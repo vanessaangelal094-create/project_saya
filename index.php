@@ -38,10 +38,8 @@ $location_condition = "";
 $location_param = null;
 
 if ($selected_location !== '') {
-
     $location_condition = " AND location = ?";
     $location_param = $selected_location;
-
 }
 
 
@@ -85,7 +83,6 @@ $total_equipment = getDashboardCount(
     $location_param
 );
 
-
 $equipment_operasi = getDashboardCount(
     $conn,
     "SELECT COUNT(*) AS total
@@ -94,7 +91,6 @@ $equipment_operasi = getDashboardCount(
      $location_condition",
     $location_param
 );
-
 
 $equipment_standby = getDashboardCount(
     $conn,
@@ -105,7 +101,6 @@ $equipment_standby = getDashboardCount(
     $location_param
 );
 
-
 $dalam_maintenance = getDashboardCount(
     $conn,
     "SELECT COUNT(*) AS total
@@ -114,7 +109,6 @@ $dalam_maintenance = getDashboardCount(
      $location_condition",
     $location_param
 );
-
 
 $breakdown = getDashboardCount(
     $conn,
@@ -145,6 +139,7 @@ $maintenance_status = $maintenance_status_query
 $maintenance_selesai = (int) ($maintenance_status['selesai'] ?? 0);
 $maintenance_segera = (int) ($maintenance_status['segera_service'] ?? 0);
 $maintenance_overdue = (int) ($maintenance_status['overdue'] ?? 0);
+
 
 /* =========================
    DATA GRAFIK BBM & PELUMAS
@@ -201,8 +196,7 @@ if ($fuel_chart_stmt) {
             $bulan = $row['bulan'];
 
             if (isset($dashboard_fuel_by_month[$bulan])) {
-                $dashboard_fuel_by_month[$bulan] =
-                    (float) $row['total'];
+                $dashboard_fuel_by_month[$bulan] = (float) $row['total'];
             }
         }
     }
@@ -243,8 +237,7 @@ if ($lubricant_chart_stmt) {
             $bulan = $row['bulan'];
 
             if (isset($dashboard_lubricant_by_month[$bulan])) {
-                $dashboard_lubricant_by_month[$bulan] =
-                    (int) $row['total'];
+                $dashboard_lubricant_by_month[$bulan] = (int) $row['total'];
             }
         }
     }
@@ -253,11 +246,9 @@ if ($lubricant_chart_stmt) {
 }
 
 /* Array yang akan digunakan grafik */
-$dashboard_chart_fuel_values =
-    array_values($dashboard_fuel_by_month);
+$dashboard_chart_fuel_values = array_values($dashboard_fuel_by_month);
 
-$dashboard_chart_lubricant_values =
-    array_values($dashboard_lubricant_by_month);
+$dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
 ?>
 
@@ -271,6 +262,16 @@ $dashboard_chart_lubricant_values =
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Dashboard Monitoring Alat Berat</title>
+
+    <!-- Terapkan tema tersimpan sebelum halaman tampil (mencegah kedipan terang) -->
+    <script>
+        try {
+            document.documentElement.setAttribute(
+                'data-theme',
+                localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+            );
+        } catch (e) {}
+    </script>
 
     <link rel="stylesheet" href="assets/css/app.css">
 
@@ -295,9 +296,7 @@ $dashboard_chart_lubricant_values =
 
             <div class="header-left">
 
-                <h1>
-                    Dashboard
-                </h1>
+                <h1>Dashboard</h1>
 
                 <p>
                     Ringkasan kondisi operasional, pemeliharaan, dan performa alat berat di PT Biringkassi Raya.
@@ -631,6 +630,20 @@ $dashboard_chart_lubricant_values =
 
             Chart.defaults.font.family = "Inter, Arial, sans-serif";
 
+            /* ---------- Warna grafik mengikuti tema ---------- */
+            const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+
+            const gridColor = isDark ? "#2a2a3d" : "#ececf3";
+            const barColor  = isDark ? "#60a5fa" : "#3b82f6";
+
+            Chart.defaults.color       = isDark ? "#a9a9c0" : "#8a8aa0";
+            Chart.defaults.borderColor = gridColor;
+
+            /* grafik tidak otomatis berganti warna, jadi muat ulang saat tema diganti */
+            window.addEventListener("themechange", function () {
+                location.reload();
+            });
+
             const fuelChartCanvas =
                 document.getElementById("fuelLubricantChart");
 
@@ -651,7 +664,7 @@ $dashboard_chart_lubricant_values =
 
                                 data: <?= json_encode($dashboard_chart_fuel_values); ?>,
 
-                                backgroundColor: "#7c5cfc",
+                                backgroundColor: barColor,
 
                                 borderRadius: 6,
 
@@ -715,13 +728,13 @@ $dashboard_chart_lubricant_values =
 
                             tooltip: {
 
-                                backgroundColor: "#ffffff",
+                                backgroundColor: isDark ? "#1f1f31" : "#ffffff",
 
-                                titleColor: "#14142b",
+                                titleColor: isDark ? "#f1f1f8" : "#14142b",
 
-                                bodyColor: "#4a4a63",
+                                bodyColor: isDark ? "#c3c3d8" : "#4a4a63",
 
-                                borderColor: "#ececf3",
+                                borderColor: gridColor,
 
                                 borderWidth: 1,
 
@@ -743,8 +756,6 @@ $dashboard_chart_lubricant_values =
 
                                     stepSize: 3000,
 
-                                    color: "#8a8aa0",
-
                                     font: {
                                         size: 11
                                     },
@@ -761,7 +772,7 @@ $dashboard_chart_lubricant_values =
 
                                     text: "BBM (Liter)",
 
-                                    color: "#7c5cfc",
+                                    color: barColor,
 
                                     font: {
                                         size: 11,
@@ -771,7 +782,7 @@ $dashboard_chart_lubricant_values =
                                 },
 
                                 grid: {
-                                    color: "#ececf3",
+                                    color: gridColor,
                                     borderDash: [5, 5]
                                 }
 
@@ -822,8 +833,6 @@ $dashboard_chart_lubricant_values =
 
                                 ticks: {
 
-                                    color: "#8a8aa0",
-
                                     font: {
                                         size: 11
                                     }
@@ -832,7 +841,7 @@ $dashboard_chart_lubricant_values =
 
                                 grid: {
 
-                                    color: "#f3f3f8",
+                                    color: gridColor,
 
                                     borderDash: [5, 5]
 
@@ -884,7 +893,9 @@ $dashboard_chart_lubricant_values =
                                 "#ef4444"
                             ],
 
-                            borderWidth: 2
+                            borderWidth: 2,
+
+                            borderColor: isDark ? "#171724" : "#ffffff"
                         }]
                     },
 
@@ -923,7 +934,9 @@ $dashboard_chart_lubricant_values =
                                         const value = context.raw;
 
                                         const percentage =
-                                            ((value / total) * 100).toFixed(1);
+                                            total > 0
+                                                ? ((value / total) * 100).toFixed(1)
+                                                : "0.0";
 
                                         return context.label +
                                             ": " +
@@ -1144,7 +1157,7 @@ $dashboard_chart_lubricant_values =
                             <?php elseif ($top_fuel_result !== false): ?>
 
                                 <tr>
-                                    <td colspan="5" style="text-align:center; padding:20px; color:#64748b;">
+                                    <td colspan="5" class="empty">
                                         Belum ada data BBM untuk filter ini.
                                     </td>
                                 </tr>
@@ -1152,7 +1165,7 @@ $dashboard_chart_lubricant_values =
                             <?php else: ?>
 
                                 <tr>
-                                    <td colspan="4" style="text-align:center; padding:20px; color:#64748b;">
+                                    <td colspan="5" class="empty">
                                         Data BBM gagal dibaca. Periksa koneksi database.
                                     </td>
                                 </tr>
@@ -1312,7 +1325,7 @@ if ($maintenance_stmt) {
 ?>
 
 <tr>
-    <td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">
+    <td colspan="6" class="empty">
         Belum ada data maintenance.
     </td>
 </tr>
@@ -1328,7 +1341,7 @@ if ($maintenance_stmt) {
 ?>
 
 <tr>
-    <td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">
+    <td colspan="6" class="empty">
         Data maintenance belum tersedia.
     </td>
 </tr>

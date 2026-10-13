@@ -2,13 +2,21 @@
    APP.CSS - Gaya Metoric untuk Monitoring Alat Berat
    PT Biringkassi Raya
 
-   Memakai NAMA CLASS LAMA (.main, .kpi-card, .box, .badge,
-   .status, dll.) jadi struktur HTML dan logika PHP tidak
-   perlu diubah. Hapus <style> inline di tiap halaman, lalu:
+   Sudah termasuk:
+   - desain dashboard (terang)
+   - tambahan halaman Histori Pemeliharaan
+   - MODE MALAM (aktif lewat <html data-theme="dark">)
+
+   Cara pakai di tiap halaman:
    <link rel="stylesheet" href="../assets/css/app.css">
 ========================================================= */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+
+/* =========================================================
+   VARIABEL WARNA - TEMA TERANG (default)
+========================================================= */
 
 :root {
     --primary: #7c5cfc;
@@ -32,10 +40,99 @@
     --orange: #ea580c;  --orange-soft: #ffeadb;
     --violet: #7c3aed;  --violet-soft: #efe7ff;
 
+    /* warna turunan (dulu tertulis langsung, sekarang variabel
+       supaya bisa berganti di mode malam) */
+    --menu-hover: #eaeaf3;
+    --menu-active: #e9e9f3;
+    --th-bg: #fafafd;
+    --row-hover: #fbfbfe;
+    --badge-bg: #eeeef5;
+    --btn-hover: #f5f5fa;
+    --tabs-bg: #efeff6;
+    --upload-bg: #faf9ff;
+    --upload-border: #cfc6ff;
+    --placeholder-bg: #f1f1f8;
+    --placeholder-ink: #c3c3d6;
+    --input-placeholder: #aaaabd;
+    --separator: #c3c3d6;
+    --bar-soft: #b9a8ff;
+    --legend-dot: #ffffff;
+
+    --view-border: #d9d0ff;
+    --edit-border: #f6dcae;
+    --delete-border: #f7c9c9;
+
+    --shadow-menu: 0 12px 32px rgba(20, 20, 43, 0.12);
+    --shadow-tab: 0 1px 2px rgba(20, 20, 43, 0.08);
+
+    --chart-blue: #3b82f6;
+    --chart-blue-soft: #93c5fd;
+
     --radius: 12px;
     --radius-sm: 8px;
     --sidebar-w: 248px;
 }
+
+
+/* =========================================================
+   VARIABEL WARNA - MODE MALAM
+========================================================= */
+
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    --primary: #8b6dff;
+    --primary-hover: #9d82ff;
+    --primary-soft: rgba(139, 109, 255, 0.18);
+
+    --bg: #0e0e18;
+    --surface: #171724;
+    --sidebar-bg: #121220;
+    --line: #26263a;
+    --line-strong: #33334d;
+
+    --ink: #f1f1f8;
+    --ink-2: #c3c3d8;
+    --muted: #8e8ea8;
+
+    --green: #4ade80;   --green-soft: rgba(34, 197, 94, 0.15);
+    --amber: #fbbf24;   --amber-soft: rgba(245, 158, 11, 0.15);
+    --red: #f87171;     --red-soft: rgba(239, 68, 68, 0.15);
+    --blue: #60a5fa;    --blue-soft: rgba(59, 130, 246, 0.15);
+    --orange: #fb923c;  --orange-soft: rgba(249, 115, 22, 0.15);
+    --violet: #a78bfa;  --violet-soft: rgba(139, 92, 246, 0.18);
+
+    --menu-hover: #1e1e30;
+    --menu-active: #25253b;
+    --th-bg: #1b1b2b;
+    --row-hover: #1c1c2c;
+    --badge-bg: #262638;
+    --btn-hover: #22223a;
+    --tabs-bg: #1b1b2b;
+    --upload-bg: #1b1b2b;
+    --upload-border: #4a3f8a;
+    --placeholder-bg: #1f1f31;
+    --placeholder-ink: #55557a;
+    --input-placeholder: #6d6d8a;
+    --separator: #4a4a66;
+    --bar-soft: #4e4396;
+    --legend-dot: #171724;
+
+    --view-border: rgba(139, 109, 255, 0.4);
+    --edit-border: rgba(245, 158, 11, 0.35);
+    --delete-border: rgba(239, 68, 68, 0.35);
+
+    --chart-blue: #60a5fa;
+    --chart-blue-soft: #2c4a8a;
+
+    --shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-tab: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+
+/* =========================================================
+   DASAR
+========================================================= */
 
 * {
     margin: 0;
@@ -143,12 +240,12 @@ select:focus-visible {
 }
 
 .menu a:hover {
-    background: #eaeaf3;
+    background: var(--menu-hover);
     color: var(--ink);
 }
 
 .menu a.active {
-    background: #e9e9f3;
+    background: var(--menu-active);
     color: var(--ink);
     font-weight: 600;
 }
@@ -156,6 +253,59 @@ select:focus-visible {
 .menu a.active svg {
     opacity: 1;
     stroke: var(--primary);
+}
+
+/* tombol ganti tema (mode malam) */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    margin: 10px 0 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.theme-toggle:hover {
+    background: var(--primary-soft);
+    color: var(--ink);
+}
+
+.theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .label-light {
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-moon,
+[data-theme="dark"] .theme-toggle .label-dark {
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+    display: inline;
+}
+
+[data-theme="dark"] .theme-toggle .label-light {
+    display: inline;
 }
 
 .sidebar-footer {
@@ -347,7 +497,7 @@ select:focus-visible {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    box-shadow: 0 12px 32px rgba(20, 20, 43, 0.12);
+    box-shadow: var(--shadow-menu);
     overflow: hidden;
     z-index: 1000;
 }
@@ -400,6 +550,10 @@ select:focus-visible {
 .summary-grid.cols-4,
 .kpi-grid {
     grid-template-columns: repeat(4, 1fr);
+}
+
+.summary-grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .kpi-card,
@@ -599,6 +753,14 @@ select:focus-visible {
     text-decoration: underline;
 }
 
+/* kartu info peralatan (header halaman detail history) */
+.equipment-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
 
 /* =========================================================
    TABEL
@@ -615,7 +777,7 @@ table {
 }
 
 th {
-    background: #fafafd;
+    background: var(--th-bg);
     color: var(--muted);
     font-size: 12px;
     font-weight: 600;
@@ -638,7 +800,7 @@ tbody tr:first-child td {
 }
 
 tbody tr:hover {
-    background: #fbfbfe;
+    background: var(--row-hover);
 }
 
 td strong,
@@ -674,7 +836,7 @@ td strong,
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
-    background: #eeeef5;
+    background: var(--badge-bg);
     color: var(--ink-2);
 }
 
@@ -747,7 +909,7 @@ td strong,
 .reset-btn:hover,
 .btn-reset:hover,
 .btn-cancel:hover {
-    background: #f5f5fa;
+    background: var(--btn-hover);
 }
 
 /* tombol aksi di dalam tabel */
@@ -775,9 +937,9 @@ td strong,
     transition: 0.15s;
 }
 
-.action .view,   .btn-detail { color: var(--primary); border-color: #d9d0ff; }
-.action .edit,   .btn-edit   { color: var(--amber);   border-color: #f6dcae; }
-.action .delete, .btn-delete { color: var(--red);     border-color: #f7c9c9; }
+.action .view,   .btn-detail { color: var(--primary); border-color: var(--view-border); }
+.action .edit,   .btn-edit   { color: var(--amber);   border-color: var(--edit-border); }
+.action .delete, .btn-delete { color: var(--red);     border-color: var(--delete-border); }
 
 .action .view:hover,   .btn-detail:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
 .action .edit:hover,   .btn-edit:hover   { background: var(--amber);   color: #fff; border-color: var(--amber); }
@@ -810,6 +972,11 @@ td strong,
     grid-template-columns: 2fr 1fr 1fr 1fr auto auto;
     gap: 10px;
     align-items: end;
+}
+
+/* filter 4 kolom: pencarian, jenis, tombol Filter, tombol Reset */
+.filter-form.cols-4 {
+    grid-template-columns: 2fr 1fr auto auto;
 }
 
 .filter-box .filter-grid,
@@ -888,12 +1055,12 @@ textarea:focus {
 }
 
 input::placeholder {
-    color: #aaaabd;
+    color: var(--input-placeholder);
 }
 
 .error-box {
     background: var(--red-soft);
-    border: 1px solid #f7c9c9;
+    border: 1px solid var(--delete-border);
     color: var(--red);
     border-radius: var(--radius-sm);
     padding: 12px 16px;
@@ -921,9 +1088,9 @@ input::placeholder {
 .upload-box {
     width: 310px;
     min-height: 110px;
-    border: 1.5px dashed #cfc6ff;
+    border: 1.5px dashed var(--upload-border);
     border-radius: var(--radius);
-    background: #faf9ff;
+    background: var(--upload-bg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -961,12 +1128,12 @@ input::placeholder {
     width: 100px;
     height: 100px;
     border-radius: 10px;
-    background: #f1f1f8;
+    background: var(--placeholder-bg);
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #c3c3d6;
+    color: var(--placeholder-ink);
     font-size: 28px;
 }
 
@@ -978,7 +1145,7 @@ input::placeholder {
 
 
 /* =========================================================
-   DETAIL EQUIPMENT (detail.php)
+   DETAIL EQUIPMENT / DETAIL HISTORY
 ========================================================= */
 
 .photo-card {
@@ -987,7 +1154,7 @@ input::placeholder {
 
 .photo-box {
     height: 200px;
-    background: #f1f1f8;
+    background: var(--placeholder-bg);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -1032,7 +1199,7 @@ input::placeholder {
 
 .info-separator,
 .detail-item .separator {
-    color: #c3c3d6;
+    color: var(--separator);
     text-align: center;
 }
 
@@ -1090,12 +1257,36 @@ input::placeholder {
     border-bottom: none;
 }
 
+/* kotak teks pekerjaan maintenance */
+.work-box {
+    background: var(--th-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-top: 12px;
+    min-height: 80px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-2);
+}
+
+/* catatan kaki */
+.info-note {
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
 /* tab (Overview, Operation, ...) */
 .tabs {
     display: inline-flex;
     gap: 2px;
     padding: 4px;
-    background: #efeff6;
+    background: var(--tabs-bg);
     border: 1px solid var(--line);
     border-radius: 10px;
     margin-bottom: 16px;
@@ -1121,7 +1312,7 @@ input::placeholder {
     background: var(--surface);
     color: var(--ink);
     font-weight: 600;
-    box-shadow: 0 1px 2px rgba(20, 20, 43, 0.08);
+    box-shadow: var(--shadow-tab);
 }
 
 
@@ -1160,7 +1351,7 @@ input::placeholder {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--chart-blue);
 }
 
 .legend-line {
@@ -1177,7 +1368,7 @@ input::placeholder {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #fff;
+    background: var(--legend-dot);
     border: 2px solid #f59e0b;
     left: 6px;
     top: -4px;
@@ -1224,11 +1415,11 @@ input::placeholder {
 .downtime-bar {
     width: 36px;
     border-radius: 6px 6px 0 0;
-    background: #b9a8ff;
+    background: var(--chart-blue-soft);
 }
 
 .downtime-bar.red {
-    background: var(--primary);
+    background: var(--chart-blue);
 }
 
 .downtime-label {
@@ -1251,11 +1442,13 @@ input::placeholder {
 
     .kpi,
     .summary-grid,
+    .summary-grid.cols-4,
     .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
     .filter-form,
+    .filter-form.cols-4,
     .filter-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1275,6 +1468,10 @@ input::placeholder {
     .dashboard-grid.equal,
     .lower-grid,
     .top-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-grid.cols-3 {
         grid-template-columns: 1fr;
     }
 
@@ -1303,8 +1500,10 @@ input::placeholder {
 
     .kpi,
     .summary-grid,
+    .summary-grid.cols-4,
     .kpi-grid,
     .filter-form,
+    .filter-form.cols-4,
     .filter-grid,
     .form-grid,
     .detail-grid {
@@ -1318,6 +1517,11 @@ input::placeholder {
     .header,
     .topbar,
     .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .equipment-head {
         flex-direction: column;
         align-items: flex-start;
     }
