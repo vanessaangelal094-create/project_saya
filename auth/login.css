@@ -1,7 +1,7 @@
-
 /* ==========================================
    LOGIN PAGE - PT BIRINGKASSI RAYA
-   Monitoring Maintenance Alat Berat
+   Layout hero dengan garis miring di tengah,
+   form interaktif, mendukung mode malam.
 ========================================== */
 
 * {
@@ -11,12 +11,44 @@
 }
 
 :root {
-    --navy: #06264b;
     --blue: #1264f5;
+    --blue-dark: #0754dc;
     --blue-light: #43b5ff;
+
+    --bg: #f3f7ff;
+    --surface: #ffffff;
     --text: #10152f;
     --muted: #77829e;
     --border: #d5dced;
+    --field-bg: #ffffff;
+    --icon: #7b86a2;
+    --placeholder: #9aa5bf;
+    --danger: #dc2626;
+    --danger-soft: #fee7e7;
+    --card-shadow: 0 24px 60px rgba(16, 40, 90, 0.12);
+    --deco-a: rgba(219, 235, 255, 0.25);
+    --deco-b: rgba(191, 219, 254, 0.65);
+}
+
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+
+    --bg: #0b1120;
+    --surface: #131b2e;
+    --text: #eef2ff;
+    --muted: #93a0bd;
+    --border: #27324d;
+    --field-bg: #0f1729;
+    --icon: #8793b0;
+    --placeholder: #66728f;
+    --danger: #f87171;
+    --danger-soft: rgba(239, 68, 68, 0.15);
+    --card-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    --deco-a: rgba(59, 130, 246, 0.05);
+    --deco-b: rgba(59, 130, 246, 0.16);
 }
 
 html,
@@ -27,9 +59,10 @@ body {
 
 body {
     font-family: 'Inter', Arial, sans-serif;
-    background: #ffffff;
+    background: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 button,
@@ -37,16 +70,52 @@ input {
     font: inherit;
 }
 
+
 /* ==========================================
-   LAYOUT DUA KOLOM
+   LAYOUT: HERO KIRI + FORM KANAN
+   dipisah garis miring
 ========================================== */
 
 .login-page {
-    display: grid !important;
-    grid-template-columns: 56% 44%;
+    --hero-w: 58%;
+    --slant: 110px;
+
+    position: relative;
+    display: flex;
     width: 100%;
     min-height: 100vh;
+    overflow: hidden;
 }
+
+/* ---------- Garis miring ---------- */
+
+.slant-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-size: 100% 300%;
+    animation: lineFlow 7s linear infinite;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--slant)) 100%, 0 100%);
+}
+
+.slant-line.line-one {
+    width: calc(var(--hero-w) + 12px);
+    background-image: linear-gradient(180deg, #43b5ff, #1264f5, #43b5ff);
+}
+
+.slant-line.line-two {
+    width: calc(var(--hero-w) + 30px);
+    background-image: linear-gradient(180deg, rgba(67, 181, 255, 0.45), rgba(18, 100, 245, 0.45), rgba(67, 181, 255, 0.45));
+}
+
+@keyframes lineFlow {
+    from { background-position: 0 0; }
+    to   { background-position: 0 300%; }
+}
+
 
 /* ==========================================
    PANEL KIRI - HERO
@@ -54,49 +123,69 @@ input {
 
 .hero-panel {
     position: relative;
-    isolation: isolate;
+    z-index: 2;
+    flex: 0 0 var(--hero-w);
     display: flex;
     flex-direction: column;
     min-width: 0;
     min-height: 100vh;
-    padding: 38px 7.2% 28px;
+    padding: 38px calc(var(--slant) + 2%) 28px 7%;
     overflow: hidden;
     color: #ffffff;
-
-    background-color: #06264b;
-    background-image:
-        linear-gradient(
-            110deg,
-            rgba(3, 24, 49, 0.86) 0%,
-            rgba(5, 42, 81, 0.62) 52%,
-            rgba(5, 35, 70, 0.32) 100%
-        ),
-        url("../assets/hero-alat-berat.jpg");
-
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+    background: #06264b;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--slant)) 100%, 0 100%);
 }
 
-.hero-overlay {
+.hero-bg {
+    position: absolute;
+    inset: -30px;
+    z-index: -3;
+    background-image: url("../assets/hero-alat-berat.jpg");
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.08);
+    transition: transform 0.25s ease-out;
+    will-change: transform;
+}
+
+.hero-shade {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            110deg,
+            rgba(3, 24, 49, 0.88) 0%,
+            rgba(5, 42, 81, 0.62) 55%,
+            rgba(5, 35, 70, 0.3) 100%
+        ),
+        linear-gradient(
+            to bottom,
+            rgba(4, 27, 54, 0.05) 20%,
+            rgba(2, 20, 42, 0.2) 50%,
+            rgba(2, 20, 42, 0.85) 100%
+        );
+}
+
+/* cahaya yang mengikuti kursor */
+.hero-glow {
+    --gx: 30%;
+    --gy: 40%;
+
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-
-    background: linear-gradient(
-        to bottom,
-        rgba(4, 27, 54, 0.05) 20%,
-        rgba(2, 20, 42, 0.15) 50%,
-        rgba(2, 20, 42, 0.82) 100%
+    background: radial-gradient(
+        circle at var(--gx) var(--gy),
+        rgba(67, 181, 255, 0.22),
+        transparent 38%
     );
+    transition: background 0.1s linear;
 }
 
-/* Logo perusahaan di kiri atas */
-
 .company-brand {
-    position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     gap: 17px;
@@ -107,8 +196,8 @@ input {
 .company-brand img {
     display: block;
     flex-shrink: 0;
-    width: 76px;
-    height: 76px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
 }
 
@@ -122,7 +211,7 @@ input {
 }
 
 .company-name strong {
-    font-size: clamp(13px, 1.3vw, 20px);
+    font-size: clamp(13px, 1.25vw, 19px);
     line-height: 1.35;
     font-weight: 800;
     letter-spacing: 0.2px;
@@ -135,11 +224,7 @@ input {
     color: #d3e3f9;
 }
 
-/* Headline dan deskripsi */
-
 .hero-content {
-    position: relative;
-    z-index: 1;
     margin-top: 28px;
     margin-bottom: 28px;
 }
@@ -172,8 +257,12 @@ input {
     color: #ffffff;
 }
 
-.hero-content h1 span {
-    color: #48b5ff;
+.hero-content h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #5cc0ff, #3b82f6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero-description {
@@ -184,16 +273,13 @@ input {
     color: #f0f5ff;
 }
 
-/* ==========================================
-   FITUR SISTEM
-========================================== */
+
+/* ---------- Fitur ---------- */
 
 .features {
-    position: relative;
-    z-index: 1;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    gap: 14px;
     margin-top: auto;
     padding-top: 25px;
 }
@@ -204,6 +290,19 @@ input {
     align-items: flex-start;
     gap: 10px;
     min-width: 0;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.13);
+    border-color: rgba(67, 181, 255, 0.55);
 }
 
 .feature-icon {
@@ -211,17 +310,22 @@ input {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
     background: linear-gradient(145deg, #2784ff, #0752e9);
-    box-shadow: 0 5px 15px rgba(0, 48, 150, 0.25);
+    box-shadow: 0 5px 15px rgba(0, 48, 150, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.feature:hover .feature-icon {
+    transform: rotate(-8deg) scale(1.08);
 }
 
 .feature-icon svg {
     display: block;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     fill: none;
     stroke: #ffffff;
     stroke-width: 1.8;
@@ -231,7 +335,7 @@ input {
 
 .feature h3 {
     font-size: 13px;
-    line-height: 1.45;
+    line-height: 1.4;
     font-weight: 700;
     color: #ffffff;
 }
@@ -239,20 +343,16 @@ input {
 .feature p {
     margin-top: 5px;
     font-size: 11px;
-    line-height: 1.65;
+    line-height: 1.6;
     color: #dce7f8;
 }
 
-/* Footer panel kiri */
-
 .hero-footer {
-    position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 30px;
+    margin-top: 26px;
     color: #e0eaff;
     font-size: 8px;
     font-weight: 500;
@@ -270,23 +370,26 @@ input {
     color: #8ea5c7;
 }
 
+
 /* ==========================================
    PANEL KANAN - LOGIN
 ========================================== */
 
 .form-panel {
     position: relative;
+    z-index: 0;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 0;
     min-height: 100vh;
-    padding: 40px clamp(26px, 4.3vw, 68px);
+    margin-left: calc(var(--slant) * -1);
+    padding: 40px 5% 40px calc(var(--slant) + 4%);
     overflow: hidden;
-    background: #ffffff;
+    background: var(--bg);
+    transition: background 0.3s ease;
 }
-
-/* Ornamen geometris */
 
 .form-decoration {
     position: absolute;
@@ -294,11 +397,7 @@ input {
     width: 180px;
     height: 100px;
     pointer-events: none;
-    background: linear-gradient(
-        135deg,
-        rgba(219, 235, 255, 0.15),
-        rgba(191, 219, 254, 0.5)
-    );
+    background: linear-gradient(135deg, var(--deco-a), var(--deco-b));
     transform: skewX(-38deg);
 }
 
@@ -314,138 +413,334 @@ input {
     height: 150px;
 }
 
-/* Kotak form */
+/* tombol mode malam */
+
+.theme-btn {
+    position: absolute;
+    top: 22px;
+    right: 24px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.3s ease, border-color 0.2s ease;
+}
+
+.theme-btn:hover {
+    color: var(--blue);
+    border-color: var(--blue);
+    transform: rotate(18deg);
+}
+
+.theme-btn:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+}
+
+.theme-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.theme-btn .icon-sun {
+    display: none;
+}
+
+[data-theme="dark"] .theme-btn .icon-moon {
+    display: none;
+}
+
+[data-theme="dark"] .theme-btn .icon-sun {
+    display: block;
+}
+
+
+/* ---------- Kartu login ---------- */
 
 .login-box {
+    --cx: 50%;
+    --cy: 0px;
+
     position: relative;
     z-index: 1;
     width: 100%;
     max-width: 450px;
     min-width: 0;
+    padding: 34px 36px 26px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-/* Logo pada panel kanan */
+/* cahaya lembut mengikuti kursor di dalam kartu */
+.login-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+        320px circle at var(--cx) var(--cy),
+        rgba(67, 140, 255, 0.12),
+        transparent 60%
+    );
+    transition: opacity 0.3s ease;
+}
+
+.login-box:hover::before {
+    opacity: 1;
+}
+
+.login-box > * {
+    position: relative;
+    z-index: 1;
+}
 
 .login-brand {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 39px;
+    margin-bottom: 22px;
     text-align: center;
 }
 
 .login-brand img {
     display: block;
-    width: 78px;
-    height: 78px;
-    margin-bottom: 9px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 8px;
     object-fit: contain;
 }
 
 .login-brand h2 {
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.4;
     font-weight: 800;
     letter-spacing: -0.2px;
-    color: #10152f;
+    color: var(--text);
 }
 
 .login-brand p {
-    margin-top: 6px;
-    color: #8490ad;
+    margin-top: 5px;
+    color: var(--muted);
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 2.5px;
 }
 
-/* Judul login */
-
 .welcome {
-    margin-bottom: 31px;
+    margin-bottom: 24px;
     text-align: center;
 }
 
+.greeting {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+    border-radius: 999px;
+    background: rgba(18, 100, 245, 0.1);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .welcome h1 {
-    font-size: clamp(23px, 2vw, 32px);
+    font-size: clamp(22px, 1.9vw, 28px);
     font-weight: 800;
     line-height: 1.3;
-    letter-spacing: -0.8px;
-    color: #10152f;
+    letter-spacing: -0.7px;
+    color: var(--text);
 }
 
 .welcome p {
-    max-width: 370px;
-    margin: 10px auto 0;
-    font-size: 14px;
-    line-height: 1.7;
+    max-width: 360px;
+    margin: 8px auto 0;
+    font-size: 13.5px;
+    line-height: 1.65;
     color: var(--muted);
 }
+
+
+/* ---------- Pesan error dari server ---------- */
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 12px;
+    background: var(--danger-soft);
+    color: var(--danger);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.alert svg {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 
 /* ==========================================
    INPUT USERNAME DAN PASSWORD
 ========================================== */
 
 .form-group {
-    margin-bottom: 21px;
+    margin-bottom: 17px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 9px;
-    font-size: 14px;
+    margin-bottom: 8px;
+    font-size: 13.5px;
     font-weight: 500;
-    color: #171b32;
+    color: var(--text);
+    transition: color 0.2s ease;
+}
+
+.form-group:focus-within label {
+    color: var(--blue);
 }
 
 .input-wrapper {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 12px;
     width: 100%;
-    min-height: 59px;
-    padding: 0 15px;
+    min-height: 54px;
+    padding: 0 14px;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: #ffffff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: var(--field-bg);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.input-wrapper:hover {
+    border-color: #9fb6e6;
 }
 
 .input-wrapper:focus-within {
-    border-color: #3985ff;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.11);
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+    transform: translateY(-1px);
 }
 
 .input-wrapper > svg {
     display: block;
-    flex: 0 0 22px;
-    width: 22px;
-    height: 22px;
+    flex: 0 0 21px;
+    width: 21px;
+    height: 21px;
     fill: none;
-    stroke: #7b86a2;
+    stroke: var(--icon);
     stroke-width: 1.9;
     stroke-linecap: round;
     stroke-linejoin: round;
+    transition: stroke 0.2s ease, transform 0.2s ease;
+}
+
+.input-wrapper:focus-within > svg {
+    stroke: var(--blue);
+    transform: scale(1.1);
 }
 
 .input-wrapper input {
     display: block;
     width: 100%;
     min-width: 0;
-    height: 56px;
+    height: 52px;
     padding: 0;
     border: none;
     outline: none;
     background: transparent;
-    color: #202842;
+    color: var(--text);
     font-size: 14px;
 }
 
 .input-wrapper input::placeholder {
-    color: #9aa5bf;
+    color: var(--placeholder);
     opacity: 1;
 }
 
-/* Tombol tampilkan password */
+/* mencegah warna biru-kuning bawaan autofill browser */
+.input-wrapper input:-webkit-autofill {
+    -webkit-text-fill-color: var(--text);
+    box-shadow: 0 0 0 40px var(--field-bg) inset;
+}
+
+/* tampilan error pada field */
+
+.form-group.has-error .input-wrapper {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+}
+
+.field-error {
+    display: block;
+    min-height: 0;
+    margin-top: 6px;
+    color: var(--danger);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.field-error:empty {
+    display: none;
+}
+
+/* peringatan caps lock */
+
+.caps-hint {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    margin-top: 7px;
+    color: #d97706;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.caps-hint.show {
+    display: flex;
+    animation: fadeUp 0.25s ease both;
+}
+
+.caps-hint svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* tombol tampilkan password */
 
 .toggle-password {
     display: flex;
@@ -453,12 +748,12 @@ input {
     justify-content: center;
     flex: 0 0 30px;
     width: 30px;
-    height: 42px;
+    height: 40px;
     padding: 0;
     border: none;
     border-radius: 6px;
     background: transparent;
-    color: #7b86a2;
+    color: var(--icon);
     cursor: pointer;
     transition: color 0.2s ease;
 }
@@ -474,8 +769,8 @@ input {
 
 .toggle-password svg {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.9;
@@ -483,37 +778,120 @@ input {
     stroke-linejoin: round;
 }
 
+.toggle-password .eye-closed {
+    display: none;
+}
+
+.toggle-password.is-visible .eye-open {
+    display: none;
+}
+
+.toggle-password.is-visible .eye-closed {
+    display: block;
+}
+
+
+/* ---------- Opsi ingat username ---------- */
+
+.form-options {
+    margin: 4px 0 4px;
+}
+
+.remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+}
+
+.remember input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.remember .check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    background: var(--field-bg);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.remember .check svg {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    transition: stroke-dashoffset 0.25s ease;
+}
+
+.remember:hover .check {
+    border-color: var(--blue);
+}
+
+.remember input:checked + .check {
+    background: var(--blue);
+    border-color: var(--blue);
+    transform: scale(1.06);
+}
+
+.remember input:checked + .check svg {
+    stroke-dashoffset: 0;
+}
+
+.remember input:focus-visible + .check {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+
 /* ==========================================
    TOMBOL MASUK
 ========================================== */
 
 .login-button {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 18px;
+    gap: 14px;
     width: 100%;
-    min-height: 62px;
-    margin-top: 26px;
+    min-height: 56px;
+    margin-top: 18px;
     padding: 12px 20px;
     border: none;
     border-radius: 12px;
     background: linear-gradient(105deg, #1264f5, #0961f7);
     color: #ffffff;
-    font-size: 16px;
+    font-size: 15.5px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 7px 18px rgba(18, 100, 245, 0.12);
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(18, 100, 245, 0.25);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.login-button svg {
+.login-button .btn-arrow {
     display: block;
-    width: 23px;
-    height: 23px;
+    width: 22px;
+    height: 22px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.8;
+    stroke-width: 1.9;
     stroke-linecap: round;
     stroke-linejoin: round;
     transition: transform 0.2s ease;
@@ -521,15 +899,16 @@ input {
 
 .login-button:hover {
     background: linear-gradient(105deg, #0754dc, #084fc9);
-    box-shadow: 0 10px 24px rgba(18, 100, 245, 0.22);
+    box-shadow: 0 12px 26px rgba(18, 100, 245, 0.35);
+    transform: translateY(-2px);
 }
 
-.login-button:hover svg {
-    transform: translateX(4px);
+.login-button:hover .btn-arrow {
+    transform: translateX(5px);
 }
 
 .login-button:active {
-    transform: scale(0.99);
+    transform: translateY(0) scale(0.99);
 }
 
 .login-button:focus-visible {
@@ -537,31 +916,112 @@ input {
     outline-offset: 3px;
 }
 
+/* status loading */
+
+.login-button .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.login-button.loading {
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.login-button.loading .spinner {
+    display: block;
+}
+
+.login-button.loading .btn-arrow {
+    display: none;
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+.login-footnote {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--muted);
+}
+
+
+/* ==========================================
+   ANIMASI
+========================================== */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    15%      { transform: translateX(-9px); }
+    30%      { transform: translateX(8px); }
+    45%      { transform: translateX(-6px); }
+    60%      { transform: translateX(5px); }
+    75%      { transform: translateX(-3px); }
+}
+
+.reveal {
+    opacity: 0;
+    animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--d, 0s);
+}
+
+.login-box.shake {
+    animation: shake 0.45s ease;
+}
+
+
 /* ==========================================
    RESPONSIVE LAPTOP
 ========================================== */
 
-@media (max-width: 1200px) and (min-width: 768px) {
+@media (max-width: 1200px) and (min-width: 861px) {
+
     .login-page {
-        grid-template-columns: 52% 48%;
+        --hero-w: 54%;
+        --slant: 80px;
     }
 
     .hero-panel {
-        padding: 30px 5%;
-    }
-
-    .company-brand {
-        gap: 12px;
+        padding: 30px calc(var(--slant) + 1%) 24px 5%;
     }
 
     .company-brand img {
-        width: 62px;
-        height: 62px;
-    }
-
-    .company-name {
-        gap: 5px;
-        padding-left: 12px;
+        width: 58px;
+        height: 58px;
     }
 
     .company-name strong {
@@ -573,12 +1033,8 @@ input {
         letter-spacing: 1.5px;
     }
 
-    .hero-content {
-        margin-top: 28px;
-    }
-
     .hero-content h1 {
-        font-size: clamp(32px, 3.5vw, 43px);
+        font-size: clamp(30px, 3.4vw, 42px);
         letter-spacing: -1px;
     }
 
@@ -587,25 +1043,15 @@ input {
     }
 
     .features {
-        gap: 12px;
+        gap: 10px;
     }
 
-    .feature-icon {
-        width: 40px;
-        height: 40px;
-    }
-
-    .feature-icon svg {
-        width: 22px;
-        height: 22px;
-    }
-
-    .feature h3 {
-        font-size: 11px;
+    .feature {
+        padding: 11px;
     }
 
     .feature p {
-        font-size: 10px;
+        display: none;
     }
 
     .hero-footer {
@@ -614,46 +1060,38 @@ input {
     }
 
     .form-panel {
-        padding: 32px 28px;
+        padding: 32px 24px 32px calc(var(--slant) + 20px);
     }
 
-    .login-brand {
-        margin-bottom: 30px;
-    }
-
-    .login-brand img {
-        width: 68px;
-        height: 68px;
-    }
-
-    .welcome {
-        margin-bottom: 26px;
-    }
-
-    .welcome h1 {
-        font-size: 25px;
-    }
-
-    .welcome p {
-        font-size: 13px;
+    .login-box {
+        padding: 28px 26px 22px;
     }
 }
 
+
 /* ==========================================
-   RESPONSIVE MOBILE
+   RESPONSIVE MOBILE / TABLET KECIL
+   hero di atas, garis miring di bawahnya
 ========================================== */
 
-@media (max-width: 767px) {
+@media (max-width: 860px) {
+
     .login-page {
-        display: flex !important;
+        --slant: 34px;
+
         flex-direction: column;
         min-height: 100vh;
     }
 
+    .slant-line {
+        display: none;
+    }
+
     .hero-panel {
-        min-height: 220px;
-        padding: 20px 22px;
-        background-position: center 55%;
+        flex: none;
+        min-height: 250px;
+        padding: 22px 24px calc(var(--slant) + 20px);
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--slant)), 0 100%);
     }
 
     .company-brand {
@@ -661,8 +1099,8 @@ input {
     }
 
     .company-brand img {
-        width: 48px;
-        height: 48px;
+        width: 46px;
+        height: 46px;
     }
 
     .company-name {
@@ -680,7 +1118,7 @@ input {
     }
 
     .hero-content {
-        margin-top: 20px;
+        margin-top: 18px;
         margin-bottom: 0;
     }
 
@@ -718,108 +1156,78 @@ input {
     }
 
     .form-panel {
-        display: flex;
         flex: 1;
         min-height: auto;
-        padding: 32px 22px 40px;
+        margin-left: 0;
+        margin-top: -22px;
+        padding: 0 20px 36px;
         overflow: visible;
     }
 
+    .form-decoration {
+        display: none;
+    }
+
+    .theme-btn {
+        top: 14px;
+        right: 16px;
+    }
+
     .login-box {
-        max-width: 430px;
+        max-width: 440px;
+        padding: 28px 22px 22px;
     }
 
     .login-brand {
-        margin-bottom: 25px;
-    }
-
-    .login-brand img {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 7px;
-    }
-
-    .login-brand h2 {
-        font-size: 15px;
-    }
-
-    .login-brand p {
-        font-size: 8px;
-        letter-spacing: 1.8px;
+        display: none;
     }
 
     .welcome {
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
 
     .welcome h1 {
-        font-size: 24px;
-    }
-
-    .welcome p {
-        margin-top: 8px;
-        font-size: 13px;
-    }
-
-    .form-group {
-        margin-bottom: 19px;
-    }
-
-    .input-wrapper {
-        min-height: 55px;
-        padding: 0 13px;
-    }
-
-    .input-wrapper input {
-        height: 53px;
-        font-size: 14px;
-    }
-
-    .login-button {
-        min-height: 55px;
-        margin-top: 24px;
-        font-size: 15px;
+        font-size: 23px;
     }
 }
 
-/* HP kecil */
-
 @media (max-width: 380px) {
+
     .hero-panel {
-        padding: 18px;
+        padding-left: 18px;
+        padding-right: 18px;
     }
 
     .company-brand img {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
     }
 
     .company-name strong {
         font-size: 11px;
     }
 
-    .company-name span {
-        font-size: 7px;
-        letter-spacing: 1px;
-    }
-
-    .form-panel {
-        padding: 27px 18px 35px;
-    }
-
-    .welcome h1 {
-        font-size: 22px;
+    .login-box {
+        padding: 24px 18px 20px;
     }
 }
+
 
 /* Menghormati pengaturan pengurangan animasi */
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .reveal {
+        opacity: 1;
     }
 }
