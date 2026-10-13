@@ -272,878 +272,19 @@ $dashboard_chart_lubricant_values =
 
     <title>Dashboard Monitoring Alat Berat</title>
 
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f8fc;
-            color: #1f2937;
-            font-size: 15px;
-        }
-
-
-        /* =========================
-           SIDEBAR - STANDARD
-           JANGAN DIUBAH
-        ========================= */
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-
-            width: 240px;
-            height: 100vh;
-
-            background: #0759bd;
-            color: white;
-
-            padding: 25px 15px;
-
-            overflow-y: auto;
-
-            z-index: 1000;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 35px;
-
-            padding-left: 10px;
-        }
-
-        .logo img {
-            width: 42px;
-            height: 42px;
-
-            object-fit: contain;
-        }
-
-        .logo-text {
-            font-size: 13px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 7px;
-        }
-
-        .menu a {
-            display: block;
-
-            padding: 12px 14px;
-
-            border-radius: 8px;
-
-            color: white;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            transition: 0.2s;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            background: rgba(255, 255, 255, 0.18);
-        }
-
-
-        /* =========================
-           MAIN
-        ========================= */
-
-        .main {
-            margin-left: 240px;
-
-            padding: 28px 32px 45px;
-        }
-
-
-        /* =========================
-           HEADER
-        ========================= */
-
-        .header {
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 22px;
-        }
-
-        .header-left h1 {
-            font-size: 32px;
-
-            color: #0759bd;
-
-            margin-bottom: 5px;
-        }
-
-        .header-left p {
-            color: #64748b;
-
-            font-size: 14px;
-        }
-
-        .profile {
-            position: relative;
-        }
-
-        .user-info {
-            background: white;
-
-            border: 1px solid #dce5ef;
-
-            padding: 11px 16px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-size: 13px;
-
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-        }
-
-        .user-info strong {
-            color: #0759bd;
-        }
-
-        .profile-menu {
-            display: none;
-
-            position: absolute;
-
-            right: 0;
-
-            top: 48px;
-
-            width: 190px;
-
-            background: white;
-
-            border: 1px solid #dce5ef;
-
-            border-radius: 9px;
-
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-
-            overflow: hidden;
-
-            z-index: 1000;
-        }
-
-        .profile-menu.show {
-            display: block;
-        }
-
-        .profile-name {
-            padding: 13px 15px;
-
-            font-size: 12px;
-
-            color: #64748b;
-
-            border-bottom: 1px solid #edf1f5;
-        }
-
-        .profile-name strong {
-            display: block;
-
-            margin-top: 4px;
-
-            color: #1f2937;
-
-            font-size: 13px;
-        }
-
-        .logout-link {
-            display: block;
-
-            padding: 12px 15px;
-
-            color: #dc2626;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: bold;
-        }
-
-        .logout-link:hover {
-            background: #fef2f2;
-        }
-
-
-        /* =========================
-           KPI
-        ========================= */
-
-        .kpi {
-            display: grid;
-
-            grid-template-columns: repeat(5, 1fr);
-
-            gap: 16px;
-
-            margin-bottom: 16px;
-        }
-
-        .kpi-card {
-            background: white;
-
-            border: 1px solid #dce8f3;
-
-            border-radius: 8px;
-
-            min-height: 105px;
-
-            padding: 16px 18px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 14px;
-
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-        }
-
-        .kpi-icon {
-            width: 52px;
-            height: 52px;
-
-            border-radius: 9px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 27px;
-
-            flex-shrink: 0;
-        }
-
-        .icon-blue {
-            background: #e7f1ff;
-        }
-
-        .icon-green {
-            background: #e5f7eb;
-        }
-
-        .icon-yellow {
-            background: #fff4d7;
-        }
-
-        .icon-red {
-            background: #ffe8e8;
-        }
-
-        .kpi-info {
-            flex: 1;
-        }
-
-        .kpi-title {
-            font-size: 12px;
-
-            color: #64748b;
-
-            margin-bottom: 6px;
-
-            font-weight: bold;
-        }
-
-        .kpi-number {
-            font-size: 29px;
-
-            font-weight: bold;
-
-            color: #0759bd;
-        }
-
-        .kpi-red {
-            color: #dc2626;
-        }
-
-
-        /* =========================
-           GRID
-        ========================= */
-
-        .dashboard-grid {
-            display: grid;
-
-            grid-template-columns: 1.55fr 1fr;
-
-            gap: 16px;
-
-            margin-bottom: 16px;
-        }
-
-        .dashboard-grid.equal {
-            grid-template-columns: 1fr 1fr;
-        }
-
-
-        /* =========================
-           BOX
-        ========================= */
-
-        .box {
-            background: white;
-
-            border: 1px solid #dce8f3;
-
-            border-radius: 8px;
-
-            padding: 16px 18px;
-
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-
-            overflow: hidden;
-        }
-
-        .box-title {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            margin-bottom: 12px;
-        }
-
-        .box-title h2 {
-            font-size: 15px;
-
-            color: #0759bd;
-
-            font-weight: bold;
-        }
-
-        .box-title span {
-            font-size: 10px;
-
-            color: #64748b;
-        }
-
-
-        /* =========================
-           COMBINED BBM + PELUMAS
-        ========================= */
-
-        .combined-chart {
-            width: 100%;
-        }
-
-        .combined-chart-area {
-            position: relative;
-            height: 250px;
-            margin-top: 8px;
-        }
-
-        .chart-canvas-wrap {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .chart-legend {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 12px;
-            font-size: 11px;
-            color: #64748b;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .legend-box {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-            background: #397ee8;
-        }
-
-        .legend-line {
-            position: relative;
-            width: 20px;
-            height: 3px;
-            border-radius: 3px;
-            background: #dc2626;
-        }
-
-        .legend-line::after {
-            content: "";
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 2px solid #dc2626;
-            left: 6px;
-            top: -4px;
-        }
-
-        /* =========================
-           TABLE
-        ========================= */
-
-        .table-wrapper {
-            width: 100%;
-
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-
-            border-collapse: collapse;
-        }
-
-        th {
-            background: #eef5fc;
-
-            color: #4b6380;
-
-            font-size: 10px;
-
-            font-weight: bold;
-
-            padding: 9px 8px;
-
-            text-align: left;
-
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 9px 8px;
-
-            border-top: 1px solid #edf2f7;
-
-            font-size: 10px;
-
-            white-space: nowrap;
-        }
-
-        td strong {
-            color: #1f2937;
-        }
-
-
-        /* =========================
-           STATUS BADGE
-        ========================= */
-
-        .badge {
-            display: inline-block;
-
-            padding: 4px 9px;
-
-            border-radius: 5px;
-
-            font-size: 9px;
-
-            font-weight: bold;
-
-            text-align: center;
-
-            min-width: 78px;
-        }
-
-        .badge-green {
-            background: #dcfce7;
-
-            color: #15803d;
-        }
-
-        .badge-yellow {
-            background: #fef3c7;
-
-            color: #a16207;
-        }
-
-        .badge-red {
-            background: #fee2e2;
-
-            color: #dc2626;
-        }
-
-        .badge-purple {
-            background: #ede9fe;
-
-            color: #7c3aed;
-        }
-
-        .badge-orange {
-            background: #ffedd5;
-
-            color: #ea580c;
-        }
-
-        .badge-blue {
-            background: #dbeafe;
-
-            color: #2563eb;
-        }
-
-
-        /* =========================
-           UNIT PERHATIAN
-        ========================= */
-
-        .attention-table th,
-        .attention-table td {
-            font-size: 10px;
-        }
-
-        .attention-table .badge {
-            min-width: 75px;
-        }
-
-
-        /* =========================
-           DOWNTIME CHART
-        ========================= */
-
-        .downtime-chart {
-            height: 210px;
-
-            display: flex;
-
-            align-items: flex-end;
-
-            justify-content: space-around;
-
-            border-bottom: 1px solid #dbe4ed;
-
-            padding: 8px 20px 0;
-        }
-
-        .downtime-column {
-            height: 100%;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            justify-content: flex-end;
-
-            gap: 5px;
-
-            width: 14%;
-        }
-
-        .downtime-value {
-            font-size: 11px;
-
-            font-weight: bold;
-
-            color: #475569;
-        }
-
-        .downtime-bar {
-            width: 38px;
-
-            border-radius: 4px 4px 0 0;
-
-            background: #3981e8;
-        }
-
-        .downtime-bar.red {
-            background: #f04444;
-        }
-
-        .downtime-label {
-            font-size: 10px;
-
-            color: #64748b;
-        }
-
-        .axis-label {
-            font-size: 9px;
-
-            color: #94a3b8;
-
-            margin-top: 6px;
-        }
-
-
-        /* =========================
-           LINK
-        ========================= */
-
-        .see-more {
-            color: #0759bd;
-
-            text-decoration: none;
-
-            font-size: 10px;
-
-            font-weight: bold;
-        }
-
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 1200px) {
-
-            .kpi {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-        }
-
-
-        @media (max-width: 900px) {
-
-            .dashboard-grid,
-            .dashboard-grid.equal {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-
-        @media (max-width: 650px) {
-
-            .sidebar {
-                position: relative;
-
-                width: 100%;
-
-                height: auto;
-            }
-
-            .main {
-                margin-left: 0;
-
-                padding: 18px;
-            }
-
-            .kpi {
-                grid-template-columns: 1fr;
-            }
-
-            .header {
-                flex-direction: column;
-
-                align-items: flex-start;
-
-                gap: 10px;
-            }
-
-        }
-
-        /* FILTER LOKASI DASHBOARD */
-.location-filter {
-    margin-top: 14px;
-}
-
-.location-filter label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #475569;
-}
-
-.location-filter form {
-    margin: 0;
-}
-
-.location-filter select {
-    width: 280px;
-    height: 40px;
-    padding: 0 12px;
-    border: 1px solid #d9e2ec;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #334155;
-    font-size: 13px;
-    font-family: inherit;
-    cursor: pointer;
-    outline: none;
-}
-
-.location-filter select:hover,
-.location-filter select:focus {
-    border-color: #0759bd;
-}
-
-.location-filter select:focus {
-    box-shadow: 0 0 0 3px rgba(7, 89, 189, 0.08);
-}
-    </style>
+    <link rel="stylesheet" href="assets/css/app.css">
 
 </head>
 
 
 <body>
 
+    <?php
+    $base   = '';
+    $active = 'dashboard';
+    include $base . 'includes/sidebar.php';
+    ?>
 
-    <!-- =========================
-         SIDEBAR
-    ========================= -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-
-            <img
-                src="assets/logo.png"
-                alt="Logo PT Biringkassi Raya"
-            >
-
-            <div class="logo-text">
-                PT BIRINGKASSI RAYA
-            </div>
-
-        </div>
-
-
-        <ul class="menu">
-
-            <li>
-                <a
-                    href="index.php"
-                    class="active"
-                >
-                    Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="equipment/index.php">
-                    Equipment Master
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    Status Unit
-                </a>
-            </li>
-
-            <li>
-                <a href="maintenance/index.php">
-                    Jadwal Pemeliharaan
-                </a>
-            </li>
-
-            <li>
-                <a href="maintenance/history/index.php">
-                    Histori Pemeliharaan
-                </a>
-            </li>
-
-            <li>
-                <a href="breakdown/index.php">
-                    Breakdown & Failure
-                </a>
-            </li>
-
-<li class="menu-dropdown">
-    <a
-        href="javascript:void(0);"
-        onclick="
-            var submenu = document.getElementById('spareSubmenu');
-            var arrow = document.getElementById('spareArrow');
-
-            if (submenu.style.display === 'none' || submenu.style.display === '') {
-                submenu.style.display = 'block';
-                arrow.textContent = '▼';
-            } else {
-                submenu.style.display = 'none';
-                arrow.textContent = '▶';
-            }
-        "
-    >
-        Spare Part & Lubricant
-        <span id="spareArrow" class="menu-arrow">▶</span>
-    </a>
-
-    <ul id="spareSubmenu" class="submenu" style="display: none;">
-        <li>
-            <a href="sparepart/index.php">
-                Spare Part
-            </a>
-        </li>
-
-        <li>
-            <a href="lubricant/index.php">
-                Lubricant
-            </a>
-        </li>
-    </ul>
-</li>
-
-<li>
-    <a href="fuel/index.php">
-        Fuel Performance
-    </a>
-</li>
-
-<li>
-    <a href="#">
-        Biaya Pemeliharaan
-    </a>
-    
-</li>
-            <li>
-                <a href="#">
-                    Kinerja & Evaluasi
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    Laporan
-                </a>
-            </li>
-
-        </ul>
-
-    </aside>
-
-
-
-    <!-- =========================
-         MAIN
-    ========================= -->
 
     <main class="main">
 
@@ -1161,41 +302,43 @@ $dashboard_chart_lubricant_values =
                 <p>
                     Ringkasan kondisi operasional, pemeliharaan, dan performa alat berat di PT Biringkassi Raya.
                 </p>
-<!-- FILTER LOKASI -->
-<div class="location-filter">
 
-    <label for="location">
-        Lokasi Equipment
-    </label>
+                <!-- FILTER LOKASI -->
+                <div class="location-filter">
 
-    <form method="GET" action="index.php">
+                    <label for="location">
+                        Lokasi Equipment
+                    </label>
 
-        <select
-            name="location"
-            id="location"
-            onchange="this.form.submit()"
-        >
+                    <form method="GET" action="index.php">
 
-            <option value="">
-                Semua Lokasi
-            </option>
+                        <select
+                            name="location"
+                            id="location"
+                            onchange="this.form.submit()"
+                        >
 
-            <?php while ($location = $location_result->fetch_assoc()): ?>
+                            <option value="">
+                                Semua Lokasi
+                            </option>
 
-                <option
-                    value="<?= htmlspecialchars($location['location']); ?>"
-                    <?= $selected_location === $location['location'] ? 'selected' : ''; ?>
-                >
-                    <?= htmlspecialchars($location['location']); ?>
-                </option>
+                            <?php while ($location = $location_result->fetch_assoc()): ?>
 
-            <?php endwhile; ?>
+                                <option
+                                    value="<?= htmlspecialchars($location['location']); ?>"
+                                    <?= $selected_location === $location['location'] ? 'selected' : ''; ?>
+                                >
+                                    <?= htmlspecialchars($location['location']); ?>
+                                </option>
 
-        </select>
+                            <?php endwhile; ?>
 
-    </form>
+                        </select>
 
-</div>
+                    </form>
+
+                </div>
+
             </div>
 
 
@@ -1254,11 +397,11 @@ $dashboard_chart_lubricant_values =
 
         <section class="kpi">
 
-        <div
-    class="kpi-card"
-    onclick="window.location.href='equipment/index.php<?php echo $selected_location !== '' ? '?location=' . urlencode($selected_location) : ''; ?>';"
-    style="cursor: pointer;"
->
+            <div
+                class="kpi-card"
+                onclick="window.location.href='equipment/index.php<?php echo $selected_location !== '' ? '?location=' . urlencode($selected_location) : ''; ?>';"
+                style="cursor: pointer;"
+            >
 
                 <div class="kpi-icon icon-blue">
                     🚜
@@ -1280,10 +423,10 @@ $dashboard_chart_lubricant_values =
 
 
             <div
-    class="kpi-card"
-    onclick="window.location.href='equipment/index.php?location=<?php echo urlencode($selected_location); ?>&status=Running';"
-    style="cursor: pointer;"
->
+                class="kpi-card"
+                onclick="window.location.href='equipment/index.php?location=<?php echo urlencode($selected_location); ?>&status=Running';"
+                style="cursor: pointer;"
+            >
 
                 <div class="kpi-icon icon-green">
                     ⚙
@@ -1303,11 +446,12 @@ $dashboard_chart_lubricant_values =
 
             </div>
 
+
             <div
-    class="kpi-card"
-    onclick="window.location.href='equipment/index.php?location=<?php echo urlencode($selected_location); ?>&status=Standby';"
-    style="cursor: pointer;"
->
+                class="kpi-card"
+                onclick="window.location.href='equipment/index.php?location=<?php echo urlencode($selected_location); ?>&status=Standby';"
+                style="cursor: pointer;"
+            >
 
                 <div class="kpi-icon icon-yellow">
                     ◷
@@ -1327,46 +471,43 @@ $dashboard_chart_lubricant_values =
 
             </div>
 
+
             <div
-    class="kpi-card"
-    onclick="<?php
-        if ($selected_location !== '') {
-            echo "window.location.href='equipment/index.php?location=" . urlencode($selected_location) . "&status=Maintenance';";
-        } else {
-            echo "window.location.href='maintenance/index.php';";
-        }
-    ?>"
-    style="cursor: pointer;"
->
+                class="kpi-card"
+                onclick="<?php
+                    if ($selected_location !== '') {
+                        echo "window.location.href='equipment/index.php?location=" . urlencode($selected_location) . "&status=Maintenance';";
+                    } else {
+                        echo "window.location.href='maintenance/index.php';";
+                    }
+                ?>"
+                style="cursor: pointer;"
+            >
 
-    <div class="kpi-card">
+                <div class="kpi-icon icon-yellow">
+                    🔧
+                </div>
 
-        <div class="kpi-icon icon-yellow">
-            🔧
-        </div>
+                <div class="kpi-info">
 
-        <div class="kpi-info">
+                    <div class="kpi-title">
+                        Dalam Maintenance
+                    </div>
 
-            <div class="kpi-title">
-                Dalam Maintenance
+                    <div class="kpi-number">
+                        <?= $dalam_maintenance; ?>
+                    </div>
+
+                </div>
+
             </div>
-
-            <div class="kpi-number">
-                <?= $dalam_maintenance; ?>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
 
 
             <div
-    class="kpi-card"
-    onclick="window.location.href='equipment/index.php?location=<?php echo urlencode($selected_location); ?>&status=Breakdown';"
-    style="cursor: pointer;"
->
+                class="kpi-card"
+                onclick="window.location.href='equipment/index.php?location=<?php echo urlencode($selected_location); ?>&status=Breakdown';"
+                style="cursor: pointer;"
+            >
 
                 <div class="kpi-icon icon-red">
                     ⚠
@@ -1437,6 +578,8 @@ $dashboard_chart_lubricant_values =
                 </div>
 
             </div>
+
+
             <div class="box">
 
                 <div class="box-title">
@@ -1458,33 +601,35 @@ $dashboard_chart_lubricant_values =
 
         <section class="dashboard-grid">
 
-    <div class="box">
+            <div class="box">
 
-        <div class="box-title">
-            <h2>🔧 &nbsp; Status Pemeliharaan</h2>
+                <div class="box-title">
+                    <h2>🔧 &nbsp; Status Pemeliharaan</h2>
 
-            <span>
-                Kondisi Jadwal
-            </span>
-        </div>
+                    <span>
+                        Kondisi Jadwal
+                    </span>
+                </div>
 
-        <div style="height: 250px; position: relative;">
-            <canvas
-    id="maintenanceStatusChart"
-    onclick="window.location.href='maintenance/index.php?status=Selesai';"
-    style="cursor: pointer;"
-></canvas>
-        </div>
+                <div style="height: 250px; position: relative;">
+                    <canvas
+                        id="maintenanceStatusChart"
+                        onclick="window.location.href='maintenance/index.php?status=Selesai';"
+                        style="cursor: pointer;"
+                    ></canvas>
+                </div>
 
-    </div>
+            </div>
 
-</section>
+        </section>
 
         <!-- CHART.JS -->
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <script>
+
+            Chart.defaults.font.family = "Inter, Arial, sans-serif";
 
             const fuelChartCanvas =
                 document.getElementById("fuelLubricantChart");
@@ -1495,7 +640,7 @@ $dashboard_chart_lubricant_values =
 
                     data: {
 
-labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
+                        labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                         datasets: [
 
@@ -1504,11 +649,11 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                 label: "BBM (Liter)",
 
-                               data: <?= json_encode($dashboard_chart_fuel_values); ?>,
+                                data: <?= json_encode($dashboard_chart_fuel_values); ?>,
 
-                                backgroundColor: "#397ee8",
+                                backgroundColor: "#7c5cfc",
 
-                                borderRadius: 5,
+                                borderRadius: 6,
 
                                 borderSkipped: false,
 
@@ -1526,9 +671,9 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                 data: <?= json_encode($dashboard_chart_lubricant_values); ?>,
 
-                                borderColor: "#dc2626",
+                                borderColor: "#f59e0b",
 
-                                backgroundColor: "#dc2626",
+                                backgroundColor: "#f59e0b",
 
                                 borderWidth: 3,
 
@@ -1540,7 +685,7 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                 pointBackgroundColor: "#ffffff",
 
-                                pointBorderColor: "#dc2626",
+                                pointBorderColor: "#f59e0b",
 
                                 pointBorderWidth: 3,
 
@@ -1556,7 +701,6 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
                         responsive: true,
 
                         maintainAspectRatio: false,
-                    
 
                         interaction: {
                             mode: "index",
@@ -1573,11 +717,11 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                 backgroundColor: "#ffffff",
 
-                                titleColor: "#1e293b",
+                                titleColor: "#14142b",
 
-                                bodyColor: "#475569",
+                                bodyColor: "#4a4a63",
 
-                                borderColor: "#dbe4ee",
+                                borderColor: "#ececf3",
 
                                 borderWidth: 1,
 
@@ -1599,10 +743,10 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                     stepSize: 3000,
 
-                                    color: "#64748b",
+                                    color: "#8a8aa0",
 
                                     font: {
-                                        size: 10
+                                        size: 11
                                     },
 
                                     callback: function(value) {
@@ -1617,7 +761,7 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                     text: "BBM (Liter)",
 
-                                    color: "#1767b1",
+                                    color: "#7c5cfc",
 
                                     font: {
                                         size: 11,
@@ -1627,7 +771,7 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
                                 },
 
                                 grid: {
-                                    color: "#e5eaf0",
+                                    color: "#ececf3",
                                     borderDash: [5, 5]
                                 }
 
@@ -1645,10 +789,10 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                     stepSize: 30,
 
-                                    color: "#dc2626",
+                                    color: "#d97706",
 
                                     font: {
-                                        size: 10
+                                        size: 11
                                     }
 
                                 },
@@ -1659,7 +803,7 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                     text: "Pelumas (Kali)",
 
-                                    color: "#dc2626",
+                                    color: "#d97706",
 
                                     font: {
                                         size: 11,
@@ -1678,17 +822,17 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
 
                                 ticks: {
 
-                                    color: "#64748b",
+                                    color: "#8a8aa0",
 
                                     font: {
-                                        size: 10
+                                        size: 11
                                     }
 
                                 },
 
                                 grid: {
 
-                                    color: "#edf2f7",
+                                    color: "#f3f3f8",
 
                                     borderDash: [5, 5]
 
@@ -1705,161 +849,167 @@ labels: <?= json_encode($dashboard_chart_labels, JSON_UNESCAPED_UNICODE); ?>,
             }
 
         </script>
-<script>
-    const statusEquipmentCanvas =
-        document.getElementById("statusEquipmentChart");
 
-    if (statusEquipmentCanvas) {
+        <script>
 
-        new Chart(statusEquipmentCanvas, {
+            const statusEquipmentCanvas =
+                document.getElementById("statusEquipmentChart");
 
-            type: "doughnut",
+            if (statusEquipmentCanvas) {
 
-            data: {
-                labels: [
-                    "Running",
-                    "Standby",
-                    "Maintenance",
-                    "Breakdown"
-                ],
+                new Chart(statusEquipmentCanvas, {
 
-datasets: [{
-    data: [
-        <?= $equipment_operasi; ?>,
-        <?= $equipment_standby; ?>,
-        <?= $dalam_maintenance; ?>,
-        <?= $breakdown; ?>
-    ],
+                    type: "doughnut",
 
-    backgroundColor: [
-        "#22c55e",
-        "#facc15",
-        "#f97316",
-        "#ef4444"
-    ],
+                    data: {
+                        labels: [
+                            "Running",
+                            "Standby",
+                            "Maintenance",
+                            "Breakdown"
+                        ],
 
-    borderWidth: 2
-}]
-            },
+                        datasets: [{
+                            data: [
+                                <?= $equipment_operasi; ?>,
+                                <?= $equipment_standby; ?>,
+                                <?= $dalam_maintenance; ?>,
+                                <?= $breakdown; ?>
+                            ],
 
-            options: {
+                            backgroundColor: [
+                                "#22c55e",
+                                "#facc15",
+                                "#f97316",
+                                "#ef4444"
+                            ],
 
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                cutout: "62%",
-
-                plugins: {
-
-                    legend: {
-                        position: "bottom",
-
-                        labels: {
-                            usePointStyle: true,
-                            padding: 15,
-                            font: {
-                                size: 11
-                            }
-                        }
+                            borderWidth: 2
+                        }]
                     },
 
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
+                    options: {
 
-                                const total =
-                                    context.dataset.data.reduce(
-                                        (a, b) => a + b,
-                                        0
-                                    );
+                        responsive: true,
 
-                                const value = context.raw;
+                        maintainAspectRatio: false,
 
-                                const percentage =
-                                    ((value / total) * 100).toFixed(1);
+                        cutout: "62%",
 
-                                return context.label +
-                                    ": " +
-                                    value +
-                                    " unit (" +
-                                    percentage +
-                                    "%)";
+                        plugins: {
+
+                            legend: {
+                                position: "bottom",
+
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 15,
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            },
+
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+
+                                        const total =
+                                            context.dataset.data.reduce(
+                                                (a, b) => a + b,
+                                                0
+                                            );
+
+                                        const value = context.raw;
+
+                                        const percentage =
+                                            ((value / total) * 100).toFixed(1);
+
+                                        return context.label +
+                                            ": " +
+                                            value +
+                                            " unit (" +
+                                            percentage +
+                                            "%)";
+                                    }
+                                }
+                            }
+
+                        }
+
+                    }
+
+                });
+
+            }
+
+        </script>
+
+        <script>
+
+            const maintenanceStatusCanvas = document.getElementById("maintenanceStatusChart");
+
+            if (maintenanceStatusCanvas) {
+
+                new Chart(maintenanceStatusCanvas, {
+                    type: "bar",
+
+                    data: {
+                        labels: [
+                            "Selesai",
+                            "Segera Diservis",
+                            "Overdue"
+                        ],
+
+                        datasets: [{
+                            label: "Jumlah Jadwal",
+
+                            data: [
+                                <?= $maintenance_selesai; ?>,
+                                <?= $maintenance_segera; ?>,
+                                <?= $maintenance_overdue; ?>
+                            ],
+
+                            backgroundColor: [
+                                "#22c55e",
+                                "#f59e0b",
+                                "#ef4444"
+                            ],
+
+                            borderRadius: 6,
+                            borderSkipped: false
+                        }]
+                    },
+
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        onClick: function (event, elements) {
+                            if (elements.length > 0) {
+                                window.location.href = "maintenance/index.php";
+                            }
+                        },
+
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
                             }
                         }
                     }
-
-                }
+                });
 
             }
 
-        });
-
-    }
-</script>
-<script>
-    const maintenanceStatusCanvas = document.getElementById("maintenanceStatusChart");
-
-    if (maintenanceStatusCanvas) {
-
-        new Chart(maintenanceStatusCanvas, {
-            type: "bar",
-
-            data: {
-                labels: [
-                    "Selesai",
-                    "Segera Diservis",
-                    "Overdue"
-                ],
-
-                datasets: [{
-                    label: "Jumlah Jadwal",
-
-                    data: [
-                        <?= $maintenance_selesai; ?>,
-                        <?= $maintenance_segera; ?>,
-                        <?= $maintenance_overdue; ?>
-                    ],
-
-                    backgroundColor: [
-                        "#22c55e",
-                        "#f59e0b",
-                        "#ef4444"
-                    ],
-
-                    borderRadius: 6,
-                    borderSkipped: false
-                }]
-            },
-
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                onClick: function (event, elements) {
-    if (elements.length > 0) {
-        window.location.href = "maintenance/index.php";
-    }
-},
-
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
-            }
-        });
-
-    }
-</script>
+        </script>
 
         <!-- =========================
              TOP EQUIPMENT + JADWAL
@@ -1867,159 +1017,161 @@ datasets: [{
 
         <section class="dashboard-grid equal">
 
-            
-<div class="box">
 
-    <div class="box-title">
-        <h2>📊 &nbsp; Top 5 Equipment berdasarkan Konsumsi BBM</h2>
+            <div class="box">
 
-        <a
-            href="fuel/index.php<?= $selected_location !== '' ? '?location=' . urlencode($selected_location) : ''; ?>"
-            class="see-more"
-        >
-            Lihat Semua
-        </a>
-    </div>
+                <div class="box-title">
+                    <h2>📊 &nbsp; Top 5 Equipment berdasarkan Konsumsi BBM</h2>
 
-    <?php
-    /* Ambil 5 unit dengan pemakaian BBM terbesar */
-   $top_fuel_sql = "
-    SELECT
-        e.id,
-        e.equipment_code,
-        e.equipment_name,
-        SUM(f.jumlah_liter) AS total_liter,
-        (
-            SELECT f2.hm_km
-            FROM fuel_usage f2
-            WHERE f2.equipment_id = e.id
-              AND f2.hm_km IS NOT NULL
-            ORDER BY f2.tanggal DESC, f2.id DESC
-            LIMIT 1
-        ) AS hm_terakhir
-    FROM fuel_usage f
-        INNER JOIN equipment e
-            ON e.id = f.equipment_id
-    ";
+                    <a
+                        href="fuel/index.php<?= $selected_location !== '' ? '?location=' . urlencode($selected_location) : ''; ?>"
+                        class="see-more"
+                    >
+                        Lihat Semua
+                    </a>
+                </div>
 
-    if ($selected_location !== '') {
-        $top_fuel_sql .= " WHERE e.location = ?";
-    }
+                <?php
+                /* Ambil 5 unit dengan pemakaian BBM terbesar */
+                $top_fuel_sql = "
+                    SELECT
+                        e.id,
+                        e.equipment_code,
+                        e.equipment_name,
+                        SUM(f.jumlah_liter) AS total_liter,
+                        (
+                            SELECT f2.hm_km
+                            FROM fuel_usage f2
+                            WHERE f2.equipment_id = e.id
+                              AND f2.hm_km IS NOT NULL
+                            ORDER BY f2.tanggal DESC, f2.id DESC
+                            LIMIT 1
+                        ) AS hm_terakhir
+                    FROM fuel_usage f
+                        INNER JOIN equipment e
+                            ON e.id = f.equipment_id
+                ";
 
-    $top_fuel_sql .= "
-        GROUP BY
-            e.id,
-            e.equipment_code,
-            e.equipment_name
-        ORDER BY total_liter DESC
-        LIMIT 5
-    ";
+                if ($selected_location !== '') {
+                    $top_fuel_sql .= " WHERE e.location = ?";
+                }
 
-    $top_fuel_stmt = $conn->prepare($top_fuel_sql);
-    $top_fuel_result = false;
+                $top_fuel_sql .= "
+                    GROUP BY
+                        e.id,
+                        e.equipment_code,
+                        e.equipment_name
+                    ORDER BY total_liter DESC
+                    LIMIT 5
+                ";
 
-    if ($top_fuel_stmt) {
-        if ($selected_location !== '') {
-            $top_fuel_stmt->bind_param("s", $selected_location);
-        }
+                $top_fuel_stmt = $conn->prepare($top_fuel_sql);
+                $top_fuel_result = false;
 
-        if ($top_fuel_stmt->execute()) {
-            $top_fuel_result = $top_fuel_stmt->get_result();
-        }
-    }
-    ?>
+                if ($top_fuel_stmt) {
+                    if ($selected_location !== '') {
+                        $top_fuel_stmt->bind_param("s", $selected_location);
+                    }
 
-    <div class="table-wrapper">
+                    if ($top_fuel_stmt->execute()) {
+                        $top_fuel_result = $top_fuel_stmt->get_result();
+                    }
+                }
+                ?>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>ID Unit</th>
-                    <th>Equipment</th>
-                    <th>Konsumsi BBM (Liter)</th>
-                    <th>HM/KM Terakhir</th>
-                </tr>
-            </thead>
+                <div class="table-wrapper">
 
-            <tbody>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>ID Unit</th>
+                                <th>Equipment</th>
+                                <th>Konsumsi BBM (Liter)</th>
+                                <th>HM/KM Terakhir</th>
+                            </tr>
+                        </thead>
 
-                <?php if ($top_fuel_result && $top_fuel_result->num_rows > 0): ?>
+                        <tbody>
 
-                    <?php $nomor = 1; ?>
+                            <?php if ($top_fuel_result && $top_fuel_result->num_rows > 0): ?>
 
-                    <?php while ($unit = $top_fuel_result->fetch_assoc()): ?>
+                                <?php $nomor = 1; ?>
 
-                        <tr>
-                            <td><?= $nomor++; ?></td>
+                                <?php while ($unit = $top_fuel_result->fetch_assoc()): ?>
 
-                            <td>
-                                <strong>
-                                    <?= htmlspecialchars(
-                                        $unit['equipment_code'],
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    ); ?>
-                                </strong>
-                            </td>
+                                    <tr>
+                                        <td><?= $nomor++; ?></td>
 
-                            <td>
-                                <?= htmlspecialchars(
-                                    $unit['equipment_name'],
-                                    ENT_QUOTES,
-                                    'UTF-8'
-                                ); ?>
-                            </td>
+                                        <td>
+                                            <strong>
+                                                <?= htmlspecialchars(
+                                                    $unit['equipment_code'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ); ?>
+                                            </strong>
+                                        </td>
 
-                            <td>
-                                <?= number_format(
-                                    (float)$unit['total_liter'],
-                                    2,
-                                    ',',
-                                    '.'
-                                ); ?>
-                            </td>
-                            <td>
-    <?php if ($unit['hm_terakhir'] !== null && $unit['hm_terakhir'] !== ''): ?>
-        <?= number_format((float)$unit['hm_terakhir'], 1, ',', '.'); ?>
-    <?php else: ?>
-        -
-    <?php endif; ?>
-</td>
-                        </tr>
+                                        <td>
+                                            <?= htmlspecialchars(
+                                                $unit['equipment_name'],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+                                        </td>
 
-                    <?php endwhile; ?>
+                                        <td>
+                                            <?= number_format(
+                                                (float)$unit['total_liter'],
+                                                2,
+                                                ',',
+                                                '.'
+                                            ); ?>
+                                        </td>
 
-                <?php elseif ($top_fuel_result !== false): ?>
+                                        <td>
+                                            <?php if ($unit['hm_terakhir'] !== null && $unit['hm_terakhir'] !== ''): ?>
+                                                <?= number_format((float)$unit['hm_terakhir'], 1, ',', '.'); ?>
+                                            <?php else: ?>
+                                                -
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
 
-                    <tr>
-                        <td colspan="5" style="text-align:center; padding:20px; color:#64748b;">
-                            Belum ada data BBM untuk filter ini.
-                        </td>
-                    </tr>
+                                <?php endwhile; ?>
 
-                <?php else: ?>
+                            <?php elseif ($top_fuel_result !== false): ?>
 
-                    <tr>
-                        <td colspan="4" style="text-align:center; padding:20px; color:#64748b;">
-                            Data BBM gagal dibaca. Periksa koneksi database.
-                        </td>
-                    </tr>
+                                <tr>
+                                    <td colspan="5" style="text-align:center; padding:20px; color:#64748b;">
+                                        Belum ada data BBM untuk filter ini.
+                                    </td>
+                                </tr>
 
-                <?php endif; ?>
+                            <?php else: ?>
 
-            </tbody>
-        </table>
+                                <tr>
+                                    <td colspan="4" style="text-align:center; padding:20px; color:#64748b;">
+                                        Data BBM gagal dibaca. Periksa koneksi database.
+                                    </td>
+                                </tr>
 
-    </div>
+                            <?php endif; ?>
 
-    <?php
-    if ($top_fuel_stmt) {
-        $top_fuel_stmt->close();
-    }
-    ?>
+                        </tbody>
+                    </table>
 
-</div>
+                </div>
+
+                <?php
+                if ($top_fuel_stmt) {
+                    $top_fuel_stmt->close();
+                }
+                ?>
+
+            </div>
+
 
             <div class="box">
 
@@ -2043,14 +1195,12 @@ datasets: [{
                         <thead>
 
                             <tr>
-
                                 <th>ID Unit</th>
                                 <th>Nama Alat</th>
                                 <th>Jenis Maintenance</th>
                                 <th>Jadwal (HM)</th>
                                 <th>Sisa HM</th>
                                 <th>Status</th>
-
                             </tr>
 
                         </thead>
@@ -2229,11 +1379,9 @@ if ($maintenance_stmt) {
                         <thead>
 
                             <tr>
-
                                 <th>ID Unit</th>
                                 <th>Masalah</th>
                                 <th>Status</th>
-
                             </tr>
 
                         </thead>
@@ -2242,97 +1390,33 @@ if ($maintenance_stmt) {
                         <tbody>
 
                             <tr>
-
-                                <td>
-                                    <strong>EXC-001</strong>
-                                </td>
-
-                                <td>
-                                    PM Overdue (150 HM)
-                                </td>
-
-                                <td>
-                                    <span class="badge badge-red">
-                                        Overdue
-                                    </span>
-                                </td>
-
+                                <td><strong>EXC-001</strong></td>
+                                <td>PM Overdue (150 HM)</td>
+                                <td><span class="badge badge-red">Overdue</span></td>
                             </tr>
 
-
                             <tr>
-
-                                <td>
-                                    <strong>WL-003</strong>
-                                </td>
-
-                                <td>
-                                    Frekuensi Failure (Hydraulic)
-                                </td>
-
-                                <td>
-                                    <span class="badge badge-purple">
-                                        Investigasi
-                                    </span>
-                                </td>
-
+                                <td><strong>WL-003</strong></td>
+                                <td>Frekuensi Failure (Hydraulic)</td>
+                                <td><span class="badge badge-purple">Investigasi</span></td>
                             </tr>
 
-
                             <tr>
-
-                                <td>
-                                    <strong>DT-005</strong>
-                                </td>
-
-                                <td>
-                                    Downtime tinggi (48 jam)
-                                </td>
-
-                                <td>
-                                    <span class="badge badge-orange">
-                                        Breakdown
-                                    </span>
-                                </td>
-
+                                <td><strong>DT-005</strong></td>
+                                <td>Downtime tinggi (48 jam)</td>
+                                <td><span class="badge badge-orange">Breakdown</span></td>
                             </tr>
 
-
                             <tr>
-
-                                <td>
-                                    <strong>EXC-007</strong>
-                                </td>
-
-                                <td>
-                                    Konsumsi BBM tidak wajar
-                                </td>
-
-                                <td>
-                                    <span class="badge badge-yellow">
-                                        Monitoring
-                                    </span>
-                                </td>
-
+                                <td><strong>EXC-007</strong></td>
+                                <td>Konsumsi BBM tidak wajar</td>
+                                <td><span class="badge badge-yellow">Monitoring</span></td>
                             </tr>
 
-
                             <tr>
-
-                                <td>
-                                    <strong>WL-009</strong>
-                                </td>
-
-                                <td>
-                                    Menunggu spare part
-                                </td>
-
-                                <td>
-                                    <span class="badge badge-blue">
-                                        Waiting Part
-                                    </span>
-                                </td>
-
+                                <td><strong>WL-009</strong></td>
+                                <td>Menunggu spare part</td>
+                                <td><span class="badge badge-blue">Waiting Part</span></td>
                             </tr>
 
                         </tbody>
@@ -2358,96 +1442,35 @@ if ($maintenance_stmt) {
 
                 <div class="downtime-chart">
 
-
                     <div class="downtime-column">
-
-                        <div class="downtime-value">
-                            72
-                        </div>
-
-                        <div
-                            class="downtime-bar red"
-                            style="height: 150px;"
-                        ></div>
-
-                        <div class="downtime-label">
-                            DT-05
-                        </div>
-
+                        <div class="downtime-value">72</div>
+                        <div class="downtime-bar red" style="height: 150px;"></div>
+                        <div class="downtime-label">DT-05</div>
                     </div>
 
-
                     <div class="downtime-column">
-
-                        <div class="downtime-value">
-                            56
-                        </div>
-
-                        <div
-                            class="downtime-bar"
-                            style="height: 118px;"
-                        ></div>
-
-                        <div class="downtime-label">
-                            EXC-01
-                        </div>
-
+                        <div class="downtime-value">56</div>
+                        <div class="downtime-bar" style="height: 118px;"></div>
+                        <div class="downtime-label">EXC-01</div>
                     </div>
 
-
                     <div class="downtime-column">
-
-                        <div class="downtime-value">
-                            38
-                        </div>
-
-                        <div
-                            class="downtime-bar"
-                            style="height: 82px;"
-                        ></div>
-
-                        <div class="downtime-label">
-                            WL-03
-                        </div>
-
+                        <div class="downtime-value">38</div>
+                        <div class="downtime-bar" style="height: 82px;"></div>
+                        <div class="downtime-label">WL-03</div>
                     </div>
 
-
                     <div class="downtime-column">
-
-                        <div class="downtime-value">
-                            26
-                        </div>
-
-                        <div
-                            class="downtime-bar"
-                            style="height: 58px;"
-                        ></div>
-
-                        <div class="downtime-label">
-                            DT-02
-                        </div>
-
+                        <div class="downtime-value">26</div>
+                        <div class="downtime-bar" style="height: 58px;"></div>
+                        <div class="downtime-label">DT-02</div>
                     </div>
 
-
                     <div class="downtime-column">
-
-                        <div class="downtime-value">
-                            18
-                        </div>
-
-                        <div
-                            class="downtime-bar"
-                            style="height: 42px;"
-                        ></div>
-
-                        <div class="downtime-label">
-                            WL-07
-                        </div>
-
+                        <div class="downtime-value">18</div>
+                        <div class="downtime-bar" style="height: 42px;"></div>
+                        <div class="downtime-label">WL-07</div>
                     </div>
-
 
                 </div>
 
