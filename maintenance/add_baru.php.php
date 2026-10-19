@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-        Remaining = Next Service - Current HM/KM
+        Remaining = Next Service - Current HM
 
     */
 
@@ -2380,7 +2380,7 @@ $equipment_result = $conn->query("
 
                         <label>
 
-                            Current HM/KM
+                            Current HM
 
                         </label>
 
@@ -2400,7 +2400,7 @@ $equipment_result = $conn->query("
 
                             min="0"
 
-                            placeholder="Masukkan Current HM/KM"
+                            placeholder="Masukkan Current HM"
 
                             oninput="calculateMaintenance()"
 
@@ -2564,7 +2564,7 @@ $equipment_result = $conn->query("
 
                             min="0"
 
-                            placeholder="Masukkan HM/KM Last Service"
+                            placeholder="Masukkan HM Last Service"
 
                             required
 
@@ -2710,7 +2710,7 @@ $equipment_result = $conn->query("
 
                                     <span>
 
-                                        Remaining HM/KM
+                                        Remaining HM
 
                                     </span>
 
@@ -3187,7 +3187,7 @@ $equipment_result = $conn->query("
 
             /*
 
-                Current HM/KM dari Equipment Master
+                Current HM dari Equipment Master
 
                 hanya diisi otomatis jika nilainya tersedia.
 

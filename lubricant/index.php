@@ -2356,7 +2356,7 @@ $chart_type_values = array_values($type_usage);
 
                                 <th>
 
-                                    HM/KM
+                                    HM
 
                                 </th>
 

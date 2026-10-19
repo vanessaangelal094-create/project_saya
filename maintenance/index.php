@@ -32,7 +32,7 @@ $sql = "
     FROM maintenance_schedule ms
     INNER JOIN equipment e
         ON ms.equipment_id = e.id
-    WHERE 1=1
+    WHERE ms.status <> 'Selesai'
 ";
 
 $params = [];
@@ -106,7 +106,7 @@ $selesai = 0;
 
 $summary_query = "
     SELECT
-        COUNT(*) AS total_jadwal,
+        SUM(status <> 'Selesai') AS total_jadwal,
         SUM(status = 'Segera Diservis') AS segera_service,
         SUM(status = 'Overdue') AS overdue,
         SUM(status = 'Selesai') AS selesai
@@ -537,7 +537,8 @@ include $base . 'includes/sidebar.php';
                         <th>ID Unit</th>
                         <th>Equipment</th>
                         <th>Jenis Maintenance</th>
-                        <th>HM / KM</th>
+                        <th>HM</th>
+                        <th>Next Service</th>
                         <th>Pekerjaan</th>
                         <th>PIC / Teknisi</th>
                         <th>Status</th>
@@ -668,6 +669,23 @@ include $base . 'includes/sidebar.php';
                                     ); ?>
 
                                 </td>
+                                <td>
+    <?php
+    if (
+        isset($row['current_hm_km'], $row['remaining_hm_km']) &&
+        is_numeric($row['current_hm_km']) &&
+        is_numeric($row['remaining_hm_km'])
+    ) {
+        $next_service_hm =
+            (float) $row['current_hm_km'] +
+            (float) $row['remaining_hm_km'];
+
+        echo number_format($next_service_hm, 0, ',', '.') . ' HM';
+    } else {
+        echo '-';
+    }
+    ?>
+</td>
 
 
                                 <td>

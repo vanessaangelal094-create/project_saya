@@ -1590,7 +1590,7 @@ $status_class = strtolower($status);
                 <div class="info-row">
 
                     <div class="info-label">
-                        HM / KM Saat Ini
+                        HM Saat Ini
                     </div>
 
                     <div class="info-separator">
@@ -2332,7 +2332,7 @@ $status_class = strtolower($status);
             <div class="status-row">
 
                 <div class="label">
-                    HM / KM
+                    HM
                 </div>
 
                 <div class="value">

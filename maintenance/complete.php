@@ -94,11 +94,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hm_saat_maintenance === ''
     ) {
 
-        $error = "Tanggal selesai dan HM/KM saat maintenance wajib diisi.";
+        $error = "Tanggal selesai dan HM saat maintenance wajib diisi.";
 
     } elseif (!is_numeric($hm_saat_maintenance)) {
 
-        $error = "HM/KM saat maintenance harus berupa angka.";
+        $error = "HM saat maintenance harus berupa angka.";
 
     } else {
 
@@ -948,7 +948,7 @@ $history_stmt->close();
                 </div>
 
                 <div class="info-item">
-                    <small>Current HM/KM</small>
+                    <small>Current HM</small>
                     <strong>
                         <?= number_format(
                             $maintenance['current_hm_km'],
@@ -1019,7 +1019,7 @@ $history_stmt->close();
                     <div class="form-group">
 
                         <label>
-                            HM/KM Saat Maintenance
+                            HM Saat Maintenance
                             <span class="required">*</span>
                         </label>
 
@@ -1140,7 +1140,7 @@ $history_stmt->close();
                         <div class="calculation-box">
 
                             <small>
-                                Remaining HM/KM
+                                Remaining HM
                             </small>
 
                             <strong id="display_remaining">

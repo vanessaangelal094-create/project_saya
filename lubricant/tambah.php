@@ -1043,13 +1043,13 @@ $equipment_result = $conn->query("
                 </div>
 
 
-                <!-- HM/KM -->
+                <!-- HM -->
 
                 <div class="form-group">
 
                     <label for="hm_km">
 
-                        HM/KM
+                        HM
 
                     </label>
 

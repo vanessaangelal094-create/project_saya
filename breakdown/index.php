@@ -819,7 +819,7 @@ $filter_aktif = ($selected_location !== '' || $selected_status !== '');
                                 <th>Tanggal Kejadian</th>
                                 <th>Unit Alat Berat</th>
                                 <th>Lokasi</th>
-                                <th>HM / KM</th>
+                                <th>HM</th>
                                 <th>Jenis Kerusakan</th>
                                 <th>PIC / Teknisi</th>
                                 <th>Downtime</th>

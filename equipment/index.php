@@ -230,7 +230,7 @@ function statusClass($status)
             min-width: 1200px;
         }
 
-        /* modal update HM / KM */
+        /* modal update HM */
 
         .modal-overlay {
             display: none;
@@ -715,7 +715,7 @@ function statusClass($status)
                             <th>TAHUN</th>
                             <th>KAPASITAS</th>
                             <th>LOKASI</th>
-                            <th>HM / KM SAAT INI</th>
+                            <th>HM SAAT INI</th>
                             <th>STATUS</th>
                             <th>AKSI</th>
                         </tr>
@@ -893,13 +893,13 @@ document.addEventListener('click', function(event) {
 </script>
 
 
-<!-- MODAL UPDATE HM / KM -->
+<!-- MODAL UPDATE HM -->
 <div id="hmModal" class="modal-overlay">
 
     <div class="modal-card">
 
         <h2>
-            Update HM / KM
+            Update HM
         </h2>
 
         <div class="modal-field">
@@ -908,18 +908,18 @@ document.addEventListener('click', function(event) {
         </div>
 
         <div class="modal-field">
-            <label>HM / KM Saat Ini</label>
+            <label>HM Saat Ini</label>
             <input type="text" id="hmCurrentValue" readonly>
         </div>
 
         <div class="modal-field">
-            <label>HM / KM Terbaru</label>
+            <label>HM Terbaru</label>
             <input
                 type="number"
                 id="hmNewValue"
                 step="0.01"
                 min="0"
-                placeholder="Masukkan HM / KM terbaru"
+                placeholder="Masukkan HM terbaru"
             >
         </div>
 
@@ -984,7 +984,7 @@ function saveHmUpdate() {
     const newHm = document.getElementById('hmNewValue').value;
 
     if (newHm === '') {
-        alert('Silakan masukkan HM / KM terbaru.');
+        alert('Silakan masukkan HM terbaru.');
         return;
     }
 
@@ -1024,7 +1024,7 @@ function saveHmUpdate() {
 
         console.error(error);
 
-        alert('Terjadi kesalahan saat memperbarui HM/KM.');
+        alert('Terjadi kesalahan saat memperbarui HM.');
 
     });
 

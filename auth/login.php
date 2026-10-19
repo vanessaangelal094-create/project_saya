@@ -332,11 +332,11 @@ if (!empty($_SESSION['login_error'])) {
 
     /* ---------- Sapaan sesuai jam ---------- */
     var hour = new Date().getHours();
-    var sapaan = 'Selamat malam';
+   
 
     if (hour >= 4 && hour < 11)       sapaan = 'Selamat pagi';
     else if (hour >= 11 && hour < 15) sapaan = 'PUNYA VANES';
-    else if (hour >= 15 && hour < 18) sapaan = 'Selamat sore';
+   
 
     greeting.textContent = sapaan + ' \uD83D\uDC4B';
 

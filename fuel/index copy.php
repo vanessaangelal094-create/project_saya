@@ -798,7 +798,7 @@ function fuel_h($value)
                         <th>ID Unit</th>
                         <th>Equipment</th>
                         <th>Lokasi</th>
-                        <th>HM/KM</th>
+                        <th>HM</th>
                         <th>BBM (Liter)</th>
                         <th>Keterangan</th>
                     </tr>

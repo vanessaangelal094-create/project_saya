@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         Next Service = Last Service + Interval PM
 
-        Remaining = Next Service - Current HM/KM
+        Remaining = Next Service - Current HM
     */
 
     $next_service = $last_service + $interval_pm;
@@ -288,13 +288,20 @@ exit;
 
 $equipment_result = $conn->query("
     SELECT
-        id,
-        equipment_code,
-        equipment_name,
-        equipment_type,
-        hm_current
-    FROM equipment
-    ORDER BY equipment_code ASC
+        e.id,
+        e.equipment_code,
+        e.equipment_name,
+        e.equipment_type,
+        e.hm_current,
+        (
+            SELECT mh.hm_saat_maintenance
+            FROM maintenance_history mh
+            WHERE mh.equipment_id = e.id
+            ORDER BY mh.tanggal_selesai DESC, mh.id DESC
+            LIMIT 1
+        ) AS last_service
+    FROM equipment e
+    ORDER BY e.equipment_code ASC
 ");
 
 ?>
@@ -1126,6 +1133,7 @@ $equipment_result = $conn->query("
                                         data-name="<?= htmlspecialchars($equipment['equipment_name']); ?>"
                                         data-type="<?= htmlspecialchars($equipment['equipment_type']); ?>"
                                         data-hm="<?= $equipment['hm_current']; ?>"
+                                        data-last-service="<?= htmlspecialchars((string)($equipment['last_service'] ?? '')); ?>"
                                     >
 
                                         <?= htmlspecialchars($equipment['equipment_code']); ?>
@@ -1182,7 +1190,7 @@ $equipment_result = $conn->query("
                     <div class="form-group">
 
                         <label>
-                            Current HM/KM
+                            Current HM
                         </label>
 
 
@@ -1192,7 +1200,7 @@ $equipment_result = $conn->query("
                             id="current_hm_km"
                             step="0.01"
                             min="0"
-                            placeholder="Masukkan Current HM/KM"
+                            placeholder="Masukkan Current HM"
                             oninput="calculateMaintenance()"
                         >
 
@@ -1274,7 +1282,7 @@ $equipment_result = $conn->query("
                             id="last_service"
                             step="0.01"
                             min="0"
-                            placeholder="Masukkan HM/KM Last Service"
+                            placeholder="Masukkan HM Last Service"
                             required
                             oninput="calculateMaintenance()"
                         >
@@ -1357,7 +1365,7 @@ $equipment_result = $conn->query("
                                 <div class="calculation-item">
 
                                     <span>
-                                        Remaining HM/KM
+                                        Remaining HM
                                     </span>
 
                                     <strong id="remaining_display">
@@ -1583,6 +1591,9 @@ $equipment_result = $conn->query("
             const hm =
                 option.getAttribute('data-hm') || '';
 
+            const lastService =
+                option.getAttribute('data-last-service') || '';
+
 
             document.getElementById(
                 'equipment_name'
@@ -1593,9 +1604,13 @@ $equipment_result = $conn->query("
                 'equipment_type'
             ).value = type;
 
+            document.getElementById(
+                'last_service'
+            ).value = lastService;
+
 
             /*
-                Current HM/KM dari Equipment Master
+                Current HM dari Equipment Master
                 hanya diisi otomatis jika nilainya tersedia.
             */
 

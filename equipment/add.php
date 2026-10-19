@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($hm_current === '') {
-        $errors[] = "HM / KM Saat Ini wajib diisi.";
+        $errors[] = "HM Saat Ini wajib diisi.";
     }
 
     if ($status === '') {
@@ -1973,7 +1973,7 @@ $location_result = $conn->query(
 
                         <label>
 
-                            HM / KM Saat Ini
+                            HM Saat Ini
                             <span>*</span>
 
                         </label>

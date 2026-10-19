@@ -1098,7 +1098,7 @@ function formatDateIndonesia($date)
                     <div class="service-box">
 
                         <span>
-                            Current HM/KM
+                            Current HM
                         </span>
 
                         <strong>
@@ -1137,7 +1137,7 @@ function formatDateIndonesia($date)
                     <div class="service-box">
 
                         <span>
-                            Remaining HM/KM
+                            Remaining HM
                         </span>
 
                         <strong>
@@ -1166,7 +1166,7 @@ function formatDateIndonesia($date)
                 <div class="remaining-box">
 
                     <span>
-                        Sisa HM/KM menuju service berikutnya
+                        Sisa HM menuju service berikutnya
                     </span>
 
                     <div class="remaining-value">

@@ -123,8 +123,7 @@ $breakdown = getDashboardCount(
 $maintenance_status_query = $conn->query("
     SELECT
         SUM(status = 'Selesai') AS selesai,
-        SUM(status = 'Segera Diservis') AS segera_service,
-        SUM(status = 'Overdue') AS overdue
+        SUM(status IN ('Segera Diservis', 'Overdue')) AS belum_selesai
     FROM maintenance_schedule
 ");
 
@@ -132,13 +131,11 @@ $maintenance_status = $maintenance_status_query
     ? $maintenance_status_query->fetch_assoc()
     : [
         'selesai' => 0,
-        'segera_service' => 0,
-        'overdue' => 0
+        'belum_selesai' => 0
     ];
 
 $maintenance_selesai = (int) ($maintenance_status['selesai'] ?? 0);
-$maintenance_segera = (int) ($maintenance_status['segera_service'] ?? 0);
-$maintenance_overdue = (int) ($maintenance_status['overdue'] ?? 0);
+$maintenance_belum_selesai = (int) ($maintenance_status['belum_selesai'] ?? 0);
 
 
 /* =========================
@@ -208,11 +205,12 @@ if ($fuel_chart_stmt) {
 $lubricant_chart_sql = "
     SELECT
         DATE_FORMAT(l.tanggal, '%Y-%m') AS bulan,
-        COUNT(*) AS total
+        SUM(l.jumlah) AS total
     FROM lubricant l
     INNER JOIN equipment e ON e.id = l.equipment_id
     WHERE l.tanggal >= '2026-01-01'
       AND l.tanggal < '2026-10-01'
+      AND LOWER(TRIM(l.satuan)) IN ('liter', 'ltr', 'l')
 ";
 
 if ($selected_location !== '') {
@@ -237,7 +235,7 @@ if ($lubricant_chart_stmt) {
             $bulan = $row['bulan'];
 
             if (isset($dashboard_lubricant_by_month[$bulan])) {
-                $dashboard_lubricant_by_month[$bulan] = (int) $row['total'];
+                $dashboard_lubricant_by_month[$bulan] = (float) $row['total'];
             }
         }
     }
@@ -569,7 +567,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
                         <div class="legend-item">
                             <div class="legend-line"></div>
-                            Pelumas (Kali)
+                            Pelumas (Liter)
                         </div>
 
                     </div>
@@ -680,7 +678,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
                             {
                                 type: "line",
 
-                                label: "Pelumas (Kali)",
+                                label: "Pelumas (Liter)",
 
                                 data: <?= json_encode($dashboard_chart_lubricant_values); ?>,
 
@@ -794,11 +792,11 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
                                 beginAtZero: true,
 
-                                max: 120,
+                                max: 1200,
 
                                 ticks: {
 
-                                    stepSize: 30,
+                                    stepSize: 300,
 
                                     color: "#d97706",
 
@@ -812,7 +810,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
                                     display: true,
 
-                                    text: "Pelumas (Kali)",
+                                    text: "Pelumas (Liter)",
 
                                     color: "#d97706",
 
@@ -971,17 +969,15 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
                         labels: [
                             "Selesai",
                             "Segera Diservis",
-                            "Overdue"
                         ],
 
                         datasets: [{
                             label: "Jumlah Jadwal",
 
                             data: [
-                                <?= $maintenance_selesai; ?>,
-                                <?= $maintenance_segera; ?>,
-                                <?= $maintenance_overdue; ?>
-                            ],
+    <?= $maintenance_selesai ?>,
+    <?= $maintenance_belum_selesai ?>
+],
 
                             backgroundColor: [
                                 "#22c55e",
@@ -1101,7 +1097,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
                                 <th>ID Unit</th>
                                 <th>Equipment</th>
                                 <th>Konsumsi BBM (Liter)</th>
-                                <th>HM/KM Terakhir</th>
+                                <th>HM Terakhir</th>
                             </tr>
                         </thead>
 
@@ -1360,143 +1356,6 @@ if ($maintenance_stmt) {
             </div>
 
         </section>
-
-
-
-        <!-- =========================
-             UNIT PERHATIAN + DOWNTIME
-        ========================= -->
-
-        <section class="dashboard-grid equal">
-
-
-            <div class="box">
-
-                <div class="box-title">
-
-                    <h2>
-                        ⚠ &nbsp; Unit Perlu Perhatian
-                    </h2>
-
-                    <a href="maintenance/index.php" class="see-more">
-                        Lihat Semua
-                    </a>
-
-                </div>
-
-
-                <div class="table-wrapper">
-
-                    <table class="attention-table">
-
-                        <thead>
-
-                            <tr>
-                                <th>ID Unit</th>
-                                <th>Masalah</th>
-                                <th>Status</th>
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                            <tr>
-                                <td><strong>EXC-001</strong></td>
-                                <td>PM Overdue (150 HM)</td>
-                                <td><span class="badge badge-red">Overdue</span></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>WL-003</strong></td>
-                                <td>Frekuensi Failure (Hydraulic)</td>
-                                <td><span class="badge badge-purple">Investigasi</span></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>DT-005</strong></td>
-                                <td>Downtime tinggi (48 jam)</td>
-                                <td><span class="badge badge-orange">Breakdown</span></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>EXC-007</strong></td>
-                                <td>Konsumsi BBM tidak wajar</td>
-                                <td><span class="badge badge-yellow">Monitoring</span></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>WL-009</strong></td>
-                                <td>Menunggu spare part</td>
-                                <td><span class="badge badge-blue">Waiting Part</span></td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="box">
-
-                <div class="box-title">
-
-                    <h2>
-                        🕒 &nbsp; Top 5 Downtime Unit (Bulan Ini)
-                    </h2>
-
-                </div>
-
-
-                <div class="downtime-chart">
-
-                    <div class="downtime-column">
-                        <div class="downtime-value">72</div>
-                        <div class="downtime-bar red" style="height: 150px;"></div>
-                        <div class="downtime-label">DT-05</div>
-                    </div>
-
-                    <div class="downtime-column">
-                        <div class="downtime-value">56</div>
-                        <div class="downtime-bar" style="height: 118px;"></div>
-                        <div class="downtime-label">EXC-01</div>
-                    </div>
-
-                    <div class="downtime-column">
-                        <div class="downtime-value">38</div>
-                        <div class="downtime-bar" style="height: 82px;"></div>
-                        <div class="downtime-label">WL-03</div>
-                    </div>
-
-                    <div class="downtime-column">
-                        <div class="downtime-value">26</div>
-                        <div class="downtime-bar" style="height: 58px;"></div>
-                        <div class="downtime-label">DT-02</div>
-                    </div>
-
-                    <div class="downtime-column">
-                        <div class="downtime-value">18</div>
-                        <div class="downtime-bar" style="height: 42px;"></div>
-                        <div class="downtime-label">WL-07</div>
-                    </div>
-
-                </div>
-
-
-                <div class="axis-label">
-                    Downtime (Jam)
-                </div>
-
-            </div>
-
-
-        </section>
-
 
     </main>
 

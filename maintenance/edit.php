@@ -1095,7 +1095,7 @@ $equipment_result = $conn->query("
 
                     <label>
 
-                        Current HM/KM <span class="required">*</span>
+                        Current HM <span class="required">*</span>
 
                     </label>
 
@@ -1327,7 +1327,7 @@ $equipment_result = $conn->query("
 
                                 <span>
 
-                                    Remaining HM/KM
+                                    Remaining HM
 
                                 </span>
 

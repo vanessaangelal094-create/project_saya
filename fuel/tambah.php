@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!$jumlah_valid) {
         $error = "Jumlah BBM harus lebih besar dari 0.";
     } elseif (!$hm_valid) {
-        $error = "HM/KM harus berupa angka 0 atau lebih.";
+        $error = "HM harus berupa angka 0 atau lebih.";
     } else {
         $cek = $conn->prepare(
             "SELECT id FROM equipment WHERE id = ? LIMIT 1"
@@ -725,7 +725,7 @@ if ($result) {
 
                     <div class="form-group">
                         <label for="hm_km">
-                            HM/KM Saat Pengisian
+                            HM Saat Pengisian
                         </label>
 
                         <input

@@ -1337,7 +1337,7 @@ $location_result = $conn->query("
                     <div class="form-group">
 
                         <label>
-                            HM / KM Saat Ini
+                            HM Saat Ini
                         </label>
 
                         <input
@@ -1353,7 +1353,7 @@ $location_result = $conn->query("
                         >
 
                         <div class="hint">
-                            Masukkan angka HM/KM terbaru.
+                            Masukkan angka HM terbaru.
                         </div>
 
                     </div>
