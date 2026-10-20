@@ -338,52 +338,6 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
             </div>
 
-
-            <div class="profile">
-
-                <div
-                    class="user-info"
-                    onclick="toggleProfile()"
-                >
-
-                    🔔 &nbsp;
-
-                    <strong>
-                        <?= htmlspecialchars($_SESSION['nama'] ?? 'User') ?>
-                    </strong>
-
-                    &nbsp;⌄
-
-                </div>
-
-
-                <div
-                    class="profile-menu"
-                    id="profileMenu"
-                >
-
-                    <div class="profile-name">
-
-                        Login sebagai
-
-                        <strong>
-                            <?= htmlspecialchars($_SESSION['nama'] ?? 'User') ?>
-                        </strong>
-
-                    </div>
-
-
-                    <a
-                        href="auth/logout.php"
-                        class="logout-link"
-                    >
-                        🚪 Logout
-                    </a>
-
-                </div>
-
-            </div>
-
         </div>
 
 
@@ -975,9 +929,9 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
                             label: "Jumlah Jadwal",
 
                             data: [
-    <?= $maintenance_selesai ?>,
-    <?= $maintenance_belum_selesai ?>
-],
+                                <?= $maintenance_selesai ?>,
+                                <?= $maintenance_belum_selesai ?>
+                            ],
 
                             backgroundColor: [
                                 "#22c55e",
@@ -1358,39 +1312,6 @@ if ($maintenance_stmt) {
         </section>
 
     </main>
-
-
-
-    <script>
-
-        function toggleProfile() {
-
-            const menu =
-                document.getElementById("profileMenu");
-
-            menu.classList.toggle("show");
-
-        }
-
-
-        document.addEventListener("click", function(event) {
-
-            const profile =
-                document.querySelector(".profile");
-
-            const menu =
-                document.getElementById("profileMenu");
-
-            if (!profile.contains(event.target)) {
-
-                menu.classList.remove("show");
-
-            }
-
-        });
-
-    </script>
-
 
 </body>
 

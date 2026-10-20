@@ -6,8 +6,8 @@
 | Cara pakai di tiap halaman, SEBELUM include ini:
 |
 |   $base   = '';        // index.php (root)
-|   $base   = '../';      // equipment/, fuel/, lubricant/, maintenance/, dst
-|   $base   = '../../';   // maintenance/history/
+|   $base   = '../';     // equipment/, fuel/, lubricant/, maintenance/, dst
+|   $base   = '../../';  // maintenance/history/
 |
 |   $active = 'dashboard'; // lihat daftar key di bawah
 |
@@ -20,7 +20,6 @@ $active = $active ?? '';
 $icons = [
     'dashboard'   => '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
     'equipment'   => '<path d="M3 17h13M5 17V9l4-3h5l3 4v7"/><circle cx="7" cy="19" r="2"/><circle cx="14" cy="19" r="2"/><path d="M17 10h4l-1 7"/>',
-    'status'      => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     'schedule'    => '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',
     'history'     => '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 8v4l3 2"/>',
     'breakdown'   => '<path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17.5v.01"/>',
@@ -40,7 +39,6 @@ $menu_groups = [
     'Menu Utama' => [
         'dashboard' => ['Dashboard',            'index.php',                       'dashboard'],
         'equipment' => ['Equipment Master',     'equipment/index.php',             'equipment'],
-        'status'    => ['Status Unit',          'equipment/index.php',             'status'],
         'schedule'  => ['Jadwal Pemeliharaan',  'maintenance/index.php',           'schedule'],
         'history'   => ['Histori Pemeliharaan', 'maintenance/history/index.php',   'history'],
         'breakdown' => ['Breakdown & Failure',  'breakdown/index.php',             'breakdown'],
