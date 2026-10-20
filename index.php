@@ -338,6 +338,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
             </div>
 
+
         </div>
 
 
@@ -1311,7 +1312,14 @@ if ($maintenance_stmt) {
 
         </section>
 
+
+
+        <?php include $base . 'includes/sakura-scene.php'; ?>
+
+
     </main>
+
+
 
 </body>
 
