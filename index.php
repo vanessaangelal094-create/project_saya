@@ -528,7 +528,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
                 </div>
 
-            </div>
+            </a>
 
 
             <div class="box">
