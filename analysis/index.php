@@ -764,8 +764,19 @@ $month_names = [
     margin-top: 10px;
 }
 
+/* Hanya area data tabel yang bisa di-scroll */
 .table-wrap {
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 520px; /* atur tinggi area data sesuai selera, mis. 70vh */
+}
+
+/* Header tabel tetap terlihat saat data di-scroll */
+.table-wrap thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bg-card, #f8f9fb);
 }
 
 .text-right {
