@@ -6,6 +6,7 @@
    - desain dashboard (terang)
    - tambahan halaman Histori Pemeliharaan
    - MODE MALAM (aktif lewat <html data-theme="dark">)
+   - ikon kartu ringkasan berbentuk SVG (warna mengikuti kartu)
 
    Cara pakai di tiap halaman:
    <link rel="stylesheet" href="../assets/css/app.css">
@@ -587,13 +588,14 @@ select:focus-visible {
     flex-shrink: 0;
 }
 
+/* warna ikon mengikuti warna kartu (otomatis ikut mode malam) */
 .icon-blue   { background: var(--blue-soft);   color: var(--blue); }
 .icon-green  { background: var(--green-soft);  color: var(--green); }
 .icon-yellow { background: var(--amber-soft);  color: var(--amber); }
 .icon-orange { background: var(--orange-soft); color: var(--orange); }
 .icon-red    { background: var(--red-soft);    color: var(--red); }
 
-/* ikon SVG profesional di dalam kartu ringkasan */
+/* ikon garis (SVG) di dalam kartu */
 .kpi-icon svg,
 .summary-icon svg {
     width: 22px;
