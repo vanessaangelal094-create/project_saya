@@ -338,7 +338,6 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
             </div>
 
-
         </div>
 
 
@@ -503,7 +502,8 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
                 </div>
 
-                <a href="analysis/index.php" style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
+                <!-- Menggunakan class combined-chart dan menutup tag </a> di dalam <div class="box"> -->
+                <a href="analysis/index.php" class="combined-chart" style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
 
                     <div class="combined-chart-area">
 
@@ -527,9 +527,10 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
                     </div>
 
-                </div>
+                </a>
 
-            </a>
+            </div>
+
 
             <div class="box">
 
@@ -548,6 +549,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
                 </div>
 
             </div>
+
         </section>
 
         <section class="dashboard-grid">
@@ -1311,14 +1313,9 @@ if ($maintenance_stmt) {
 
         </section>
 
-
-
         <?php include $base . 'includes/sakura-scene.php'; ?>
 
-
     </main>
-
-
 
 </body>
 
