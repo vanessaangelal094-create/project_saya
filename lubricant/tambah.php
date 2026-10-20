@@ -127,483 +127,56 @@ $equipment_result = $conn->query("
 
     <title>Tambah Lubricant - PT Biringkassi Raya</title>
 
+    <link rel="stylesheet" href="../assets/css/app.css">
 
     <style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* khusus halaman tambah lubricant */
 
-
-        body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #f4f7fb;
-
-            color: #172033;
-        }
-
-
-        /* =================================================
-           SIDEBAR
-        ================================================= */
-
-        .sidebar {
-
-            position: fixed;
-
-            left: 0;
-
-            top: 0;
-
-            width: 240px;
-
-            height: 100vh;
-
-            background: #0759bd;
-
-            color: white;
-
-            padding: 25px 15px;
-
-            overflow-y: auto;
-
-            z-index: 1000;
-        }
-
-
-        .brand {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 35px;
-
-            padding-left: 10px;
-        }
-
-
-        .brand img {
-
-            width: 42px;
-
-            height: 42px;
-
-            object-fit: contain;
-        }
-
-
-        .brand span {
-
-            font-size: 13px;
-
-            font-weight: bold;
-
-            line-height: 1.3;
-        }
-
-
-        .menu {
-
-            list-style: none;
-        }
-
-
-        .menu li {
-
-            margin-bottom: 7px;
-        }
-
-
-        .menu a {
-
-            display: block;
-
-            padding: 12px 14px;
-
-            border-radius: 8px;
-
-            color: white;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            transition: 0.2s;
-        }
-
-
-        .menu a:hover {
-
-            background: rgba(255,255,255,0.12);
-        }
-
-
-        .menu a.active {
-
-            background: rgba(255,255,255,0.18);
-        }
-
-
-        .menu-dropdown > a {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-        }
-
-
-        .submenu {
-
-            list-style: none;
-
-            display: block;
-
-            margin-top: 3px;
-        }
-
-
-        .submenu a {
-
-            padding: 10px 14px 10px 30px;
-
-            font-size: 13px;
-
-            background: rgba(255,255,255,0.08);
-
-            margin-bottom: 3px;
-        }
-
-
-        .submenu a.active {
-
-            background: rgba(255,255,255,0.18);
-        }
-
-
-        /* =================================================
-           MAIN
-        ================================================= */
-
-        .main {
-
-            margin-left: 240px;
-
-            min-height: 100vh;
-
-            padding: 35px 40px;
-        }
-
-
-        .breadcrumb {
-
-            color: #64748b;
-
-            font-size: 14px;
-
-            margin-bottom: 10px;
-        }
-
-
-        .breadcrumb span {
-
-            color: #0759bd;
-
-            font-weight: 600;
-        }
-
-
-        h1 {
-
-            color: #123b6d;
-
-            font-size: 30px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .description {
-
-            color: #64748b;
-
-            margin-bottom: 28px;
-        }
-
-
-        /* =================================================
-           FORM BOX
-        ================================================= */
-
-        .form-box {
-
-            background: white;
-
-            border: 1px solid #e1e8f0;
-
-            border-radius: 14px;
-
-            padding: 28px;
-
+        .form-card {
             max-width: 1000px;
+            padding: 24px;
         }
-
 
         .form-title {
-
-            font-size: 20px;
-
-            font-weight: 700;
-
-            color: #172033;
-
-            margin-bottom: 22px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 20px;
         }
-.btn-back {
-    float: right;
-    margin-top: -42px;
-    padding: 9px 16px;
-    border: 1px solid #0759bd;
-    border-radius: 8px;
-    color: #0759bd;
-    background: white;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-}
 
-.btn-back:hover {
-    background: #f0f6ff;
-}
-
-        .form-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
+        .form-card .form-grid {
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
 
-
-        .form-group {
-
-            display: flex;
-
-            flex-direction: column;
-        }
-
-
-        .form-group.full {
-
-            grid-column: 1 / -1;
-        }
-
-
-        .form-group label {
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            color: #475569;
-
-            margin-bottom: 7px;
-        }
-
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-
-            width: 100%;
-
-            border: 1px solid #d5dee9;
-
-            border-radius: 8px;
-
-            padding: 11px 13px;
-
-            font-family: inherit;
-
-            font-size: 14px;
-
-            color: #334155;
-
-            background: white;
-
-            outline: none;
-        }
-
-
-        .form-group input,
-        .form-group select {
-
-            height: 44px;
-        }
-
-
-        .form-group textarea {
-
+        textarea {
             min-height: 100px;
-
             resize: vertical;
         }
 
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-
-            border-color: #0759bd;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(7,89,189,0.08);
-        }
-
-
-        .required {
-
-            color: #dc2626;
-        }
-
-
         .form-note {
-
             font-size: 12px;
-
-            color: #64748b;
-
-            margin-top: 6px;
+            color: var(--muted);
+            margin-top: 2px;
         }
-
-
-        /* =================================================
-           ERROR
-        ================================================= */
-
-        .error-box {
-
-            background: #fff1f2;
-
-            border: 1px solid #fecdd3;
-
-            color: #be123c;
-
-            padding: 13px 15px;
-
-            border-radius: 8px;
-
-            margin-bottom: 20px;
-
-            font-size: 13px;
-        }
-
-
-        /* =================================================
-           BUTTON
-        ================================================= */
 
         .form-actions {
-
             display: flex;
-
             gap: 12px;
-
-            margin-top: 25px;
+            margin-top: 24px;
         }
-
-
-        .btn-save {
-
-            height: 44px;
-
-            padding: 0 25px;
-
-            border: none;
-
-            border-radius: 8px;
-
-            background: #0759bd;
-
-            color: white;
-
-            font-weight: 600;
-
-            cursor: pointer;
-        }
-
-
-        .btn-save:hover {
-
-            background: #064b9f;
-        }
-
-
-        .btn-cancel {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            height: 44px;
-
-            padding: 0 22px;
-
-            border: 1px solid #d5dee9;
-
-            border-radius: 8px;
-
-            background: white;
-
-            color: #334155;
-
-            text-decoration: none;
-
-            font-size: 14px;
-
-            font-weight: 600;
-        }
-
 
         @media (max-width: 800px) {
 
-            .sidebar {
-
-                width: 210px;
-            }
-
-            .main {
-
-                margin-left: 210px;
-
-                padding: 25px;
-            }
-
-            .form-grid {
-
+            .form-card .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .form-group.full {
-
+            .form-card .form-group.full {
                 grid-column: auto;
             }
+
         }
 
     </style>
@@ -613,144 +186,11 @@ $equipment_result = $conn->query("
 
 <body>
 
-
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
-<aside class="sidebar">
-
-    <div class="brand">
-
-        <img
-            src="../assets/logo.png"
-            alt="Logo PT Biringkassi Raya"
-        >
-
-        <span>
-            PT BIRINGKASSI<br>
-            RAYA
-        </span>
-
-    </div>
-
-
-    <ul class="menu">
-
-        <li>
-            <a href="../index.php">
-                Dashboard
-            </a>
-        </li>
-
-
-        <li>
-            <a href="../equipment/index.php">
-                Equipment Master
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Status Unit
-            </a>
-        </li>
-
-
-        <li>
-            <a href="../maintenance/index.php">
-                Jadwal Pemeliharaan
-            </a>
-        </li>
-
-
-        <li>
-            <a href="../maintenance/history/index.php">
-                Histori Pemeliharaan
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Breakdown & Failure
-            </a>
-        </li>
-
-
-        <li class="menu-dropdown">
-
-            <a href="javascript:void(0);">
-
-                Spare Part & Lubricant
-
-                <span>▴</span>
-
-            </a>
-
-
-            <ul class="submenu">
-
-                <li>
-
-                    <a href="../sparepart/index.php">
-
-                        Spare Part
-
-                    </a>
-
-                </li>
-
-
-                <li>
-
-                    <a
-                        href="index.php"
-                        class="active"
-                    >
-
-                        Lubricant
-
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </li>
-
-
-        <li>
-            <a href="#">
-                Fuel Performance
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Biaya Pemeliharaan
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Kinerja & Evaluasi
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Laporan
-            </a>
-        </li>
-
-    </ul>
-
-</aside>
+<?php
+$base   = '../';
+$active = 'lubricant';
+include $base . 'includes/sidebar.php';
+?>
 
 
 <!-- =====================================================
@@ -762,12 +202,10 @@ $equipment_result = $conn->query("
 
     <div class="breadcrumb">
 
-        Home
+        <a href="../index.php">Home</a>
         &nbsp;›&nbsp;
 
-        <span>
-            Lubricant
-        </span>
+        <a href="index.php">Lubricant</a>
 
         &nbsp;›&nbsp;
 
@@ -778,30 +216,37 @@ $equipment_result = $conn->query("
     </div>
 
 
-    <h1>
-        Tambah Data Lubricant
-    </h1>
+    <div class="header">
+
+        <div class="header-left">
+
+            <h1>
+                Tambah Data Lubricant
+            </h1>
+
+            <p>
+
+                Masukkan data penggunaan atau penggantian pelumas
+                pada equipment.
+
+            </p>
+
+        </div>
+
+        <a href="index.php" class="btn-reset">
+            ← Kembali
+        </a>
+
+    </div>
 
 
-    <p class="description">
-
-        Masukkan data penggunaan atau penggantian pelumas
-        pada equipment.
-
-    </p>
-
-
-    <section class="form-box">
+    <section class="form-card">
 
         <div class="form-title">
 
             Data Penggunaan Pelumas
 
         </div>
-
-<a href="index.php" class="btn-back">
-    ← Kembali
-</a>
 
         <?php if ($error): ?>
 

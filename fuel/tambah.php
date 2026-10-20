@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -147,168 +146,31 @@ if ($result) {
 
     <title>Tambah Data BBM - PT Biringkassi Raya</title>
 
+    <link rel="stylesheet" href="../assets/css/app.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f8fc;
-            color: #1f2937;
-            font-size: 15px;
-        }
-
-        /* =========================
-           SIDEBAR - SAMA DENGAN DASHBOARD
-        ========================= */
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 240px;
-            height: 100vh;
-            background: #0759bd;
-            color: white;
-            padding: 25px 15px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 35px;
-            padding-left: 10px;
-        }
-
-        .logo img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-        }
-
-        .logo-text {
-            font-size: 13px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 7px;
-        }
-
-        .menu a {
-            display: block;
-            padding: 12px 14px;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            background: rgba(255, 255, 255, 0.18);
-        }
-
-        .menu-dropdown > a {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .menu-arrow {
-            margin-left: 8px;
-            flex-shrink: 0;
-        }
-
-        .submenu {
-            list-style: none;
-            display: none;
-            margin-top: 3px;
-            padding: 0;
-        }
-
-        .submenu li {
-            margin-bottom: 3px;
-        }
-
-        .submenu a {
-            padding: 10px 14px 10px 30px;
-            font-size: 13px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        /* =========================
-           MAIN CONTENT
-        ========================= */
-
-        .main {
-            margin-left: 240px;
-            min-height: 100vh;
-            padding: 32px;
-        }
-
-        .breadcrumb {
-            margin-bottom: 12px;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .page-header {
-            margin-bottom: 22px;
-        }
-
-        .page-header h1 {
-            font-size: 32px;
-            color: #0759bd;
-            margin-bottom: 5px;
-        }
-
-        .page-header p {
-            color: #64748b;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        /* =========================
-           FORM TAMBAH DATA BBM
-        ========================= */
+        /* khusus halaman tambah data BBM */
 
         .form-card {
-            max-width: 100%;
-            padding: 25px;
-            background: white;
-            border: 1px solid #dce8f3;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            padding: 24px;
         }
 
         .form-title {
-            margin-bottom: 8px;
-            font-size: 18px;
-            color: #0759bd;
+            margin-bottom: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ink);
         }
 
         .form-description {
-            margin-bottom: 24px;
-            color: #64748b;
-            font-size: 14px;
+            margin-bottom: 22px;
+            color: var(--muted);
+            font-size: 13px;
             line-height: 1.6;
         }
 
-        .form-grid {
-            display: grid;
+        .form-card .form-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 20px 24px;
         }
@@ -317,80 +179,26 @@ if ($result) {
             min-width: 0;
         }
 
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #334155;
-        }
-
-        .required {
-            color: #dc2626;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            display: block;
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #d9e2ec;
-            border-radius: 8px;
-            background: white;
-            color: #1f2937;
-            font-family: inherit;
-            font-size: 14px;
-        }
-
-        .form-group input,
-        .form-group select {
-            min-height: 48px;
-        }
-
-        .form-group textarea {
+        textarea {
             min-height: 110px;
             resize: vertical;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #0759bd;
-            box-shadow: 0 0 0 3px rgba(7, 89, 189, 0.08);
-        }
-
         .help-text {
             display: block;
-            margin-top: 7px;
-            color: #64748b;
+            margin-top: 2px;
+            color: var(--muted);
             font-size: 12px;
             line-height: 1.5;
         }
 
         .unit-info {
             display: none;
-            margin-top: 10px;
+            margin-top: 6px;
             padding: 12px;
-            border-radius: 8px;
-            background: #eef5fc;
-            color: #0759bd;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .error-message {
-            margin-bottom: 18px;
-            padding: 13px 15px;
-            border: 1px solid #fecaca;
-            border-radius: 8px;
-            background: #fef2f2;
-            color: #b91c1c;
+            border-radius: var(--radius-sm);
+            background: var(--primary-soft);
+            color: var(--primary);
             font-size: 13px;
             line-height: 1.6;
         }
@@ -400,234 +208,62 @@ if ($result) {
             justify-content: flex-end;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 28px;
-            padding-top: 22px;
-            border-top: 1px solid #edf2f7;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 44px;
-            padding: 0 18px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            background: white;
-            color: #475569;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            border-color: #0759bd;
-            background: #0759bd;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #06499b;
-        }
-
-        .btn-secondary:hover {
-            background: #f8fafc;
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
         }
 
         .empty-state {
-            color: #64748b;
+            color: var(--muted);
             font-size: 14px;
             line-height: 1.7;
         }
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
         @media (max-width: 900px) {
-            .main {
-                padding: 24px;
-            }
 
-            .form-grid {
+            .form-card .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .form-group.full {
+            .form-card .form-group.full {
                 grid-column: auto;
             }
+
         }
 
-        @media (max-width: 650px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 18px;
-            }
-
-            .page-header h1 {
-                font-size: 26px;
-            }
-
-            .form-card {
-                padding: 18px;
-            }
-        }
     </style>
 </head>
 
 <body>
 
-<!-- =========================
-     SIDEBAR
-========================= -->
-
-<aside class="sidebar">
-
-    <div class="logo">
-        <img
-            src="../assets/logo.png"
-            alt="Logo PT Biringkassi Raya"
-        >
-
-        <div class="logo-text">
-            PT BIRINGKASSI RAYA
-        </div>
-    </div>
-
-    <ul class="menu">
-
-        <li>
-            <a href="../index.php">
-                Dashboard
-            </a>
-        </li>
-
-        <li>
-            <a href="../equipment/index.php">
-                Equipment Master
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Status Unit
-            </a>
-        </li>
-
-        <li>
-            <a href="../maintenance/index.php">
-                Jadwal Pemeliharaan
-            </a>
-        </li>
-
-        <li>
-            <a href="../maintenance/history/index.php">
-                Histori Pemeliharaan
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Breakdown &amp; Failure
-            </a>
-        </li>
-
-        <li class="menu-dropdown">
-            <a
-                href="javascript:void(0);"
-                onclick="
-                    var submenu = document.getElementById('spareSubmenu');
-                    var arrow = document.getElementById('spareArrow');
-
-                    if (
-                        submenu.style.display === 'none' ||
-                        submenu.style.display === ''
-                    ) {
-                        submenu.style.display = 'block';
-                        arrow.textContent = '▼';
-                    } else {
-                        submenu.style.display = 'none';
-                        arrow.textContent = '▶';
-                    }
-                "
-            >
-                Spare Part &amp; Lubricant
-                <span id="spareArrow" class="menu-arrow">▶</span>
-            </a>
-
-            <ul id="spareSubmenu" class="submenu">
-                <li>
-                    <a href="../sparepart/index.php">
-                        Spare Part
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../lubricant/index.php">
-                        Lubricant
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <a href="index.php" class="active">
-                Fuel Performance
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Biaya Pemeliharaan
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Kinerja &amp; Evaluasi
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                Laporan
-            </a>
-        </li>
-
-    </ul>
-</aside>
-
-<!-- =========================
-     MAIN CONTENT
-========================= -->
+<?php
+$base   = '../';
+$active = 'fuel';
+include $base . 'includes/sidebar.php';
+?>
 
 <main class="main">
 
     <div class="breadcrumb">
-        Home &nbsp;›&nbsp;
-        <span>Fuel Performance</span>
+        <a href="../index.php">Home</a>
+        &nbsp;›&nbsp;
+        <a href="index.php">Fuel Performance</a>
         &nbsp;›&nbsp;
         <span>Tambah Data BBM</span>
     </div>
 
-    <div class="page-header">
-        <h1>Tambah Data BBM</h1>
+    <div class="header">
+        <div class="header-left">
+            <h1>Tambah Data BBM</h1>
 
-        <p>
-            Masukkan catatan pemakaian bahan bakar untuk unit alat berat.
-        </p>
+            <p>
+                Masukkan catatan pemakaian bahan bakar untuk unit alat berat.
+            </p>
+        </div>
     </div>
 
     <?php if ($error !== ''): ?>
-        <div class="error-message">
+        <div class="error-box">
             <?= fuel_h($error); ?>
         </div>
     <?php endif; ?>
@@ -640,7 +276,7 @@ if ($result) {
 
         <p class="form-description">
             Kolom bertanda
-            <span class="required">*</span>
+            <span class="required" style="color: var(--red);">*</span>
             wajib diisi.
         </p>
 
@@ -759,13 +395,13 @@ if ($result) {
 
                 <div class="form-actions">
 
-                    <a href="index.php" class="btn btn-secondary">
+                    <a href="index.php" class="btn-cancel">
                         Batal
                     </a>
 
                     <button
                         type="submit"
-                        class="btn btn-primary"
+                        class="btn-primary"
                     >
                         Simpan Data BBM
                     </button>
@@ -784,7 +420,7 @@ if ($result) {
             <div class="form-actions">
                 <a
                     href="../equipment/index.php"
-                    class="btn btn-primary"
+                    class="btn-primary"
                 >
                     Buka Equipment Master
                 </a>
@@ -797,26 +433,6 @@ if ($result) {
 </main>
 
 <script>
-function toggleSubmenu() {
-    const submenu = document.getElementById('spareSubmenu');
-    const arrow = document.getElementById('spareArrow');
-
-    if (!submenu || !arrow) {
-        return;
-    }
-
-    if (
-        submenu.style.display === 'none' ||
-        submenu.style.display === ''
-    ) {
-        submenu.style.display = 'block';
-        arrow.textContent = '▼';
-    } else {
-        submenu.style.display = 'none';
-        arrow.textContent = '▶';
-    }
-}
-
 /* Informasi unit yang dipilih */
 const equipmentSelect = document.getElementById('equipment_id');
 const unitInfo = document.getElementById('unitInfo');

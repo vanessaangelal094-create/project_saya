@@ -302,231 +302,56 @@ function fuel_h($value)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fuel Performance - PT Biringkassi Raya</title>
 
+    <link rel="stylesheet" href="../assets/css/app.css">
+
     <style>
-        * { box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f8fc;
-            color: #1f2937;
-            font-size: 14px;
-        }
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 240px;
-            height: 100vh;
-            background: #0759bd;
-            color: white;
-            padding: 25px 15px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 35px;
-            padding-left: 10px;
-        }
-
-        .logo img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-        }
-
-        .logo-text {
-            font-size: 13px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        .menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .menu li { margin-bottom: 7px; }
-
-        .menu a {
-            display: block;
-            padding: 12px 14px;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            background: rgba(255, 255, 255, 0.18);
-        }
-
-        .submenu {
-            list-style: none;
-            padding-left: 18px;
-            margin: 0;
-        }
-
-        .menu-arrow { float: right; }
-
-        .main {
-            margin-left: 240px;
-            padding: 28px 32px 45px;
-        }
-
-        .header { margin-bottom: 22px; }
-
-        .header h1 {
-            margin: 0 0 7px;
-            font-size: 30px;
-            color: #0759bd;
-        }
-
-        .header p {
-            margin: 0;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .filter-box,
-        .summary-card,
-        .box {
-            background: white;
-            border: 1px solid #dce8f3;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-        }
-
-        .filter-box {
-            padding: 18px;
-            margin-bottom: 20px;
-        }
-
-        .filter-title {
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .filter-form {
-            display: flex;
-            align-items: end;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .filter-group label {
-            font-size: 12px;
-            font-weight: bold;
-            color: #475569;
-        }
-
-        .filter-form select {
-            width: 280px;
-            max-width: 100%;
-            height: 40px;
-            padding: 0 12px;
-            border: 1px solid #d9e2ec;
-            border-radius: 8px;
-            background: white;
-            font-size: 13px;
-        }
-
-        .btn {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 40px;
-            padding: 0 17px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .btn-filter {
-            background: #0759bd;
-            color: white;
-            border: none;
-        }
-
-        .btn-reset {
-            background: white;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-        }
+        /* khusus halaman Fuel Performance */
 
         .summary-grid {
-            display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .summary-card { padding: 20px; }
-
-        .summary-title {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 10px;
         }
 
         .summary-value {
-            font-size: 27px;
-            font-weight: bold;
-            color: #0759bd;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--ink);
+            line-height: 1.2;
             overflow-wrap: anywhere;
         }
 
         .summary-unit {
             font-size: 13px;
-            font-weight: normal;
-            color: #64748b;
+            font-weight: 500;
+            letter-spacing: 0;
+            color: var(--muted);
         }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .box {
-            padding: 20px;
-            min-width: 0;
-        }
-
-        .box-title {
+        .filter-form {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
+            flex-wrap: wrap;
             gap: 10px;
+        }
+
+        .filter-form select {
+            width: 280px;
+            max-width: 100%;
+        }
+
+        .period-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
             margin-bottom: 16px;
         }
 
-        .box-title h2 {
-            margin: 0;
-            font-size: 15px;
-            color: #0759bd;
-        }
-
-        .box-title span {
-            font-size: 11px;
-            color: #64748b;
+        .period-form select,
+        .period-form input {
+            width: auto;
+            margin-top: 6px;
         }
 
         .chart-area {
@@ -535,142 +360,54 @@ function fuel_h($value)
             width: 100%;
         }
 
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        th {
-            text-align: left;
-            padding: 12px 10px;
-            background: #eef5fc;
-            color: #4b6380;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #edf2f7;
-            color: #334155;
-            vertical-align: top;
-        }
-
         .empty-data {
             text-align: center;
             padding: 30px 15px;
-            color: #64748b;
-        }
-
-        .error-message {
-            padding: 12px 15px;
-            background: #fee2e2;
-            border: 1px solid #fecaca;
-            color: #b91c1c;
-            border-radius: 8px;
-            margin-bottom: 18px;
-        }
-
-        .period-form {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: end;
-            margin-bottom: 18px;
-        }
-
-        .period-form label {
-            font-size: 12px;
-            color: #475569;
-        }
-
-        .period-form select,
-        .period-form input {
-            padding: 9px;
-            border: 1px solid #d9e2ec;
-            border-radius: 7px;
-            margin-top: 5px;
-            background: white;
+            color: var(--muted);
         }
 
         @media (max-width: 1100px) {
-            .summary-grid { grid-template-columns: 1fr; }
-            .dashboard-grid { grid-template-columns: 1fr; }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
         }
 
         @media (max-width: 650px) {
-            .sidebar {
-                position: relative;
+
+            .filter-form select {
                 width: 100%;
-                height: auto;
             }
 
-            .main {
-                margin-left: 0;
-                padding: 18px;
-            }
-
-            .header h1 { font-size: 24px; }
-
-            .filter-form select { width: 100%; }
         }
+
     </style>
 </head>
 
 <body>
 
-<aside class="sidebar">
-    <div class="logo">
-        <img src="../assets/logo.png" alt="Logo PT Biringkassi Raya">
-        <div class="logo-text">PT BIRINGKASSI RAYA</div>
-    </div>
-
-    <ul class="menu">
-        <li><a href="../index.php">Dashboard</a></li>
-        <li><a href="../equipment/index.php">Equipment Master</a></li>
-        <li><a href="#">Status Unit</a></li>
-        <li><a href="../maintenance/index.php">Jadwal Pemeliharaan</a></li>
-        <li><a href="../maintenance/history/index.php">Histori Pemeliharaan</a></li>
-        <li><a href="../breakdown/index.php">Breakdown &amp; Failure</a></li>
-
-        <li>
-            <a href="javascript:void(0)" onclick="toggleSubmenu()">
-                Spare Part &amp; Lubricant
-                <span id="menuArrow" class="menu-arrow">▶</span>
-            </a>
-
-            <ul id="spareSubmenu" class="submenu" style="display:none;">
-                <li><a href="../sparepart/index.php">Spare Part</a></li>
-                <li><a href="../lubricant/index.php">Lubricant</a></li>
-            </ul>
-        </li>
-
-        <li><a href="index.php" class="active">Fuel Performance</a></li>
-        <li><a href="#">Biaya Pemeliharaan</a></li>
-        <li><a href="#">Kinerja &amp; Evaluasi</a></li>
-        <li><a href="#">Laporan</a></li>
-    </ul>
-</aside>
+<?php
+$base   = '../';
+$active = 'fuel';
+include $base . 'includes/sidebar.php';
+?>
 
 <main class="main">
 
     <div class="header">
-        <h1>Fuel Performance</h1>
-        <p>Monitoring penggunaan bahan bakar alat berat berdasarkan lokasi dan equipment.</p>
+        <div class="header-left">
+            <h1>Fuel Performance</h1>
+            <p>Monitoring penggunaan bahan bakar alat berat berdasarkan lokasi dan equipment.</p>
+        </div>
+
+        <a href="tambah.php" class="btn-primary">
+            + Tambah Data BBM
+        </a>
     </div>
-    <a href="tambah.php" class="btn btn-filter"
-   style="display:inline-flex; margin-bottom:20px;">
-    + Tambah Data BBM
-</a>
 
     <?php if ($error_message !== ''): ?>
-        <div class="error-message">
+        <div class="error-box">
             <?= fuel_h($error_message); ?>
             Periksa tabel fuel_usage dan koneksi database.
         </div>
@@ -681,20 +418,20 @@ function fuel_h($value)
 
         <form method="GET" action="index.php" class="filter-form" id="fuelFilterForm">
             <div class="filter-group">
-               <label for="location">Lokasi Equipment</label>
+                <label for="location">Lokasi Equipment</label>
 
-<select name="location" id="location">
-    <option value="">Semua Lokasi</option>
+                <select name="location" id="location">
+                    <option value="">Semua Lokasi</option>
 
-    <?php foreach ($locations as $location): ?>
-        <option
-            value="<?= fuel_h($location); ?>"
-            <?= $selected_location === $location ? 'selected' : ''; ?>
-        >
-            <?= fuel_h($location); ?>
-        </option>
-    <?php endforeach; ?>
-</select>
+                    <?php foreach ($locations as $location): ?>
+                        <option
+                            value="<?= fuel_h($location); ?>"
+                            <?= $selected_location === $location ? 'selected' : ''; ?>
+                        >
+                            <?= fuel_h($location); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
 
             <div class="filter-group">
@@ -713,38 +450,47 @@ function fuel_h($value)
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-filter">Tampilkan</button>
-            <a href="index.php" class="btn btn-reset">Reset</a>
+            <button type="submit" class="btn-filter">Tampilkan</button>
+            <a href="index.php" class="btn-reset">Reset</a>
         </form>
     </div>
 
     <section class="summary-grid">
         <div class="summary-card">
-            <div class="summary-title">Total Pemakaian BBM</div>
-            <div class="summary-value">
-                <?= number_format($total_liter, 2, ',', '.'); ?>
-                <span class="summary-unit">Liter</span>
+            <div class="summary-icon icon-blue">⛽</div>
+            <div>
+                <div class="summary-title">Total Pemakaian BBM</div>
+                <div class="summary-value">
+                    <?= number_format($total_liter, 2, ',', '.'); ?>
+                    <span class="summary-unit">Liter</span>
+                </div>
             </div>
         </div>
 
         <div class="summary-card">
-            <div class="summary-title">Rata-rata Pemakaian per Catatan</div>
-            <div class="summary-value">
-                <?= number_format($average_liter, 2, ',', '.'); ?>
-                <span class="summary-unit">Liter</span>
+            <div class="summary-icon icon-yellow">📊</div>
+            <div>
+                <div class="summary-title">Rata-rata Pemakaian per Catatan</div>
+                <div class="summary-value">
+                    <?= number_format($average_liter, 2, ',', '.'); ?>
+                    <span class="summary-unit">Liter</span>
+                </div>
             </div>
         </div>
 
         <div class="summary-card">
-            <div class="summary-title">Pemakaian Bulan Ini</div>
-            <div class="summary-value">
-                <?= number_format($this_month_liter, 2, ',', '.'); ?>
-                <span class="summary-unit">Liter</span>
+            <div class="summary-icon icon-green">📅</div>
+            <div>
+                <div class="summary-title">Pemakaian Bulan Ini</div>
+                <div class="summary-value">
+                    <?= number_format($this_month_liter, 2, ',', '.'); ?>
+                    <span class="summary-unit">Liter</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="dashboard-grid">
+    <section class="dashboard-grid equal">
         <div class="box">
             <div class="box-title">
                 <h2>📈 Tren Pemakaian BBM</h2>
@@ -779,7 +525,7 @@ function fuel_h($value)
                                value="<?= fuel_h($tanggal_akhir); ?>" required>
                     </div>
 
-                    <button type="submit" class="btn btn-filter">Terapkan</button>
+                    <button type="submit" class="btn-filter">Terapkan</button>
                 <?php endif; ?>
             </form>
 
@@ -859,18 +605,8 @@ function fuel_h($value)
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-function toggleSubmenu() {
-    const submenu = document.getElementById('spareSubmenu');
-    const arrow = document.getElementById('menuArrow');
 
-    if (submenu.style.display === 'none') {
-        submenu.style.display = 'block';
-        arrow.textContent = '▼';
-    } else {
-        submenu.style.display = 'none';
-        arrow.textContent = '▶';
-    }
-}
+Chart.defaults.font.family = "Inter, Arial, sans-serif";
 
 /* Data grafik dari PHP */
 const trendLabels = <?= json_encode($trend_labels); ?>;
@@ -890,8 +626,8 @@ if (trendCanvas) {
             datasets: [{
                 label: 'Pemakaian BBM (Liter)',
                 data: trendValues,
-                borderColor: '#0759bd',
-                backgroundColor: 'rgba(7, 89, 189, 0.12)',
+                borderColor: '#7c5cfc',
+                backgroundColor: 'rgba(124, 92, 252, 0.12)',
                 borderWidth: 2,
                 fill: true,
                 tension: 0.3,
@@ -950,13 +686,13 @@ if (equipmentCanvas) {
         type: 'bar',
         data: {
             labels: equipmentLabels.map(function(label) {
-    return label.split(' - ')[0];
-}),
+                return label.split(' - ')[0];
+            }),
             datasets: [{
                 label: 'Total Pemakaian (Liter)',
                 data: equipmentValues,
-                backgroundColor: '#0759bd',
-                borderRadius: 5,
+                backgroundColor: '#7c5cfc',
+                borderRadius: 6,
                 maxBarThickness: 45
             }]
         },

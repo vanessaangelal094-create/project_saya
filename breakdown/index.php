@@ -214,551 +214,205 @@ $filter_aktif = ($selected_location !== '' || $selected_status !== '');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breakdown &amp; Failure | Monitoring Alat Berat</title>
+
+    <link rel="stylesheet" href="../assets/css/app.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f9;
-            color: #253247;
-            font-size: 14px;
-        }
-        /* =========================
-           SIDEBAR - STANDARD
-           JANGAN DIUBAH
-        ========================= */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 240px;
-            height: 100vh;
-            background: #0759bd;
-            color: white;
-            padding: 25px 15px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 35px;
-            padding-left: 10px;
-        }
-        .logo img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-        }
-        .logo-text {
+
+        /* khusus halaman Breakdown */
+
+        .section-sub {
+            margin-top: 2px;
             font-size: 13px;
-            font-weight: bold;
-            line-height: 1.3;
+            color: var(--muted);
         }
-        .menu {
-            list-style: none;
-        }
-        .menu li {
-            margin-bottom: 7px;
-        }
-        .menu a {
-            display: block;
-            padding: 12px 14px;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-        .menu a:hover,
-        .menu a.active {
-            background: rgba(255, 255, 255, 0.18);
-        }
-        .menu-arrow {
-            margin-left: 6px;
-            font-size: 11px;
-        }
-        .submenu {
-            list-style: none;
-            padding-left: 13px;
-            margin-top: 5px;
-        }
-        .submenu li {
-            margin-bottom: 4px;
-        }
-        .submenu a {
-            font-size: 12px;
-            padding: 10px 12px;
-        }
-        /* =========================
-           KONTEN UTAMA
-        ========================= */
-        .main-content {
-            margin-left: 240px;
-            padding: 30px;
-            min-height: 100vh;
-        }
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        .page-title {
-            font-size: 25px;
-            font-weight: 700;
-            color: #172b4d;
-            margin-bottom: 8px;
-        }
-        .page-description {
-            color: #78869b;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 17px;
-            background: #0759bd;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .btn-primary:hover {
-            background: #064a9c;
-        }
-        /* =========================
-           KARTU RINGKASAN
-        ========================= */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 16px;
-            margin-bottom: 25px;
-        }
-        .stat-card {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #e6ebf2;
-            min-height: 125px;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: #78869b;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-        .stat-value {
-            font-size: 29px;
-            font-weight: 700;
-            color: #172b4d;
-        }
-        .stat-card.total {
-            border-top: 4px solid #0759bd;
-        }
-        .stat-card.dilaporkan {
-            border-top: 4px solid #e3a008;
-        }
-        .stat-card.penanganan {
-            border-top: 4px solid #2684ff;
-        }
-        .stat-card.menunggu {
-            border-top: 4px solid #e87518;
-        }
-        .stat-card.selesai {
-            border-top: 4px solid #19945b;
-        }
-        /* =========================
-           PANEL DAN FILTER
-        ========================= */
-        .panel {
-            background: #ffffff;
-            border: 1px solid #e6ebf2;
-            border-radius: 12px;
-            margin-bottom: 22px;
-            overflow: hidden;
-        }
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            padding: 20px 22px;
-            border-bottom: 1px solid #edf0f5;
-        }
-        .panel-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #172b4d;
-        }
-        .panel-subtitle {
-            color: #8995a8;
-            font-size: 12px;
-            margin-top: 6px;
-            line-height: 1.5;
-        }
+
         .filter-form {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-end;
-            gap: 13px;
-            padding: 20px 22px;
+            gap: 12px;
+            padding: 18px 20px;
         }
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-            min-width: 200px;
+
+        .filter-form .filter-group {
+            min-width: 210px;
         }
-        .filter-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #526176;
-        }
-        .filter-group select {
-            min-width: 200px;
-            padding: 11px 12px;
-            border: 1px solid #d9e0e9;
-            border-radius: 7px;
-            background: #ffffff;
-            color: #253247;
-            font-size: 13px;
-            outline: none;
-        }
-        .filter-group select:focus {
-            border-color: #0759bd;
-        }
-        .btn-filter,
-        .btn-reset {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 11px 16px;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .btn-filter {
-            background: #0759bd;
-            color: #ffffff;
-            border: 1px solid #0759bd;
-        }
-        .btn-reset {
-            background: #ffffff;
-            color: #526176;
-            border: 1px solid #d9e0e9;
-        }
-        .result-info {
-            padding: 0 22px 18px;
-            color: #78869b;
-            font-size: 12px;
-        }
-        /* =========================
-           TABEL LAPORAN
-        ========================= */
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            white-space: nowrap;
-        }
-        thead {
-            background: #f7f9fc;
-        }
-        th {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            color: #718096;
-            font-weight: 700;
-            text-align: left;
-            padding: 15px 14px;
-            border-bottom: 1px solid #e8edf3;
-        }
-        td {
-            padding: 16px 14px;
-            font-size: 12px;
-            color: #40516a;
-            border-bottom: 1px solid #edf0f5;
-            vertical-align: middle;
-        }
-        tbody tr:hover {
-            background: #fbfcfe;
-        }
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-        .unit-code {
-            font-weight: 700;
-            color: #0759bd;
-        }
+
         .unit-name {
             font-weight: 600;
-            color: #253247;
-            margin-bottom: 5px;
+            color: var(--ink);
+            margin: 2px 0;
         }
+
         .muted-text {
-            color: #8995a8;
-            font-size: 11px;
+            color: var(--muted);
+            font-size: 12px;
         }
+
         .damage-name {
             max-width: 220px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-weight: 600;
-            color: #253247;
+            color: var(--ink);
         }
+
         .status-badge {
-            display: inline-block;
-            padding: 6px 9px;
-            border-radius: 6px;
-            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 11px;
+            border-radius: 999px;
+            font-size: 12px;
             font-weight: 600;
+            white-space: nowrap;
         }
-        .status-dilaporkan {
-            background: #fff5d9;
-            color: #986800;
+
+        .status-dilaporkan { background: var(--amber-soft);  color: var(--amber); }
+        .status-penanganan { background: var(--blue-soft);   color: var(--blue); }
+        .status-menunggu   { background: var(--orange-soft); color: var(--orange); }
+        .status-selesai    { background: var(--green-soft);  color: var(--green); }
+        .status-default    { background: #eeeef5;            color: var(--ink-2); }
+
+        .result-info {
+            padding: 14px 20px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 13px;
         }
-        .status-penanganan {
-            background: #e8f2ff;
-            color: #0759bd;
-        }
-        .status-menunggu {
-            background: #fff0e4;
-            color: #b65411;
-        }
-        .status-selesai {
-            background: #e3f7ed;
-            color: #167347;
-        }
-        .status-default {
-            background: #edf0f5;
-            color: #526176;
-        }
+
         .empty-state {
-            padding: 55px 20px;
+            padding: 56px 20px;
             text-align: center;
         }
-        .empty-icon {
-            font-size: 35px;
-            margin-bottom: 15px;
+
+        .empty-state .empty-icon {
+            font-size: 34px;
+            margin-bottom: 12px;
         }
+
         .empty-title {
             font-size: 16px;
-            font-weight: 700;
-            color: #34445b;
+            font-weight: 600;
+            color: var(--ink);
             margin-bottom: 8px;
         }
+
         .empty-description {
-            color: #8995a8;
-            font-size: 13px;
-            line-height: 1.7;
             max-width: 480px;
             margin: 0 auto 20px;
-        }
-        .footer-note {
-            margin-top: 18px;
-            color: #8995a8;
-            font-size: 11px;
+            color: var(--muted);
+            font-size: 13px;
             line-height: 1.7;
         }
-        /* =========================
-           RESPONSIVE
-        ========================= */
-        @media (max-width: 1250px) {
-            .stats-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
+
+        .footer-note {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
         }
-        @media (max-width: 900px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-            .page-title {
-                font-size: 22px;
-            }
-        }
-        @media (max-width: 620px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 18px;
-            }
-            .page-header {
-                flex-direction: column;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .stat-card {
-                padding: 15px;
-                min-height: 105px;
-            }
-            .stat-value {
-                font-size: 24px;
-            }
+
+        @media (max-width: 650px) {
+
             .filter-form {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .filter-group,
-            .filter-group select {
-                width: 100%;
+
+            .filter-form .filter-group {
                 min-width: 0;
             }
-            .btn-filter,
-            .btn-reset {
-                width: 100%;
-            }
+
         }
+
     </style>
 </head>
 <body>
-    <!-- =========================
-         SIDEBAR
-    ========================= -->
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="../assets/logo.png" alt="Logo PT Biringkassi Raya">
-            <div class="logo-text">
-                PT BIRINGKASSI RAYA
-            </div>
-        </div>
-        <ul class="menu">
-            <li>
-                <a href="../index.php">Dashboard</a>
-            </li>
-            <li>
-                <a href="../equipment/index.php">Equipment Master</a>
-            </li>
-            <li>
-                <a href="../equipment/index.php">Status Unit</a>
-            </li>
-            <li>
-                <a href="../maintenance/index.php">Jadwal Pemeliharaan</a>
-            </li>
-            <li>
-                <a href="../maintenance/history/index.php">Histori Pemeliharaan</a>
-            </li>
-            <li>
-                <a href="index.php" class="active">Breakdown &amp; Failure</a>
-            </li>
-            <li class="menu-dropdown">
-                <a href="javascript:void(0);" onclick="
-                    var submenu = document.getElementById('spareSubmenu');
-                    var arrow = document.getElementById('spareArrow');
-                    if (submenu.style.display === 'none' || submenu.style.display === '') {
-                        submenu.style.display = 'block';
-                        arrow.textContent = '▼';
-                    } else {
-                        submenu.style.display = 'none';
-                        arrow.textContent = '▶';
-                    }
-                ">
-                    Spare Part &amp; Lubricant
-                    <span id="spareArrow" class="menu-arrow">▶</span>
-                </a>
-                <ul id="spareSubmenu" class="submenu" style="display: none;">
-                    <li>
-                        <a href="../sparepart/index.php">Spare Part</a>
-                    </li>
-                    <li>
-                        <a href="../lubricant/index.php">Lubricant</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="../fuel/index.php">Fuel Performance</a>
-            </li>
-            <li>
-                <a href="#">Biaya Pemeliharaan</a>
-            </li>
-            <li>
-                <a href="#">Kinerja &amp; Evaluasi</a>
-            </li>
-            <li>
-                <a href="#">Laporan</a>
-            </li>
-        </ul>
-    </aside>
+
+    <?php
+    $base   = '../';
+    $active = 'breakdown';
+    include $base . 'includes/sidebar.php';
+    ?>
+
     <!-- KONTEN UTAMA -->
-    <main class="main-content">
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">Breakdown &amp; Failure</h1>
-                <p class="page-description">
+    <main class="main">
+
+        <div class="header">
+            <div class="header-left">
+                <h1>Breakdown &amp; Failure</h1>
+                <p>
                     Monitoring laporan kerusakan, proses perbaikan, dan downtime alat berat.
                 </p>
             </div>
             <a href="tambah.php" class="btn-primary">
-                <span>+</span>
-                <span>Tambah Laporan</span>
+                + Tambah Laporan
             </a>
         </div>
+
         <!-- KARTU RINGKASAN -->
-        <section class="stats-grid">
-            <div class="stat-card total">
-                <div class="stat-label">Total Laporan Breakdown</div>
-                <div class="stat-value">
-                    <?= number_format($stats['total'], 0, ',', '.') ?>
-                </div>
-            </div>
-            <div class="stat-card dilaporkan">
-                <div class="stat-label">Dilaporkan</div>
-                <div class="stat-value">
-                    <?= number_format($stats['dilaporkan'], 0, ',', '.') ?>
-                </div>
-            </div>
-            <div class="stat-card penanganan">
-                <div class="stat-label">Dalam Penanganan</div>
-                <div class="stat-value">
-                    <?= number_format($stats['penanganan'], 0, ',', '.') ?>
-                </div>
-            </div>
-            <div class="stat-card menunggu">
-                <div class="stat-label">Menunggu Spare Part</div>
-                <div class="stat-value">
-                    <?= number_format($stats['menunggu'], 0, ',', '.') ?>
-                </div>
-            </div>
-            <div class="stat-card selesai">
-                <div class="stat-label">Selesai</div>
-                <div class="stat-value">
-                    <?= number_format($stats['selesai'], 0, ',', '.') ?>
-                </div>
-            </div>
-        </section>
-        <!-- FILTER -->
-        <section class="panel">
-            <div class="panel-header">
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <div class="summary-icon icon-blue">📋</div>
                 <div>
-                    <h2 class="panel-title">Filter Laporan</h2>
-                    <p class="panel-subtitle">
+                    <div class="summary-title">Total Laporan Breakdown</div>
+                    <div class="summary-number">
+                        <?= number_format($stats['total'], 0, ',', '.') ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon icon-yellow">📣</div>
+                <div>
+                    <div class="summary-title">Dilaporkan</div>
+                    <div class="summary-number number-yellow">
+                        <?= number_format($stats['dilaporkan'], 0, ',', '.') ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon icon-blue">🔧</div>
+                <div>
+                    <div class="summary-title">Dalam Penanganan</div>
+                    <div class="summary-number">
+                        <?= number_format($stats['penanganan'], 0, ',', '.') ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon icon-orange">⏳</div>
+                <div>
+                    <div class="summary-title">Menunggu Spare Part</div>
+                    <div class="summary-number number-orange">
+                        <?= number_format($stats['menunggu'], 0, ',', '.') ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon icon-green">✓</div>
+                <div>
+                    <div class="summary-title">Selesai</div>
+                    <div class="summary-number number-green">
+                        <?= number_format($stats['selesai'], 0, ',', '.') ?>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- FILTER -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h3>Filter Laporan</h3>
+                    <p class="section-sub">
                         Saring laporan berdasarkan lokasi unit dan status penanganan.
                     </p>
                 </div>
@@ -800,12 +454,13 @@ $filter_aktif = ($selected_location !== '' || $selected_status !== '');
                 </a>
             </form>
         </section>
-                <!-- TABEL LAPORAN -->
-        <section class="panel">
-            <div class="panel-header">
+
+        <!-- TABEL LAPORAN -->
+        <section class="section">
+            <div class="section-header">
                 <div>
-                    <h2 class="panel-title">Riwayat Breakdown &amp; Failure</h2>
-                    <p class="panel-subtitle">
+                    <h3>Riwayat Breakdown &amp; Failure</h3>
+                    <p class="section-sub">
                         Daftar kerusakan dan status penanganan setiap unit alat berat.
                     </p>
                 </div>
@@ -913,10 +568,12 @@ $filter_aktif = ($selected_location !== '' || $selected_status !== '');
                 </div>
             <?php endif; ?>
         </section>
+
         <p class="footer-note">
             Catatan: Downtime dihitung sejak waktu kejadian hingga waktu selesai perbaikan.
             Untuk laporan yang belum selesai, perhitungan berlangsung hingga waktu saat ini.
         </p>
+
     </main>
 </body>
 </html>

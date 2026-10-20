@@ -288,1381 +288,252 @@ $chart_type_values = array_values($type_usage);
     >
 
     <title>Lubricant - PT Biringkassi Raya</title>
-    <!-- Chart.js -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../assets/css/app.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+
+        /* khusus halaman Lubricant */
+
+        .summary-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
-        body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-            background: #f4f7fb;
-            color: #172033;
-        }
-
-        /* =================================================
-           SIDEBAR
-        ================================================= */
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 240px;
-            height: 100vh;
-            background: #0759bd;
-            color: white;
-            padding: 25px 15px;
-            overflow-y: auto;
-            z-index: 1000;
-
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 35px;
-            padding-left: 10px;
-
-        }
-
-        .brand img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-
-        }
-
-        .brand span {
-            font-size: 13px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 7px;
-        }
-
-        .menu a {
-            display: block;
-            padding: 12px 14px;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-
-        .menu a:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .menu a.active {
-            background: rgba(255, 255, 255, 0.18);
-        }
-
-        .menu-dropdown > a {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .submenu {
-            list-style: none;
-            display: block;
-            margin-top: 3px;
-
-        }
-
-        .submenu a {
-            padding: 10px 14px 10px 30px;
-            font-size: 13px;
-            background: rgba(255,255,255,0.08);
-            margin-bottom: 3px;
-        }
-
-        .submenu a.active {
-            background: rgba(255,255,255,0.18);
-        }
-
-        /* =================================================
-           CONTENT
-        ================================================= */
-
-        .main {
-            margin-left: 240px;
-            min-height: 100vh;
-            padding: 35px 40px;
-        }
-
-        .breadcrumb {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .breadcrumb span {
-            color: #0759bd;
-            font-weight: 600;
-        }
-
-        h1 {
-            color: #123b6d;
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
-
-        .description {
-            color: #64748b;
-            margin-bottom: 28px;
-        }
-
-.btn-add {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 11px 18px;
-    margin-bottom: 25px;
-    border-radius: 8px;
-    background: #0759bd;
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.btn-add:hover {
-    background: #064b9f;
-}
-
-        /* =================================================
-           FILTER
-        ================================================= */
-
-        .filter-box {
-            background: white;
-            border: 1px solid #e1e8f0;
-            border-radius: 14px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-
-        .filter-title {
-            font-size: 18px;
+        .summary-value {
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 18px;
-            color: #172033;
+            letter-spacing: -0.5px;
+            color: var(--ink);
+            line-height: 1.2;
+        }
+
+        .summary-unit {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0;
+            color: var(--muted);
+            margin-left: 2px;
         }
 
         .filter-form {
             display: flex;
-            gap: 15px;
-            align-items: end;
+            gap: 14px;
+            align-items: flex-end;
         }
 
-        .form-group {
+        .filter-form .form-group {
             flex: 1;
         }
 
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 7px;
-        }
-
-        .form-group select {
-            width: 100%;
-            height: 44px;
-            padding: 0 13px;
-            border: 1px solid #d5dee9;
-            border-radius: 8px;
-            background: white;
-            color: #334155;
-            font-size: 14px;
-            outline: none;
-
-        }
-
-        .form-group select:focus {
-            border-color: #0759bd;
-            box-shadow:
-                0 0 0 3px
-                rgba(7,89,189,0.08);
-        }
-
-        .btn-filter {
-            height: 44px;
-            padding: 0 24px;
-            border: none;
-            border-radius: 8px;
-            background: #0759bd;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-filter:hover {
-            background: #064b9f;
-        }
-
-        .btn-reset {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            height: 44px;
-            padding: 0 20px;
-            border: 1px solid #d5dee9;
-            border-radius: 8px;
-            color: #334155;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            background: white;
-        }
-
-        /* =================================================
-           EQUIPMENT INFO
-        ================================================= */
-
         .equipment-info {
-            background: white;
-            border: 1px solid #e1e8f0;
-            border-radius: 14px;
-            padding: 25px;
-            margin-bottom: 25px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
         }
 
         .equipment-header {
-         display: flex;
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .equipment-header h2 {
-            font-size: 20px;
-            color: #123b6d;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         .equipment-code {
-            background: #eaf3ff;
-            color: #0759bd;
-            padding: 7px 13px;
-            border-radius: 7px;
-            font-weight: 700;
-            font-size: 13px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 12px;
         }
 
         .equipment-grid {
             display: grid;
-            grid-template-columns:
-                repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
         }
 
         .info-item {
-            background: #f8fafc;
-
-
-
-            border-radius: 9px;
-
-
-
-            padding: 15px;
-
+            background: #fafafd;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 14px;
         }
-
-
-
-
 
         .info-label {
-
-
-
-            color: #64748b;
-
-
-
+            color: var(--muted);
             font-size: 12px;
-
-
-
-            margin-bottom: 5px;
-
+            margin-bottom: 4px;
         }
-
-
-
-
 
         .info-value {
-
-
-
             font-size: 15px;
-
-
-
             font-weight: 600;
-
-
-
-            color: #172033;
-
+            color: var(--ink);
         }
-
-
-
-
-
-        /* =================================================
-
-           SUMMARY
-
-        ================================================= */
-
-
-
-        .summary-grid {
-
-
-
-            display: grid;
-
-
-
-            grid-template-columns:
-
-                repeat(4, 1fr);
-
-
-
-            gap: 18px;
-
-
-
-            margin-bottom: 25px;
-
-        }
-
-
-
-
-
-        .summary-card {
-
-
-
-            background: white;
-
-
-
-            border: 1px solid #e1e8f0;
-
-
-
-            border-radius: 14px;
-
-
-
-            padding: 20px;
-
-        }
-
-
-
-
-
-        .summary-label {
-
-
-
-            color: #64748b;
-
-
-
-            font-size: 13px;
-
-
-
-            margin-bottom: 9px;
-
-        }
-
-
-
-
-
-        .summary-value {
-
-
-
-            color: #123b6d;
-
-
-
-            font-size: 26px;
-
-
-
-            font-weight: 700;
-
-        }
-
-
-
-
-
-        .summary-unit {
-
-
-
-            color: #64748b;
-
-
-
-            font-size: 12px;
-
-
-
-            margin-left: 4px;
-
-        }
-
-
-
-
-
-        /* =================================================
-
-           CHART
-
-        ================================================= */
-
-
 
         .chart-grid {
-
-
-
             display: grid;
-
-
-
-            grid-template-columns:
-
-                1.5fr 1fr;
-
-
-
-            gap: 20px;
-
-
-
-            margin-bottom: 25px;
-
+            grid-template-columns: 1.5fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
         }
-
-
-
-
 
         .chart-box {
-
-
-
-            background: white;
-
-
-
-            border: 1px solid #e1e8f0;
-
-
-
-            border-radius: 14px;
-
-
-
-            padding: 22px;
-
-
-
-            min-height: 350px;
-
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 20px;
+            min-width: 0;
         }
-
-
-
-
 
         .chart-header {
-
-
-
-            margin-bottom: 18px;
-
+            margin-bottom: 14px;
         }
-
-
-
-
 
         .chart-header h2 {
-
-
-
-            font-size: 19px;
-
-
-
-            color: #172033;
-
-
-
-            margin-bottom: 5px;
-
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 3px;
         }
-
-
-
-
 
         .chart-header p {
-
-
-
-            color: #64748b;
-
-
-
-            font-size: 12px;
-
+            color: var(--muted);
+            font-size: 13px;
         }
-
-
-
-
 
         .chart-container {
-
-
-
             position: relative;
-
-
-
             height: 270px;
-
         }
 
-
-
-
-
-        /* =================================================
-
-           TABLE
-
-        ================================================= */
-
-
-
-        .table-box {
-
-
-
-            background: white;
-
-
-
-            border: 1px solid #e1e8f0;
-
-
-
-            border-radius: 14px;
-
-
-
-            overflow: hidden;
-
+        .period-filter input,
+        .period-filter select {
+            width: auto;
+            margin-top: 6px;
         }
-
-
-
-
-
-        .table-header {
-
-
-
-            padding: 22px 25px;
-
-
-
-            border-bottom: 1px solid #e8edf3;
-
-        }
-
-
-
-
 
         .table-header h2 {
-
-
-
-            font-size: 20px;
-
-
-
-            color: #172033;
-
+            font-size: 16px;
+            font-weight: 600;
         }
-
-
-
-
 
         .table-header p {
-
-
-
-            color: #64748b;
-
-
-
+            color: var(--muted);
             font-size: 13px;
-
-
-
-            margin-top: 5px;
-
+            margin-top: 3px;
         }
-
-
-
-
-
-        .table-wrapper {
-
-
-
-            overflow-x: auto;
-
-        }
-
-
-
-
-
-        table {
-
-
-
-            width: 100%;
-
-
-
-            border-collapse: collapse;
-
-
-
-            min-width: 950px;
-
-        }
-
-
-
-
-
-        th {
-
-
-
-            background: #f5f8fc;
-
-
-
-            color: #64748b;
-
-
-
-            font-size: 12px;
-
-
-
-            text-align: left;
-
-
-
-            padding: 14px 16px;
-
-
-
-            white-space: nowrap;
-
-        }
-
-
-
-
-
-        td {
-
-
-
-            padding: 15px 16px;
-
-
-
-            border-top: 1px solid #edf1f5;
-
-
-
-            font-size: 13px;
-
-
-
-            color: #334155;
-
-
-
-            vertical-align: top;
-
-        }
-
-
-
-
-
-        tbody tr:hover {
-
-
-
-            background: #fafcff;
-
-        }
-
-
-
-
-
-        .item-name {
-
-
-
-            font-weight: 700;
-
-
-
-            color: #172033;
-
-        }
-
-
-
-
-
-        .spec {
-
-
-
-            color: #64748b;
-
-
-
-            margin-top: 4px;
-
-
-
-            font-size: 12px;
-
-        }
-
-
-
-
-
-        .badge {
-
-
-
-            display: inline-block;
-
-
-
-            padding: 6px 10px;
-
-
-
-            border-radius: 20px;
-
-
-
-            font-size: 11px;
-
-
-
-            font-weight: 600;
-
-
-
-            background: #eaf3ff;
-
-
-
-            color: #0759bd;
-
-
-
-            white-space: nowrap;
-
-        }
-
-
-
-
-
-        .empty {
-
-
-
-            padding: 55px 20px;
-
-
-
-            text-align: center;
-
-
-
-            color: #64748b;
-
-        }
-
-
-
-
-
-        .empty-icon {
-
-
-
-            font-size: 40px;
-
-
-
-            margin-bottom: 12px;
-
-        }
-
-
-
-
 
         .empty h3 {
-
-
-
-            color: #334155;
-
-
-
-            margin-bottom: 7px;
-
+            color: var(--ink);
+            margin-bottom: 6px;
         }
-
-
-
-
-
-        /* =================================================
-
-           RESPONSIVE
-
-        ================================================= */
-
-
 
         @media (max-width: 1100px) {
 
-
-
             .equipment-grid {
-
-
-
-                grid-template-columns:
-
-                    repeat(2, 1fr);
-
+                grid-template-columns: repeat(2, 1fr);
             }
-
-
 
             .summary-grid {
-
-
-
-                grid-template-columns:
-
-                    repeat(2, 1fr);
-
+                grid-template-columns: repeat(2, 1fr);
             }
 
-
-
             .chart-grid {
-
-
-
                 grid-template-columns: 1fr;
-
             }
 
         }
-
-
-
-
 
         @media (max-width: 800px) {
 
-
-
-            .sidebar {
-
-
-
-                width: 210px;
-
-            }
-
-
-
-            .main {
-
-
-
-                margin-left: 210px;
-
-
-
-                padding: 25px;
-
-            }
-
-
-
             .filter-form {
-
-
-
                 flex-direction: column;
-
-
-
                 align-items: stretch;
-
             }
-
-
 
             .summary-grid {
-
-
-
                 grid-template-columns: 1fr;
-
             }
 
         }
 
-
-
     </style>
-
-
 
 </head>
 
 
-
-
-
 <body>
 
-
-
+<?php
+$base   = '../';
+$active = 'lubricant';
+include $base . 'includes/sidebar.php';
+?>
 
 
 <!-- =====================================================
-
-     SIDEBAR
-
-===================================================== -->
-
-
-
-<aside class="sidebar">
-
-
-
-    <div class="brand">
-
-
-
-        <img
-
-            src="../assets/logo.png"
-
-            alt="Logo PT Biringkassi Raya"
-
-        >
-
-
-
-        <span>
-
-            PT BIRINGKASSI<br>
-
-            RAYA
-
-        </span>
-
-
-
-    </div>
-
-
-
-
-
-    <ul class="menu">
-
-
-
-        <li>
-
-            <a href="../index.php">
-
-                Dashboard
-
-            </a>
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="../equipment/index.php">
-
-                Equipment Master
-
-            </a>
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="#">
-
-                Status Unit
-
-            </a>
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="../maintenance/index.php">
-
-                Jadwal Pemeliharaan
-
-            </a>
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="../maintenance/history/index.php">
-
-                Histori Pemeliharaan
-
-            </a>
-
-        </li>
-
-        <li>
-            <a href="../breakdown/index.php">
-                Breakdown & Failure
-            </a>
-        </li>
-
-        <li class="menu-dropdown">
-            <a href="javascript:void(0);">
-                Spare Part & Lubricant
-                <span>▴</span>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a href="../sparepart/index.php">
-                        Spare Part
-                    </a>
-                </li>
-
-                <li>
-
-                    <a
-                        href="index.php"
-                        class="active"
-                    >
-
-
-
-                        Lubricant
-
-
-
-                    </a>
-
-
-
-                </li>
-
-
-
-            </ul>
-
-
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="../fuel/index.php">
-
-                Fuel Performance
-
-            </a>
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="#">
-
-                Biaya Pemeliharaan
-
-            </a>
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="#">
-
-                Kinerja & Evaluasi
-
-            </a>
-
-        </li>
-
-
-
-
-
-        <li>
-
-            <a href="#">
-
-                Laporan
-
-            </a>
-
-        </li>
-
-
-
-    </ul>
-
-
-
-</aside>
-
-
-
-
-
-<!-- =====================================================
-
      MAIN CONTENT
-
 ===================================================== -->
-
-
 
 <main class="main">
 
 
+    <div class="header">
 
+        <div class="header-left">
 
+            <h1>
+                Lubricant
+            </h1>
 
-    <div class="breadcrumb">
+            <p>
+                Rekam jejak penggunaan pelumas pada setiap alat berat.
+            </p>
 
+        </div>
 
-
-        Home
-
-        &nbsp;›&nbsp;
-
-
-
-        <span>
-
-            Lubricant
-
-        </span>
-
-
+        <a href="tambah.php" class="btn-primary">
+            + Tambah Data Pelumas
+        </a>
 
     </div>
 
 
-
-
-
-    <h1>
-
-        Lubricant
-
-    </h1>
-
-
-
-
-
-    <p class="description">
-
-
-
-        Rekam jejak penggunaan pelumas pada setiap alat berat.
-
-
-
-    </p>
-
-    <a href="tambah.php" class="btn-add">
-
-    + Tambah Data Pelumas
-
-</a>
-
-
-
-
-
     <!-- =================================================
-
          FILTER EQUIPMENT
-
     ================================================= -->
-
-
 
     <section class="filter-box">
 
+        <div class="box-title">
 
+            <div class="filter-title" style="margin-bottom:0;">
+                🔎 Filter Lokasi dan Equipment
+            </div>
 
-        <div class="filter-title">
+            <a href="javascript:history.back()" class="btn-reset">
+                ← Kembali
+            </a>
 
+        </div>
 
-
-    🔎 Filter Lokasi dan Equipment
-
-
-
-    <a href="javascript:history.back()"
-
-       style="
-
-           float:right;
-
-           padding:9px 16px;
-
-           border:1px solid #0759bd;
-
-           border-radius:8px;
-
-           color:#0759bd;
-
-           background:white;
-
-           text-decoration:none;
-
-           font-size:13px;
-
-           font-weight:600;
-
-       ">
-
-        ← Kembali
-
-    </a>
-
-</div>
-
-<form
-    id="filterForm"
-    method="GET"
-    action="index.php"
-    class="filter-form"
->
+        <form
+            id="filterForm"
+            method="GET"
+            action="index.php"
+            class="filter-form"
+        >
 
             <div class="form-group">
                 <label for="location">Lokasi</label>
@@ -1773,7 +644,7 @@ $chart_type_values = array_values($type_usage);
         ================================================= -->
 
         <?php if ($selected_equipment_data): ?>
-<section class="equipment-info">
+        <section class="equipment-info">
 
             <div class="equipment-header">
 
@@ -1802,10 +673,7 @@ $chart_type_values = array_values($type_usage);
                         Nama Equipment
                     </div>
 
-
                     <div class="info-value">
-
-
 
                         <?= htmlspecialchars(
 
@@ -1813,21 +681,12 @@ $chart_type_values = array_values($type_usage);
 
                         ); ?>
 
-
-
                     </div>
-
-
 
                 </div>
 
 
-
-
-
                 <div class="info-item">
-
-
 
                     <div class="info-label">
 
@@ -1835,11 +694,7 @@ $chart_type_values = array_values($type_usage);
 
                     </div>
 
-
-
                     <div class="info-value">
-
-
 
                         <?= htmlspecialchars(
 
@@ -1849,21 +704,12 @@ $chart_type_values = array_values($type_usage);
 
                         ); ?>
 
-
-
                     </div>
-
-
 
                 </div>
 
 
-
-
-
                 <div class="info-item">
-
-
 
                     <div class="info-label">
 
@@ -1871,11 +717,7 @@ $chart_type_values = array_values($type_usage);
 
                     </div>
 
-
-
                     <div class="info-value">
-
-
 
                         <?= number_format(
 
@@ -1895,21 +737,12 @@ $chart_type_values = array_values($type_usage);
 
                         ); ?>
 
-
-
                     </div>
-
-
 
                 </div>
 
 
-
-
-
                 <div class="info-item">
-
-
 
                     <div class="info-label">
 
@@ -1917,39 +750,20 @@ $chart_type_values = array_values($type_usage);
 
                     </div>
 
-
-
                     <div class="info-value">
-
-
 
                         <?= $total_replacement; ?>
 
-
-
                         Kali
-
-
 
                     </div>
 
-
-
                 </div>
-
-
-
-
 
             </div>
 
-
-
         </section>
-<?php endif; ?>
-
-
-
+        <?php endif; ?>
 
 
         <!-- =================================================
@@ -1958,190 +772,122 @@ $chart_type_values = array_values($type_usage);
 
         ================================================= -->
 
-
-
         <section class="summary-grid">
 
-
-
-
-
             <div class="summary-card">
 
+                <div class="summary-icon icon-blue">🛢️</div>
 
+                <div>
 
-                <div class="summary-label">
+                    <div class="summary-title">
+                        Total Penggunaan
+                    </div>
 
+                    <div class="summary-value">
 
+                        <?= number_format(
 
-                    Total Penggunaan
+                            $total_liter,
 
+                            2,
 
+                            ',',
 
-                </div>
+                            '.'
 
+                        ); ?>
 
+                        <span class="summary-unit">
 
-                <div class="summary-value">
+                            Liter
 
+                        </span>
 
-
-                    <?= number_format(
-
-                        $total_liter,
-
-                        2,
-
-                        ',',
-
-                        '.'
-
-                    ); ?>
-
-
-
-                    <span class="summary-unit">
-
-                        Liter
-
-                    </span>
-
-
+                    </div>
 
                 </div>
-
-
 
             </div>
 
 
-
-
-
             <div class="summary-card">
 
+                <div class="summary-icon icon-yellow">🔁</div>
 
+                <div>
 
-                <div class="summary-label">
+                    <div class="summary-title">
+                        Total Penggantian
+                    </div>
 
+                    <div class="summary-value">
 
+                        <?= $total_replacement; ?>
 
-                    Total Penggantian
+                        <span class="summary-unit">
 
+                            Kali
 
+                        </span>
 
-                </div>
-
-
-
-                <div class="summary-value">
-
-
-
-                    <?= $total_replacement; ?>
-
-
-
-                    <span class="summary-unit">
-
-                        Kali
-
-                    </span>
-
-
+                    </div>
 
                 </div>
-
-
 
             </div>
 
 
-
-
-
             <div class="summary-card">
 
+                <div class="summary-icon icon-green">📅</div>
 
+                <div>
 
-                <div class="summary-label">
+                    <div class="summary-title">
+                        Penggantian Bulan Ini
+                    </div>
 
+                    <div class="summary-value">
 
+                        <?= $this_month_replacement; ?>
 
-                    Penggantian Bulan Ini
+                        <span class="summary-unit">
 
+                            Kali
 
+                        </span>
 
-                </div>
-
-
-
-                <div class="summary-value">
-
-
-
-                    <?= $this_month_replacement; ?>
-
-
-
-                    <span class="summary-unit">
-
-                        Kali
-
-                    </span>
-
-
+                    </div>
 
                 </div>
-
-
 
             </div>
 
 
-
-
-
             <div class="summary-card">
 
+                <div class="summary-icon icon-orange">🕒</div>
 
+                <div>
 
-                <div class="summary-label">
+                    <div class="summary-title">
+                        Penggantian Terakhir
+                    </div>
 
+                    <div class="summary-value"
 
+                         style="font-size:20px;">
 
-                    Penggantian Terakhir
+                        <?= $last_replacement; ?>
 
-
-
-                </div>
-
-
-
-                <div class="summary-value"
-
-                     style="font-size:22px;">
-
-
-
-                    <?= $last_replacement; ?>
-
-
+                    </div>
 
                 </div>
-
-
 
             </div>
-
-
-
-
 
         </section>
-
-
-
 
 
         <!-- =================================================
@@ -2149,8 +895,6 @@ $chart_type_values = array_values($type_usage);
              CHARTS
 
         ================================================= -->
-
-
 
         <section class="chart-grid">
 
@@ -2167,34 +911,34 @@ $chart_type_values = array_values($type_usage);
                         Penggunaan pelumas berdasarkan bulan.
                     </p>
 
-<div class="period-filter" style="display:flex; gap:12px; align-items:end; flex-wrap:wrap; margin:12px 0;">
-    <div>
-        <label for="periode">Periode Grafik</label>
-        <select id="periode" name="periode" form="filterForm">
-            <option value="Harian" <?= $periode === 'Harian' ? 'selected' : ''; ?>>Harian</option>
-            <option value="Bulanan" <?= $periode === 'Bulanan' ? 'selected' : ''; ?>>Bulanan</option>
-            <option value="Khusus" <?= $periode === 'Khusus' ? 'selected' : ''; ?>>Periode Khusus</option>
-        </select>
-    </div>
+                    <div class="period-filter" style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin:12px 0;">
+                        <div>
+                            <label for="periode">Periode Grafik</label>
+                            <select id="periode" name="periode" form="filterForm">
+                                <option value="Harian" <?= $periode === 'Harian' ? 'selected' : ''; ?>>Harian</option>
+                                <option value="Bulanan" <?= $periode === 'Bulanan' ? 'selected' : ''; ?>>Bulanan</option>
+                                <option value="Khusus" <?= $periode === 'Khusus' ? 'selected' : ''; ?>>Periode Khusus</option>
+                            </select>
+                        </div>
 
-    <div>
-        <label for="tanggal_mulai">Tanggal Mulai</label>
-        <input type="date" id="tanggal_mulai" name="tanggal_mulai"
-               form="filterForm"
-               value="<?= htmlspecialchars($tanggal_mulai); ?>">
-    </div>
+                        <div>
+                            <label for="tanggal_mulai">Tanggal Mulai</label>
+                            <input type="date" id="tanggal_mulai" name="tanggal_mulai"
+                                   form="filterForm"
+                                   value="<?= htmlspecialchars($tanggal_mulai); ?>">
+                        </div>
 
-    <div>
-        <label for="tanggal_akhir">Tanggal Akhir</label>
-        <input type="date" id="tanggal_akhir" name="tanggal_akhir"
-               form="filterForm"
-               value="<?= htmlspecialchars($tanggal_akhir); ?>">
-    </div>
+                        <div>
+                            <label for="tanggal_akhir">Tanggal Akhir</label>
+                            <input type="date" id="tanggal_akhir" name="tanggal_akhir"
+                                   form="filterForm"
+                                   value="<?= htmlspecialchars($tanggal_akhir); ?>">
+                        </div>
 
-    <button type="submit" form="filterForm" class="btn-filter">
-        Terapkan Periode
-    </button>
-</div>
+                        <button type="submit" form="filterForm" class="btn-filter">
+                            Terapkan Periode
+                        </button>
+                    </div>
 
                 </div>
 
@@ -2226,14 +970,7 @@ $chart_type_values = array_values($type_usage);
 
             </div>
 
-
-
-
-
         </section>
-
-
-
 
 
         <!-- =================================================
@@ -2242,157 +979,60 @@ $chart_type_values = array_values($type_usage);
 
         ================================================= -->
 
-
-
         <section class="table-box">
-
-
 
             <div class="table-header">
 
+                <div>
 
+                    <h2>
 
-                <h2>
+                        Riwayat Penggunaan Pelumas
 
-                    Riwayat Penggunaan Pelumas
+                    </h2>
 
-                </h2>
+                    <p>
 
+                        Daftar penggunaan dan penggantian pelumas
 
+                        berdasarkan equipment.
 
-                <p>
+                    </p>
 
-                    Daftar penggunaan dan penggantian pelumas
-
-                    berdasarkan equipment.
-
-                </p>
-
-
+                </div>
 
             </div>
 
 
-
-
-
             <?php if (!empty($lubricant_data)): ?>
-
-
-
-
 
                 <div class="table-wrapper">
 
-
-
-                    <table>
-
-
+                    <table style="min-width: 950px;">
 
                         <thead>
 
-
-
                             <tr>
-
-
-
-                                <th>
-
-                                    No
-
-                                </th>
-
-
-
-                                <th>
-
-                                    Tanggal
-
-                                </th>
-
-
-
-                                <th>
-
-                                    ID Unit
-
-                                </th>
-
-
-
-                                <th>
-
-                                    Jenis Pelumas
-
-                                </th>
-
-
-
-                                <th>
-
-                                    Merek
-
-                                </th>
-
-
-
-                                <th>
-
-                                    Jumlah
-
-                                </th>
-
-
-
-                                <th>
-
-                                    Satuan
-
-                                </th>
-
-
-
-                                <th>
-
-                                    HM
-
-                                </th>
-
-
-
-                                <th>
-
-                                    Keterangan
-
-                                </th>
-
-                        <th>
-
-    Aksi
-
-</th>
-
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>ID Unit</th>
+                                <th>Jenis Pelumas</th>
+                                <th>Merek</th>
+                                <th>Jumlah</th>
+                                <th>Satuan</th>
+                                <th>HM</th>
+                                <th>Keterangan</th>
+                                <th>Aksi</th>
                             </tr>
-
-
 
                         </thead>
 
 
-
-
-
                         <tbody>
-
-
 
                             <?php
 
                             $no = 1;
-
-
 
                             foreach (
 
@@ -2404,11 +1044,7 @@ $chart_type_values = array_values($type_usage);
 
                             ?>
 
-
-
                                 <tr>
-
-
 
                                     <td>
 
@@ -2417,12 +1053,7 @@ $chart_type_values = array_values($type_usage);
                                     </td>
 
 
-
-
-
                                     <td>
-
-
 
                                         <?= !empty(
 
@@ -2446,21 +1077,12 @@ $chart_type_values = array_values($type_usage);
 
                                         ?>
 
-
-
                                     </td>
-
-
-
 
 
                                     <td>
 
-
-
                                         <strong>
-
-
 
                                             <?= htmlspecialchars(
 
@@ -2468,25 +1090,14 @@ $chart_type_values = array_values($type_usage);
 
                                             ); ?>
 
-
-
                                         </strong>
-
-
 
                                     </td>
 
 
-
-
-
                                     <td>
 
-
-
-                                        <div class="item-name">
-
-
+                                        <div class="item-name" style="font-weight:600; color:var(--ink);">
 
                                             <?= htmlspecialchars(
 
@@ -2494,21 +1105,12 @@ $chart_type_values = array_values($type_usage);
 
                                             ); ?>
 
-
-
                                         </div>
-
-
 
                                     </td>
 
 
-
-
-
                                     <td>
-
-
 
                                         <?= htmlspecialchars(
 
@@ -2518,17 +1120,10 @@ $chart_type_values = array_values($type_usage);
 
                                         ); ?>
 
-
-
                                     </td>
 
 
-
-
-
                                     <td>
-
-
 
                                         <?= number_format(
 
@@ -2548,19 +1143,12 @@ $chart_type_values = array_values($type_usage);
 
                                         ); ?>
 
-
-
                                     </td>
-
-
-
 
 
                                     <td>
 
-
-
-                                        <span class="badge">
+                                        <span class="badge badge-blue">
                                             <?= htmlspecialchars(
                                                 $item['satuan']
                                                 ?? '-'
@@ -2581,34 +1169,25 @@ $chart_type_values = array_values($type_usage);
                                             : '-';
                                         ?>
                                     </td>
-                                  <td>
+                                    <td>
 
-    <?= htmlspecialchars(
-        $item['keterangan']
-        ?? '-'
-    ); ?>
-</td>
+                                        <?= htmlspecialchars(
+                                            $item['keterangan']
+                                            ?? '-'
+                                        ); ?>
+                                    </td>
 
-<td>
-    <a
-        href="delete.php?id=<?= (int) $item['id']; ?>"
-        onclick="return confirm('Yakin ingin menghapus data pelumas ini?');"
-        style="
-            display:inline-block;
-            padding:7px 12px;
-            background:#dc3545;
-            color:white;
-            text-decoration:none;
-            border-radius:6px;
-            font-size:12px;
-            font-weight:600;
-        "
-    >
-        Hapus
-    </a>
-</td>
+                                    <td>
+                                        <a
+                                            href="delete.php?id=<?= (int) $item['id']; ?>"
+                                            onclick="return confirm('Yakin ingin menghapus data pelumas ini?');"
+                                            class="action-btn btn-delete"
+                                        >
+                                            Hapus
+                                        </a>
+                                    </td>
 
-</tr>
+                                </tr>
                             <?php endforeach; ?>
 
                         </tbody>
@@ -2714,41 +1293,25 @@ if (!empty($all_summary['last_replacement'])) {
 
     <div class="summary-card">
 
-        <div class="summary-label">
+        <div class="summary-icon icon-blue">🛢️</div>
 
-            Total Penggunaan
+        <div>
 
-        </div>
+            <div class="summary-title">
 
+                Total Penggunaan
 
-
-        <div class="summary-value">
-
-            <?= number_format($all_total_liter, 2); ?>
-
-            <span class="summary-unit">Liter</span>
-
-        </div>
-
-    </div>
+            </div>
 
 
 
-    <div class="summary-card">
+            <div class="summary-value">
 
-        <div class="summary-label">
+                <?= number_format($all_total_liter, 2); ?>
 
-            Total Penggantian
+                <span class="summary-unit">Liter</span>
 
-        </div>
-
-
-
-        <div class="summary-value">
-
-            <?= $all_total_replacement; ?>
-
-            <span class="summary-unit">Kali</span>
+            </div>
 
         </div>
 
@@ -2758,19 +1321,25 @@ if (!empty($all_summary['last_replacement'])) {
 
     <div class="summary-card">
 
-        <div class="summary-label">
+        <div class="summary-icon icon-yellow">🔁</div>
 
-            Penggantian Bulan Ini
+        <div>
 
-        </div>
+            <div class="summary-title">
+
+                Total Penggantian
+
+            </div>
 
 
 
-        <div class="summary-value">
+            <div class="summary-value">
 
-            <?= $all_this_month; ?>
+                <?= $all_total_replacement; ?>
 
-            <span class="summary-unit">Kali</span>
+                <span class="summary-unit">Kali</span>
+
+            </div>
 
         </div>
 
@@ -2780,17 +1349,51 @@ if (!empty($all_summary['last_replacement'])) {
 
     <div class="summary-card">
 
-        <div class="summary-label">
+        <div class="summary-icon icon-green">📅</div>
 
-            Penggantian Terakhir
+        <div>
+
+            <div class="summary-title">
+
+                Penggantian Bulan Ini
+
+            </div>
+
+
+
+            <div class="summary-value">
+
+                <?= $all_this_month; ?>
+
+                <span class="summary-unit">Kali</span>
+
+            </div>
 
         </div>
 
+    </div>
 
 
-        <div class="summary-value">
 
-            <?= $all_last_replacement; ?>
+    <div class="summary-card">
+
+        <div class="summary-icon icon-orange">🕒</div>
+
+        <div>
+
+            <div class="summary-title">
+
+                Penggantian Terakhir
+
+            </div>
+
+
+
+            <div class="summary-value" style="font-size:20px;">
+
+                <?= $all_last_replacement; ?>
+
+            </div>
 
         </div>
 
@@ -3047,6 +1650,13 @@ $all_chart_type_values = array_values(
 
 <script>
 
+Chart.defaults.font.family = "Inter, Arial, sans-serif";
+
+const chartColors = [
+    '#7c5cfc', '#f59e0b', '#22c55e', '#ef4444',
+    '#3b82f6', '#ec4899', '#14b8a6', '#a78bfa'
+];
+
 <?php if ($selected_equipment_data || $selected_location !== ''): ?>
 
 
@@ -3077,6 +1687,10 @@ if (monthlyCanvas) {
                 label: 'Penggunaan Pelumas (Liter)',
 
                 data: monthlyValues,
+
+                borderColor: '#7c5cfc',
+
+                backgroundColor: '#7c5cfc',
 
                 borderWidth: 3,
 
@@ -3170,7 +1784,9 @@ if (typeCanvas) {
 
                 data: typeValues,
 
-                borderWidth: 1
+                backgroundColor: chartColors,
+
+                borderWidth: 2
 
             }]
 
@@ -3261,6 +1877,10 @@ if (allMonthlyCanvas) {
                 label: 'Penggunaan Pelumas (Liter)',
 
                 data: allMonthlyValues,
+
+                borderColor: '#7c5cfc',
+
+                backgroundColor: '#7c5cfc',
 
                 borderWidth: 3,
 
@@ -3364,7 +1984,9 @@ if (allTypeCanvas) {
 
                 data: allTypeValues,
 
-                borderWidth: 1
+                backgroundColor: chartColors,
+
+                borderWidth: 2
 
             }]
 

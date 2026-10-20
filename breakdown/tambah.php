@@ -209,163 +209,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <title>Tambah Laporan Breakdown | Monitoring Alat Berat</title>
 
+    <link rel="stylesheet" href="../assets/css/app.css">
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f9;
-            color: #253247;
-            font-size: 14px;
-        }
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 240px;
-            height: 100vh;
-            background: #0759bd;
-            color: #fff;
-            padding: 25px 15px;
-            overflow-y: auto;
-            z-index: 10;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 35px;
-            padding-left: 10px;
-        }
-
-        .logo img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-        }
-
-        .logo-text {
-            font-size: 13px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 7px;
-        }
-
-        .menu a {
-            display: block;
-            padding: 12px 14px;
-            border-radius: 8px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            background: rgba(255, 255, 255, .18);
-        }
-
-        .main-content {
-            margin-left: 240px;
-            padding: 30px;
-            min-height: 100vh;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .page-title {
-            font-size: 25px;
-            font-weight: 700;
-            color: #172b4d;
-            margin-bottom: 8px;
-        }
-
-        .page-description {
-            color: #78869b;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .panel {
-            background: #fff;
-            border: 1px solid #e6ebf2;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 20px 22px;
-            border-bottom: 1px solid #edf0f5;
-        }
-
-        .panel-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #172b4d;
-        }
+        /* khusus halaman tambah laporan */
 
         .form-body {
-            padding: 22px;
+            padding: 20px;
         }
 
-        .form-grid {
-            display: grid;
+        .form-body .form-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 18px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
-        label {
-            color: #526176;
+        .help {
+            color: var(--muted);
             font-size: 12px;
-            font-weight: 600;
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            border: 1px solid #d9e0e9;
-            border-radius: 7px;
-            padding: 11px 12px;
-            background: #fff;
-            color: #253247;
-            font: inherit;
-            outline: none;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #0759bd;
+            line-height: 1.5;
         }
 
         textarea {
@@ -373,165 +235,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             resize: vertical;
         }
 
-        .help {
-            color: #8995a8;
-            font-size: 11px;
-            line-height: 1.5;
-        }
-
-        .actions {
+        .form-actions {
             display: flex;
             justify-content: flex-end;
             gap: 10px;
             margin-top: 22px;
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 7px;
-            padding: 11px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: #0759bd;
-            border: 1px solid #0759bd;
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: #064a9c;
-        }
-
-        .btn-secondary {
-            background: #fff;
-            border: 1px solid #d9e0e9;
-            color: #526176;
-        }
-
-        .alert {
-            border-radius: 8px;
-            padding: 13px 16px;
-            margin-bottom: 18px;
-            line-height: 1.6;
-        }
-
-        .alert-error {
-            background: #fff0ef;
-            border: 1px solid #f4c7c3;
-            color: #a12820;
-        }
-
-        .required {
-            color: #c62828;
+        .btn-primary[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         @media (max-width: 850px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
 
-            .main-content {
-                margin-left: 0;
-                padding: 18px;
-            }
-
-            .form-grid {
+            .form-body .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .form-group.full {
+            .form-body .form-group.full {
                 grid-column: auto;
             }
 
-            .page-header {
-                flex-direction: column;
-            }
         }
+
     </style>
 </head>
 
 <body>
-    <aside class="sidebar">
-        <div class="logo">
-            <img
-                src="../assets/logo.png"
-                alt="Logo PT Biringkassi Raya"
-            >
-            <div class="logo-text">PT BIRINGKASSI RAYA</div>
+
+    <?php
+    $base   = '../';
+    $active = 'breakdown';
+    include $base . 'includes/sidebar.php';
+    ?>
+
+    <main class="main">
+
+        <div class="breadcrumb">
+            <a href="../index.php">Home</a> &nbsp;›&nbsp;
+            <a href="index.php">Breakdown &amp; Failure</a> &nbsp;›&nbsp;
+            <span>Tambah Laporan</span>
         </div>
 
-        <ul class="menu">
-            <li>
-                <a href="../index.php">Dashboard</a>
-            </li>
-            <li>
-                <a href="../equipment/index.php">Equipment Master</a>
-            </li>
-            <li>
-                <a href="../equipment/index.php">Status Unit</a>
-            </li>
-            <li>
-                <a href="../maintenance/index.php">Jadwal Pemeliharaan</a>
-            </li>
-            <li>
-                <a href="../maintenance/history/index.php">
-                    Histori Pemeliharaan
-                </a>
-            </li>
-            <li>
-                <a href="index.php" class="active">
-                    Breakdown &amp; Failure
-                </a>
-            </li>
-            <li>
-                <a href="../sparepart/index.php">Spare Part</a>
-            </li>
-            <li>
-                <a href="../lubricant/index.php">Lubricant</a>
-            </li>
-            <li>
-                <a href="../fuel/index.php">Fuel Performance</a>
-            </li>
-        </ul>
-    </aside>
-
-    <main class="main-content">
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">
+        <div class="header">
+            <div class="header-left">
+                <h1>
                     Tambah Laporan Breakdown
                 </h1>
 
-                <p class="page-description">
+                <p>
                     Catat kejadian kerusakan atau gangguan pada alat berat.
                 </p>
             </div>
         </div>
 
         <?php if (!empty($errors)): ?>
-            <div class="alert alert-error">
+            <div class="error-box">
                 <?php foreach ($errors as $error): ?>
                     <div>• <?= h($error) ?></div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
 
-        <section class="panel">
-            <div class="panel-header">
-                <h2 class="panel-title">Informasi Laporan</h2>
+        <section class="section">
+            <div class="section-header">
+                <h3>Informasi Laporan</h3>
             </div>
 
             <div class="form-body">
                 <?php if (empty($equipment_list)): ?>
-                    <div class="alert alert-error">
+                    <div class="error-box">
                         Belum ada data equipment yang dapat dipilih.
                         Tambahkan data unit terlebih dahulu pada Equipment Master.
                     </div>
@@ -703,14 +477,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <div class="actions">
-                        <a href="index.php" class="btn btn-secondary">
+                    <div class="form-actions">
+                        <a href="index.php" class="btn-cancel">
                             Batal
                         </a>
 
                         <button
                             type="submit"
-                            class="btn btn-primary"
+                            class="btn-primary"
                             <?= empty($equipment_list) ? 'disabled' : '' ?>
                         >
                             Simpan Laporan

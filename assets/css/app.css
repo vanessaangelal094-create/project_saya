@@ -587,11 +587,23 @@ select:focus-visible {
     flex-shrink: 0;
 }
 
-.icon-blue   { background: var(--blue-soft); }
-.icon-green  { background: var(--green-soft); }
-.icon-yellow { background: var(--amber-soft); }
-.icon-orange { background: var(--orange-soft); }
-.icon-red    { background: var(--red-soft); }
+.icon-blue   { background: var(--blue-soft);   color: var(--blue); }
+.icon-green  { background: var(--green-soft);  color: var(--green); }
+.icon-yellow { background: var(--amber-soft);  color: var(--amber); }
+.icon-orange { background: var(--orange-soft); color: var(--orange); }
+.icon-red    { background: var(--red-soft);    color: var(--red); }
+
+/* ikon SVG profesional di dalam kartu ringkasan */
+.kpi-icon svg,
+.summary-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 
 .kpi-info {
     flex: 1;

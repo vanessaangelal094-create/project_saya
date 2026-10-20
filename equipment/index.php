@@ -203,6 +203,16 @@ function statusClass($status)
 
     <title>Equipment Master - Monitoring Maintenance</title>
 
+    <!-- Terapkan tema tersimpan sebelum halaman tampil -->
+    <script>
+        try {
+            document.documentElement.setAttribute(
+                'data-theme',
+                localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+            );
+        } catch (e) {}
+    </script>
+
     <link rel="stylesheet" href="../assets/css/app.css">
 
     <style>
@@ -267,7 +277,7 @@ function statusClass($status)
         }
 
         .modal-field input[readonly] {
-            background: #f5f5fa;
+            background: var(--th-bg);
         }
 
         .modal-actions {
@@ -378,7 +388,12 @@ function statusClass($status)
             >
 
                 <div class="summary-icon icon-blue">
-                    🚜
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--blue);">
+                        <path d="M3 17h13M5 17V9l4-3h5l3 4v7"/>
+                        <circle cx="7" cy="19" r="2"/>
+                        <circle cx="14" cy="19" r="2"/>
+                        <path d="M17 10h4l-1 7"/>
+                    </svg>
                 </div>
 
                 <div>
@@ -403,7 +418,10 @@ function statusClass($status)
             >
 
                 <div class="summary-icon icon-green">
-                    ✓
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--green);">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8.5 12.5 2.5 2.5 4.5-5"/>
+                    </svg>
                 </div>
 
                 <div>
@@ -428,7 +446,10 @@ function statusClass($status)
             >
 
                 <div class="summary-icon icon-yellow">
-                    ◷
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--amber);">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M10 9v6M14 9v6"/>
+                    </svg>
                 </div>
 
                 <div>
@@ -459,7 +480,9 @@ function statusClass($status)
             >
 
                 <div class="summary-icon icon-orange">
-                    🔧
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--orange);">
+                        <path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L3.5 17.2a2 2 0 0 0 2.8 2.8l5.8-5.8a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/>
+                    </svg>
                 </div>
 
                 <div>
@@ -484,7 +507,10 @@ function statusClass($status)
             >
 
                 <div class="summary-icon icon-red">
-                    !
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--red);">
+                        <path d="M12 3 2 20h20L12 3Z"/>
+                        <path d="M12 10v4M12 17.5v.01"/>
+                    </svg>
                 </div>
 
                 <div>
