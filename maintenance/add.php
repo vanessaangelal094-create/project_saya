@@ -255,20 +255,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 status equipment otomatis menjadi Maintenance.
             */
 
-$updateEquipment = $conn->prepare("
-    UPDATE equipment
-    SET status = 'Maintenance'
-    WHERE id = ?
-");
+            $updateEquipment = $conn->prepare("
+                UPDATE equipment
+                SET status = 'Maintenance'
+                WHERE id = ?
+            ");
 
-if ($updateEquipment) {
-    $updateEquipment->bind_param("i", $equipment_id);
-    $updateEquipment->execute();
-    $updateEquipment->close();
-}
+            if ($updateEquipment) {
+                $updateEquipment->bind_param("i", $equipment_id);
+                $updateEquipment->execute();
+                $updateEquipment->close();
+            }
 
-header("Location: index.php");
-exit;
+            header("Location: index.php");
+            exit;
 
         } else {
 
@@ -312,597 +312,281 @@ $equipment_result = $conn->query("
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Tambah Jadwal - PT Biringkassi Raya</title>
 
+    <!-- Terapkan tema tersimpan sebelum halaman tampil -->
+    <script>
+        try {
+            document.documentElement.setAttribute(
+                'data-theme',
+                localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+            );
+        } catch (e) {}
+    </script>
+
+    <link rel="stylesheet" href="../assets/css/app.css">
+
     <style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #172033;
-        }
-
-
-        /* =====================================================
-           SIDEBAR
-        ===================================================== */
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 240px;
-            height: 100vh;
-            background: #0759bd;
-            color: white;
-            padding: 25px 15px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 35px;
-            padding-left: 10px;
-        }
-
-
-        .logo img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-        }
-
-
-        .logo-text {
-            font-size: 13px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-
-        .menu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        .menu li {
-            margin-bottom: 7px;
-        }
-
-
-        .menu a {
-            display: block;
-            padding: 12px 14px;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-
-
-        .menu a:hover,
-        .menu a.active {
-            background: rgba(255,255,255,0.18);
-        }
-
-
-        /* =====================================================
-           DROPDOWN SPARE PART & LUBRICANT
-        ===================================================== */
-
-        .menu-dropdown {
-            margin-bottom: 7px;
-        }
-
-
-        .menu-dropdown > a {
-            display: flex !important;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-
-        .menu-arrow {
-            font-size: 11px;
-            transition: transform 0.2s ease;
-        }
-
-
-        .menu-arrow.open {
-            transform: rotate(180deg);
-        }
-
-
-        .submenu {
-            display: none;
-            list-style: none;
-            margin: 4px 0 5px 0;
-            padding: 0 0 0 12px;
-        }
-
-
-        .submenu.show {
-            display: block;
-        }
-
-
-        .submenu li {
-            margin-bottom: 3px;
-        }
-
-
-        .submenu li a {
-            display: block;
-            padding: 9px 14px !important;
-            border-radius: 7px;
-            color: rgba(255,255,255,0.85) !important;
-            font-size: 12px !important;
-            background: rgba(255,255,255,0.06);
-        }
-
-
-        .submenu li a:hover {
-            background: rgba(255,255,255,0.15);
-            color: white !important;
-        }
-
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
-
-        .main {
-            margin-left: 240px;
-            min-height: 100vh;
-            padding: 30px 35px 50px;
-        }
-
-
-        .breadcrumb {
-            font-size: 12px;
-            color: #7d899d;
-            margin-bottom: 8px;
-        }
-
-
-        .breadcrumb a {
-            color: #0759bd;
-            text-decoration: none;
-        }
-
-
-        .page-title {
-            margin: 0;
-            font-size: 28px;
-            color: #13284a;
-        }
-
-
-        .page-subtitle {
-            margin: 7px 0 25px;
-            color: #7a8799;
-            font-size: 13px;
-        }
-
-
-        /* =====================================================
-           FORM CARD
-        ===================================================== */
+        /* khusus halaman form jadwal */
 
         .form-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 25px;
-            max-width: 1050px;
+            max-width: 1100px;
+            padding: 24px 26px;
         }
-
 
         .form-section {
-            margin-bottom: 25px;
+            margin-bottom: 26px;
         }
-
 
         .form-section-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #0759bd;
-            padding-bottom: 10px;
-            margin-bottom: 18px;
-            border-bottom: 1px solid #edf1f6;
-        }
-
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
-
-
-        .form-group {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ink);
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--line);
         }
 
-
-        .form-group.full {
-            grid-column: 1 / -1;
+        .form-section-title::before {
+            content: "";
+            width: 4px;
+            height: 16px;
+            border-radius: 2px;
+            background: var(--primary);
         }
 
-
-        label {
-            font-size: 11px;
-            font-weight: bold;
-            color: #475467;
-            margin-bottom: 7px;
+        .form-grid.cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 20px;
         }
-
 
         .required {
-            color: #d62828;
+            color: var(--red);
         }
-
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            border: 1px solid #d7dee8;
-            border-radius: 7px;
-            padding: 11px 12px;
-            font-size: 12px;
-            color: #344054;
-            outline: none;
-            background: white;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #0759bd;
-            box-shadow: 0 0 0 2px rgba(7,89,189,0.08);
-        }
-
 
         input[readonly] {
-            background: #f5f7fa;
-            color: #667085;
+            background: var(--th-bg);
+            color: var(--muted);
+            cursor: not-allowed;
         }
-
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
 
         .helper {
-            margin-top: 5px;
-            font-size: 10px;
-            color: #98a2b3;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--muted);
         }
 
+        .form-footer {
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+        }
 
-        /* =====================================================
-           AUTO CALCULATION
-        ===================================================== */
+        /* pesan */
+
+        .message {
+            max-width: 1100px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .message.error {
+            background: var(--red-soft);
+            border: 1px solid var(--delete-border);
+            color: var(--red);
+        }
+
+        /* kotak hitung otomatis */
 
         .calculation-box {
-            background: #f6f9fd;
-            border: 1px solid #e0e8f2;
-            border-radius: 9px;
-            padding: 18px;
-            margin-top: 5px;
+            background: var(--th-bg);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px;
         }
-
 
         .calculation-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 14px;
         }
-
 
         .calculation-item {
-            background: white;
-            border: 1px solid #e4eaf2;
-            border-radius: 8px;
-            padding: 13px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 14px 16px;
         }
-
 
         .calculation-item span {
             display: block;
-            color: #7d899d;
-            font-size: 10px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--muted);
+            margin-bottom: 4px;
         }
-
 
         .calculation-item strong {
-            font-size: 17px;
-            color: #13284a;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            color: var(--ink);
         }
-
 
         .status-preview {
-            display: inline-block;
-            margin-top: 7px;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-size: 9px;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
         }
 
+        .status-preview.normal  { background: var(--green-soft); color: var(--green); }
+        .status-preview.warning { background: var(--amber-soft); color: var(--amber); }
+        .status-preview.danger  { background: var(--red-soft);   color: var(--red); }
 
-        .normal {
-            background: #e3f7eb;
-            color: #16804b;
-        }
-
-
-        .warning {
-            background: #fff0d4;
-            color: #c97900;
-        }
-
-
-        .danger {
-            background: #ffe2e2;
-            color: #c62828;
-        }
-
-
-        /* =====================================================
-           SPARE PART & LUBRICANT
-        ===================================================== */
+        /* spare part & lubricant */
 
         .sparepart-wrapper {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
+            background: var(--th-bg);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
             padding: 16px;
         }
-
 
         .sparepart-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 6px;
         }
 
+        .sparepart-header strong {
+            font-size: 14px;
+            color: var(--ink);
+        }
 
         .sparepart-description {
-            font-size: 11px;
-            color: #7a8799;
-            line-height: 1.5;
-            margin-top: -8px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--muted);
             margin-bottom: 14px;
         }
 
-
         .btn-add-item {
-            border: 1px solid #0759bd;
-            background: white;
-            color: #0759bd;
-            border-radius: 7px;
-            padding: 9px 13px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            height: 34px;
+            padding: 0 14px;
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            color: var(--primary);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
             white-space: nowrap;
+            cursor: pointer;
         }
-
 
         .btn-add-item:hover {
-            background: #f0f6ff;
+            background: var(--primary-soft);
         }
-
 
         .sparepart-empty {
-            border: 1px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 20px;
+            border: 1.5px dashed var(--line-strong);
+            border-radius: 10px;
+            padding: 22px;
             text-align: center;
-            color: #94a3b8;
-            font-size: 11px;
-            background: white;
+            font-size: 12px;
+            color: var(--muted);
+            background: var(--surface);
         }
 
-
         .sparepart-item {
-            background: white;
-            border: 1px solid #dfe6ef;
-            border-radius: 9px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
             padding: 16px;
             margin-bottom: 14px;
         }
-
 
         .sparepart-item:last-child {
             margin-bottom: 0;
         }
 
-
         .sparepart-item-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 14px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #edf1f6;
+            border-bottom: 1px solid var(--line);
         }
-
 
         .sparepart-item-title {
-            font-size: 12px;
-            font-weight: bold;
-            color: #13284a;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
         }
 
-
         .btn-remove-item {
-            border: 1px solid #f1b7b7;
-            background: white;
-            color: #c62828;
-            border-radius: 6px;
-            padding: 7px 10px;
-            font-size: 10px;
-            font-weight: bold;
+            border: 1px solid var(--delete-border);
+            background: transparent;
+            color: var(--red);
+            border-radius: 7px;
+            padding: 5px 11px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
         }
 
-
         .btn-remove-item:hover {
-            background: #fff4f4;
+            background: var(--red-soft);
         }
-
 
         .sparepart-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 14px 16px;
         }
-
 
         .sparepart-grid .form-group.full {
             grid-column: 1 / -1;
         }
 
-
         .sparepart-grid textarea {
-            min-height: 80px;
+            min-height: 76px;
         }
-
-
-        /* =====================================================
-           BUTTON
-        ===================================================== */
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding-top: 20px;
-            border-top: 1px solid #edf1f6;
-        }
-
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 11px 18px;
-            border-radius: 7px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-
-        .btn-cancel {
-            background: white;
-            color: #475467;
-            border: 1px solid #d7dee8;
-        }
-
-
-        .btn-save {
-            background: #0759bd;
-            color: white;
-            border: 1px solid #0759bd;
-        }
-
-
-        .btn-save:hover {
-            background: #064da4;
-        }
-
-
-        /* =====================================================
-           MESSAGE
-        ===================================================== */
-
-        .message {
-            max-width: 1050px;
-            padding: 12px 15px;
-            border-radius: 7px;
-            margin-bottom: 18px;
-            font-size: 12px;
-        }
-
-
-        .message.error {
-            background: #ffe8e8;
-            color: #b42318;
-            border: 1px solid #f5b5b5;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
 
         @media (max-width: 900px) {
 
-            .sidebar {
-                width: 200px;
-            }
-
-            .main {
-                margin-left: 200px;
-                padding: 20px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-group.full {
-                grid-column: auto;
-            }
-
-            .calculation-grid {
-                grid-template-columns: 1fr;
-            }
-
+            .form-grid.cols-2,
+            .calculation-grid,
             .sparepart-grid {
                 grid-template-columns: 1fr;
             }
 
+            .form-group.full,
             .sparepart-grid .form-group.full {
                 grid-column: auto;
             }
 
             .sparepart-header {
-                align-items: flex-start;
                 flex-direction: column;
+                align-items: flex-start;
             }
-
         }
 
     </style>
@@ -912,165 +596,51 @@ $equipment_result = $conn->query("
 
 <body>
 
+    <?php
+    $base   = '../';
+    $active = 'schedule';
+    include $base . 'includes/sidebar.php';
+    ?>
 
-    <!-- =========================================================
-         SIDEBAR
-    ========================================================= -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-
-            <img
-                src="../assets/logo.png"
-                alt="Logo PT Biringkassi Raya"
-            >
-
-            <div class="logo-text">
-                PT BIRINGKASSI RAYA
-            </div>
-
-        </div>
-
-
-        <ul class="menu">
-
-            <li>
-                <a href="../index.php">
-                    Dashboard
-                </a>
-            </li>
-
-
-            <li>
-                <a href="../equipment/index.php">
-                    Equipment Master
-                </a>
-            </li>
-
-
-            <li>
-                <a href="#">
-                    Status Unit
-                </a>
-            </li>
-
-
-            <li>
-                <a href="index.php" class="active">
-                    Jadwal Pemeliharaan
-                </a>
-            </li>
-
-
-            <li>
-                <a href="#">
-                    Histori Pemeliharaan
-                </a>
-            </li>
-
-
-            <li>
-                <a href="#">
-                    Breakdown & Failure
-                </a>
-            </li>
-
-
-            <!-- =================================================
-                 SPARE PART & LUBRICANT DROPDOWN
-            ================================================== -->
-
-            <li class="menu-dropdown">
-
-              <a
-    href="javascript:void(0);"
-    onclick="toggleSpareMenu()"
->
-    Spare Part & Lubricant
-    <span id="spareArrow" class="menu-arrow">▾</span>
-</a>
-
-
-              <ul id="spareSubmenu" class="submenu">
-
-    <li>
-        <a href="../sparepart/index.php">
-            Spare Part
-        </a>
-    </li>
-
-    <li>
-        <a href="../lubricant/index.php">
-            Lubricant
-        </a>
-    </li>
-
-</ul>
-
-            </li>
-
-
-            <li>
-                <a href="#">
-                    Fuel Performance
-                </a>
-            </li>
-
-
-            <li>
-                <a href="#">
-                    Biaya Pemeliharaan
-                </a>
-            </li>
-
-
-            <li>
-                <a href="#">
-                    Kinerja & Evaluasi
-                </a>
-            </li>
-
-
-            <li>
-                <a href="#">
-                    Laporan
-                </a>
-            </li>
-
-        </ul>
-
-    </aside>
-
-
-    <!-- =========================================================
-         MAIN
-    ========================================================= -->
 
     <main class="main">
 
 
-        <div class="breadcrumb">
+        <!-- HEADER -->
 
-            <a href="index.php">
-                Jadwal Pemeliharaan
-            </a>
+        <div class="header">
 
-            &nbsp;›&nbsp;
+            <div class="header-left">
 
-            Tambah Jadwal
+                <div class="breadcrumb">
+
+                    <a href="index.php">
+                        Jadwal Pemeliharaan
+                    </a>
+
+                    &nbsp;›&nbsp;
+
+                    <span>
+                        Tambah Jadwal
+                    </span>
+
+                </div>
+
+                <h1>
+                    Tambah Jadwal Pemeliharaan
+                </h1>
+
+                <p>
+                    Tambahkan jadwal preventive maintenance untuk alat berat.
+                </p>
+
+            </div>
+
+            <div class="header-right">
+                <a href="index.php" class="back-btn" title="Kembali">←</a>
+            </div>
 
         </div>
-
-
-        <h1 class="page-title">
-            Tambah Jadwal Pemeliharaan
-        </h1>
-
-
-        <p class="page-subtitle">
-            Tambahkan jadwal preventive maintenance untuk alat berat.
-        </p>
 
 
         <?php if ($message !== ''): ?>
@@ -1101,7 +671,7 @@ $equipment_result = $conn->query("
                 </div>
 
 
-                <div class="form-grid">
+                <div class="form-grid cols-2">
 
 
                     <div class="form-group">
@@ -1227,7 +797,7 @@ $equipment_result = $conn->query("
                 </div>
 
 
-                <div class="form-grid">
+                <div class="form-grid cols-2">
 
 
                     <div class="form-group">
@@ -1331,16 +901,31 @@ $equipment_result = $conn->query("
 
                     </div>
 
-<div class="form-group">
-    <label>Pelaksanaan Maintenance</label>
-    <select name="mulai_maintenance" required>
-        <option value="0">Jadwal saja (belum dimulai)</option>
-        <option value="1">Mulai maintenance sekarang</option>
-    </select>
-    <div class="helper">
-        Pilih mulai sekarang hanya jika pekerjaan benar-benar dimulai.
-    </div>
-</div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Pelaksanaan Maintenance
+                        </label>
+
+                        <select name="mulai_maintenance" required>
+
+                            <option value="0">
+                                Jadwal saja (belum dimulai)
+                            </option>
+
+                            <option value="1">
+                                Mulai maintenance sekarang
+                            </option>
+
+                        </select>
+
+                        <div class="helper">
+                            Pilih mulai sekarang hanya jika pekerjaan benar-benar dimulai.
+                        </div>
+
+                    </div>
+
 
                     <div class="form-group full">
 
@@ -1417,9 +1002,7 @@ $equipment_result = $conn->query("
 
                     <div class="sparepart-header">
 
-                        <strong
-                            style="font-size:12px; color:#13284a;"
-                        >
+                        <strong>
                             Spare Part / Lubricant yang Dibutuhkan
                         </strong>
 
@@ -1479,7 +1062,7 @@ $equipment_result = $conn->query("
                 </div>
 
 
-                <div class="form-grid">
+                <div class="form-grid cols-2">
 
 
                     <div class="form-group">
@@ -1522,20 +1105,18 @@ $equipment_result = $conn->query("
                  ACTION
             ================================================== -->
 
-            <div class="form-actions">
-
+            <div class="form-footer">
 
                 <a
                     href="index.php"
-                    class="btn btn-cancel"
+                    class="btn-cancel"
                 >
                     Batal
                 </a>
 
-
                 <button
                     type="submit"
-                    class="btn btn-save"
+                    class="btn-save"
                 >
                     Simpan Jadwal
                 </button>
@@ -1549,24 +1130,6 @@ $equipment_result = $conn->query("
 
 
     <script>
-
-
-        /* =========================================================
-           DROPDOWN SPARE PART & LUBRICANT
-        ========================================================= */
-
-        function toggleSpareMenu() {
-
-    const submenu = document.getElementById("spareSubmenu");
-
-    if (!submenu) {
-        alert("spareSubmenu tidak ditemukan!");
-        return;
-    }
-
-    submenu.classList.toggle("show");
-
-}
 
 
         /* =========================================================
@@ -2082,23 +1645,6 @@ $equipment_result = $conn->query("
 
         }
 
-/* =========================================================
-   DROPDOWN SPARE PART & LUBRICANT
-========================================================= */
-
-function toggleSpareMenu() {
-
-    const submenu =
-        document.getElementById('spareSubmenu');
-
-    const arrow =
-        document.getElementById('spareArrow');
-
-    submenu.classList.toggle('show');
-
-    arrow.classList.toggle('open');
-
-}
 
         /* =========================================================
            FORMAT ANGKA

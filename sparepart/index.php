@@ -142,6 +142,21 @@ if ($selected_equipment > 0) {
     }
 }
 
+
+/* =========================================================
+   FORMAT TANGGAL
+   (tanggal kosong ditampilkan sebagai "-")
+========================================================= */
+
+function formatTanggal($value)
+{
+    if (!empty($value)) {
+        return date('d/m/Y', strtotime($value));
+    }
+
+    return '-';
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -157,695 +172,126 @@ if ($selected_equipment > 0) {
 
     <title>Spare Part - PT Biringkassi Raya</title>
 
+    <!-- Terapkan tema tersimpan sebelum halaman tampil -->
+    <script>
+        try {
+            document.documentElement.setAttribute(
+                'data-theme',
+                localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+            );
+        } catch (e) {}
+    </script>
+
+    <link rel="stylesheet" href="../assets/css/app.css">
 
     <style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* khusus halaman ini */
+
+        .filter-form.cols-3 {
+            grid-template-columns: 1fr auto auto;
         }
 
-
-        body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #f4f7fb;
-
-            color: #172033;
-
-        }
-
-/* =================================================
-   SIDEBAR - STANDARD
-================================================= */
-
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-
-    width: 240px;
-    height: 100vh;
-
-    background: #0759bd;
-    color: white;
-
-    padding: 25px 15px;
-
-    overflow-y: auto;
-    z-index: 1000;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    margin-bottom: 35px;
-    padding-left: 10px;
-}
-
-.brand img {
-    width: 42px;
-    height: 42px;
-
-    object-fit: contain;
-}
-
-.brand span {
-    font-size: 13px;
-    font-weight: bold;
-    line-height: 1.3;
-}
-
-.menu {
-    list-style: none;
-}
-
-.menu li {
-    margin-bottom: 7px;
-}
-
-.menu a {
-    display: block;
-
-    padding: 12px 14px;
-
-    border-radius: 8px;
-
-    color: white;
-    text-decoration: none;
-
-    font-size: 13px;
-
-    transition: 0.2s;
-}
-
-.menu a:hover {
-    background: rgba(255, 255, 255, 0.12);
-}
-
-.menu a.active {
-    background: rgba(255, 255, 255, 0.18);
-}
-
-.menu-dropdown > a {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.submenu {
-    list-style: none;
-    display: block;
-    margin-top: 3px;
-}
-
-.submenu a {
-    padding: 10px 14px 10px 30px;
-    font-size: 13px;
-    background: rgba(255,255,255,0.08);
-    margin-bottom: 3px;
-}
-
-.submenu a.active {
-    background: rgba(255,255,255,0.18);
-}
-
-        /* =================================================
-           CONTENT
-        ================================================= */
-
-        .main {
-
-            margin-left: 240px;
-
-            min-height: 100vh;
-
-            padding: 35px 40px;
-
-        }
-
-
-        .breadcrumb {
-
-            color: #64748b;
-
-            font-size: 14px;
-
-            margin-bottom: 10px;
-
-        }
-
-
-        .breadcrumb span {
-
-            color: #0759bd;
-
-            font-weight: 600;
-
-        }
-
-
-        h1 {
-
-            color: #123b6d;
-
-            font-size: 30px;
-
-            margin-bottom: 8px;
-
-        }
-
-
-        .description {
-
-            color: #64748b;
-
-            margin-bottom: 28px;
-
-        }
-
-
-        /* =================================================
-           FILTER
-        ================================================= */
-
-        .filter-box {
-
-            background: white;
-
-            border: 1px solid #e1e8f0;
-
-            border-radius: 14px;
-
-            padding: 25px;
-
-            margin-bottom: 25px;
-
-        }
-
-
-        .filter-title {
-
-            font-size: 18px;
-
-            font-weight: 700;
-
-            margin-bottom: 18px;
-
-            color: #172033;
-
-        }
-
-
-        .filter-form {
-
+        .title-with-icon {
             display: flex;
-
-            gap: 15px;
-
-            align-items: end;
-
-        }
-
-
-        .form-group {
-
-            flex: 1;
-
-        }
-
-
-        .form-group label {
-
-            display: block;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            color: #475569;
-
-            margin-bottom: 7px;
-
-        }
-
-
-        .form-group select {
-
-            width: 100%;
-
-            height: 44px;
-
-            padding: 0 13px;
-
-            border: 1px solid #d5dee9;
-
-            border-radius: 8px;
-
-            background: white;
-
-            color: #334155;
-
-            font-size: 14px;
-
-            outline: none;
-
-        }
-
-
-        .form-group select:focus {
-
-            border-color: #0759bd;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(7,89,189,0.08);
-
-        }
-
-
-        .btn-filter {
-
-            height: 44px;
-
-            padding: 0 24px;
-
-            border: none;
-
-            border-radius: 8px;
-
-            background: #0759bd;
-
-            color: white;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-        }
-
-
-        .btn-filter:hover {
-
-            background: #064b9f;
-
-        }
-
-
-        .btn-reset {
-
-            display: inline-flex;
-
             align-items: center;
-
-            justify-content: center;
-
-            height: 44px;
-
-            padding: 0 20px;
-
-            border: 1px solid #d5dee9;
-
-            border-radius: 8px;
-
-            color: #334155;
-
-            text-decoration: none;
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-            background: white;
-
+            gap: 8px;
         }
 
-
-        /* =================================================
-           EQUIPMENT INFO
-        ================================================= */
-
-        .equipment-info {
-
-            background: white;
-
-            border: 1px solid #e1e8f0;
-
-            border-radius: 14px;
-
-            padding: 25px;
-
-            margin-bottom: 25px;
-
+        .title-with-icon svg {
+            color: var(--primary);
         }
 
-
-        .equipment-header {
-
+        .equipment-top {
             display: flex;
-
+            align-items: center;
             justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 20px;
-
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
-
-        .equipment-header h2 {
-
-            font-size: 20px;
-
-            color: #123b6d;
-
+        .equipment-top h2 {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            color: var(--ink);
         }
-
-
-        .equipment-code {
-
-            background: #eaf3ff;
-
-            color: #0759bd;
-
-            padding: 7px 13px;
-
-            border-radius: 7px;
-
-            font-weight: 700;
-
-            font-size: 13px;
-
-        }
-
 
         .equipment-grid {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 15px;
-
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
         }
-
 
         .info-item {
-
-            background: #f8fafc;
-
-            border-radius: 9px;
-
-            padding: 15px;
-
-        }
-
-
-        .info-label {
-
-            color: #64748b;
-
-            font-size: 12px;
-
-            margin-bottom: 5px;
-
-        }
-
-
-        .info-value {
-
-            font-size: 15px;
-
-            font-weight: 600;
-
-            color: #172033;
-
-        }
-
-
-        /* =================================================
-           TABLE
-        ================================================= */
-
-        .table-box {
-
-            background: white;
-
-            border: 1px solid #e1e8f0;
-
-            border-radius: 14px;
-
-            overflow: hidden;
-
-        }
-
-
-        .table-header {
-
-            padding: 22px 25px;
-
-            border-bottom: 1px solid #e8edf3;
-
-        }
-
-
-        .table-header h2 {
-
-            font-size: 20px;
-
-            color: #172033;
-
-        }
-
-
-        .table-header p {
-
-            color: #64748b;
-
-            font-size: 13px;
-
-            margin-top: 5px;
-
-        }
-
-
-        .table-wrapper {
-
-            overflow-x: auto;
-
-        }
-
-
-        table {
-
-            width: 100%;
-
-            border-collapse: collapse;
-
-            min-width: 1100px;
-
-        }
-
-
-        th {
-
-            background: #f5f8fc;
-
-            color: #64748b;
-
-            font-size: 12px;
-
-            text-align: left;
-
+            background: var(--th-bg);
+            border: 1px solid var(--line);
+            border-radius: 10px;
             padding: 14px 16px;
-
-            white-space: nowrap;
-
         }
 
-
-        td {
-
-            padding: 15px 16px;
-
-            border-top: 1px solid #edf1f5;
-
-            font-size: 13px;
-
-            color: #334155;
-
-            vertical-align: top;
-
+        .info-item .info-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
         }
 
-
-        tbody tr:hover {
-
-            background: #fafcff;
-
+        .info-item .info-value {
+            font-size: 15px;
         }
 
+        .table-sub {
+            margin-top: 2px;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        .sparepart-table {
+            min-width: 1100px;
+        }
+
+        td.wrap {
+            white-space: normal;
+            min-width: 170px;
+        }
 
         .item-name {
-
-            font-weight: 700;
-
-            color: #172033;
-
+            font-weight: 600;
+            color: var(--ink);
         }
-
 
         .spec {
-
-            color: #64748b;
-
-            margin-top: 4px;
-
+            margin-top: 3px;
             font-size: 12px;
-
+            color: var(--muted);
         }
 
-
-        .badge {
-
-            display: inline-block;
-
-            padding: 6px 10px;
-
-            border-radius: 20px;
-
-            font-size: 11px;
-
-            font-weight: 600;
-
-            white-space: nowrap;
-
+        .empty svg {
+            display: block;
+            margin: 0 auto 10px;
+            color: var(--muted);
         }
-
-
-        .badge-wait {
-
-            background: #fff4df;
-
-            color: #b45309;
-
-        }
-
-
-        .badge-order {
-
-            background: #eaf3ff;
-
-            color: #0759bd;
-
-        }
-
-
-        .badge-delivery {
-
-            background: #f1eafe;
-
-            color: #7c3aed;
-
-        }
-
-
-        .badge-arrived {
-
-            background: #e8f8ee;
-
-            color: #15803d;
-
-        }
-
-
-        .badge-default {
-
-            background: #eef2f7;
-
-            color: #475569;
-
-        }
-
-
-        .empty {
-
-            padding: 55px 20px;
-
-            text-align: center;
-
-            color: #64748b;
-
-        }
-
-
-        .empty-icon {
-
-            font-size: 40px;
-
-            margin-bottom: 12px;
-
-        }
-
 
         .empty h3 {
-
-            color: #334155;
-
-            margin-bottom: 7px;
-
+            margin-bottom: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ink);
         }
-
-
-        /* =================================================
-           RESPONSIVE
-        ================================================= */
 
         @media (max-width: 1100px) {
 
             .equipment-grid {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
+                grid-template-columns: repeat(2, 1fr);
             }
-
         }
 
+        @media (max-width: 650px) {
 
-        @media (max-width: 800px) {
-
-            .sidebar {
-
-                width: 210px;
-
+            .equipment-grid {
+                grid-template-columns: 1fr;
             }
-
-            .main {
-
-                margin-left: 210px;
-
-                padding: 25px;
-
-            }
-
-            .filter-form {
-
-                flex-direction: column;
-
-                align-items: stretch;
-
-            }
-
         }
 
     </style>
@@ -855,795 +301,599 @@ if ($selected_equipment > 0) {
 
 <body>
 
-
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
-<aside class="sidebar">
-
-    <div class="brand">
-
-        <img
-            src="../assets/logo.png"
-            alt="Logo PT Biringkassi Raya"
-        >
-
-        <span>
-            PT BIRINGKASSI<br>
-            RAYA
-        </span>
-
-    </div>
+    <?php
+    $base   = '../';
+    $active = 'sparepart';
+    include $base . 'includes/sidebar.php';
+    ?>
 
 
-    <ul class="menu">
-
-        <li>
-            <a href="../index.php">
-                Dashboard
-            </a>
-        </li>
+    <main class="main">
 
 
-        <li>
-            <a href="../equipment/index.php">
-                Equipment Master
-            </a>
-        </li>
+        <!-- HEADER -->
 
+        <div class="header">
 
-        <li>
-            <a href="../equipment/index.php">
-                Status Unit
-            </a>
-        </li>
+            <div class="header-left">
 
+                <div class="breadcrumb">
 
-        <li>
-            <a href="../maintenance/index.php">
-                Jadwal Pemeliharaan
-            </a>
-        </li>
-
-
-        <li>
-            <a href="../maintenance/history/index.php">
-                Histori Pemeliharaan
-            </a>
-        </li>
-
-
-        <li>
-            <a href="../breakdown/index.php">
-                Breakdown & Failure
-            </a>
-        </li>
-
-
-        <li class="menu-dropdown">
-
-            <a href="javascript:void(0);">
-                Spare Part & Lubricant
-                <span>▴</span>
-            </a>
-
-
-            <ul class="submenu">
-
-                <li>
-                    <a
-                        href="index.php"
-                        class="active"
-                    >
-                        Spare Part
+                    <a href="../index.php">
+                        Home
                     </a>
-                </li>
 
+                    &nbsp;›&nbsp;
 
-                <li>
-                    <a href="../lubricant/index.php">
-                        Lubricant
-                    </a>
-                </li>
-
-            </ul>
-
-        </li>
-
-
-        <li>
-            <a href="../fuel/index.php">
-                Fuel Performance
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Biaya Pemeliharaan
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Kinerja & Evaluasi
-            </a>
-        </li>
-
-
-        <li>
-            <a href="#">
-                Laporan
-            </a>
-        </li>
-
-    </ul>
-
-</aside>
-
-
-<!-- =====================================================
-     MAIN CONTENT
-===================================================== -->
-
-<main class="main">
-
-
-    <div class="breadcrumb">
-
-        Home
-        &nbsp;›&nbsp;
-        <span>Spare Part</span>
-
-    </div>
-
-
-    <h1>
-        Spare Part
-    </h1>
-
-
-    <p class="description">
-        Rekam jejak penggunaan spare part pada setiap alat berat.
-    </p>
-
-
-    <!-- =================================================
-         FILTER EQUIPMENT
-    ================================================= -->
-
-    <section class="filter-box">
-
-        <div class="filter-title">
-            🔎 Pilih Equipment
-        </div>
-
-
-        <form
-            method="GET"
-            action="index.php"
-            class="filter-form"
-        >
-
-            <div class="form-group">
-
-                <label for="equipment_id">
-                    Equipment
-                </label>
-
-
-                <select
-                    name="equipment_id"
-                    id="equipment_id"
-                    required
-                >
-
-                    <option value="">
-                        Pilih Equipment
-                    </option>
-
-
-                    <?php
-
-                    if ($equipment_result):
-
-                        while (
-                            $equipment =
-                            $equipment_result->fetch_assoc()
-                        ):
-
-                    ?>
-
-                        <option
-                            value="<?= (int)$equipment['id']; ?>"
-                            <?= (
-                                $selected_equipment ==
-                                $equipment['id']
-                            )
-                                ? 'selected'
-                                : '';
-                            ?>
-                        >
-
-                            <?= htmlspecialchars(
-                                $equipment['equipment_code']
-                            ); ?>
-
-                            -
-                            <?= htmlspecialchars(
-                                $equipment['equipment_name']
-                            ); ?>
-
-                        </option>
-
-                    <?php
-
-                        endwhile;
-
-                    endif;
-
-                    ?>
-
-                </select>
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="btn-filter"
-            >
-                Tampilkan
-            </button>
-
-
-            <a
-                href="index.php"
-                class="btn-reset"
-            >
-                Reset
-            </a>
-
-        </form>
-
-    </section>
-
-
-    <?php if ($selected_equipment_data): ?>
-
-
-        <!-- =============================================
-             EQUIPMENT INFO
-        ============================================== -->
-
-        <section class="equipment-info">
-
-            <div class="equipment-header">
-
-                <h2>
-                    Informasi Equipment
-                </h2>
-
-
-                <span class="equipment-code">
-
-                    <?= htmlspecialchars(
-                        $selected_equipment_data[
-                            'equipment_code'
-                        ]
-                    ); ?>
-
-                </span>
-
-            </div>
-
-
-            <div class="equipment-grid">
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        Nama Equipment
-                    </div>
-
-                    <div class="info-value">
-
-                        <?= htmlspecialchars(
-                            $selected_equipment_data[
-                                'equipment_name'
-                            ]
-                        ); ?>
-
-                    </div>
+                    <span>Spare Part</span>
 
                 </div>
 
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        Jenis
-                    </div>
-
-                    <div class="info-value">
-
-                        <?= htmlspecialchars(
-                            $selected_equipment_data[
-                                'equipment_type'
-                            ] ?? '-'
-                        ); ?>
-
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        HM Saat Ini
-                    </div>
-
-                    <div class="info-value">
-
-                        <?= number_format(
-                            (float)(
-                                $selected_equipment_data[
-                                    'hm_current'
-                                ] ?? 0
-                            ),
-                            0,
-                            ',',
-                            '.'
-                        ); ?>
-
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        Total Spare Part
-                    </div>
-
-                    <div class="info-value">
-
-                        <?= count($sparepart_data); ?>
-                        Item
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-        <!-- =============================================
-             TABLE SPARE PART
-        ============================================== -->
-
-        <section class="table-box">
-
-            <div class="table-header">
-
-                <h2>
-                    Riwayat Penggunaan Spare Part
-                </h2>
+                <h1>
+                    Spare Part
+                </h1>
 
                 <p>
-                    Daftar spare part yang digunakan
-                    berdasarkan riwayat maintenance equipment.
+                    Rekam jejak penggunaan spare part pada setiap alat berat.
                 </p>
 
             </div>
 
-
-            <?php if (!empty($sparepart_data)): ?>
-
-
-                <div class="table-wrapper">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    No
-                                </th>
-
-                                <th>
-                                    Tanggal Maintenance
-                                </th>
-
-                                <th>
-                                    Nama Spare Part
-                                </th>
-
-                                <th>
-                                    Jenis
-                                </th>
-
-                                <th>
-                                    Spesifikasi
-                                </th>
-
-                                <th>
-                                    Jumlah
-                                </th>
-
-                                <th>
-                                    Tanggal Order
-                                </th>
-
-                                <th>
-                                    Perkiraan Tiba
-                                </th>
-
-                                <th>
-                                    Status Spare Part
-                                </th>
-
-                                <th>
-                                    Pekerjaan
-                                </th>
-
-                            </tr>
-
-                        </thead>
+        </div>
 
 
-                        <tbody>
+        <!-- =================================================
+             FILTER EQUIPMENT
+        ================================================= -->
 
-                            <?php
+        <section class="filter-box">
 
-                            $no = 1;
+            <div class="filter-title title-with-icon">
 
-                            foreach (
-                                $sparepart_data
-                                as $item
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"
+                     fill="none" stroke="currentColor" stroke-width="1.8"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="m20 20-3.5-3.5"/>
+                </svg>
+
+                Pilih Equipment
+
+            </div>
+
+
+            <form
+                method="GET"
+                action="index.php"
+                class="filter-form cols-3"
+            >
+
+                <div class="form-group">
+
+                    <label for="equipment_id">
+                        Equipment
+                    </label>
+
+
+                    <select
+                        name="equipment_id"
+                        id="equipment_id"
+                        required
+                    >
+
+                        <option value="">
+                            Pilih Equipment
+                        </option>
+
+
+                        <?php
+
+                        if ($equipment_result):
+
+                            while (
+                                $equipment =
+                                $equipment_result->fetch_assoc()
                             ):
 
-                                $status =
-                                    $item[
-                                        'status_sparepart'
-                                    ] ?? '';
+                        ?>
 
-                                $status_class =
-                                    'badge-default';
+                            <option
+                                value="<?= (int)$equipment['id']; ?>"
+                                <?= (
+                                    $selected_equipment ==
+                                    $equipment['id']
+                                )
+                                    ? 'selected'
+                                    : '';
+                                ?>
+                            >
+
+                                <?= htmlspecialchars(
+                                    $equipment['equipment_code']
+                                ); ?>
+
+                                -
+                                <?= htmlspecialchars(
+                                    $equipment['equipment_name']
+                                ); ?>
+
+                            </option>
+
+                        <?php
+
+                            endwhile;
+
+                        endif;
+
+                        ?>
+
+                    </select>
+
+                </div>
 
 
-                                if (
-                                    $status ===
-                                    'Menunggu Order'
-                                ) {
+                <button
+                    type="submit"
+                    class="btn-filter"
+                >
+                    Tampilkan
+                </button>
 
-                                    $status_class =
-                                        'badge-wait';
 
-                                } elseif (
-                                    $status ===
-                                    'Sudah Diorder'
-                                ) {
+                <a
+                    href="index.php"
+                    class="btn-reset"
+                >
+                    Reset
+                </a>
 
-                                    $status_class =
-                                        'badge-order';
+            </form>
 
-                                } elseif (
-                                    $status ===
-                                    'Dalam Pengiriman'
-                                ) {
+        </section>
 
-                                    $status_class =
-                                        'badge-delivery';
 
-                                } elseif (
-                                    $status ===
-                                    'Sudah Tiba'
-                                ) {
+        <?php if ($selected_equipment_data): ?>
 
-                                    $status_class =
-                                        'badge-arrived';
 
-                                }
+            <!-- =============================================
+                 EQUIPMENT INFO
+            ============================================== -->
 
-                            ?>
+            <section class="box">
+
+                <div class="equipment-top">
+
+                    <h2>
+                        Informasi Equipment
+                    </h2>
+
+
+                    <span class="badge badge-blue">
+
+                        <?= htmlspecialchars(
+                            $selected_equipment_data[
+                                'equipment_code'
+                            ]
+                        ); ?>
+
+                    </span>
+
+                </div>
+
+
+                <div class="equipment-grid">
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Nama Equipment
+                        </div>
+
+                        <div class="info-value">
+
+                            <?= htmlspecialchars(
+                                $selected_equipment_data[
+                                    'equipment_name'
+                                ]
+                            ); ?>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Jenis
+                        </div>
+
+                        <div class="info-value">
+
+                            <?= htmlspecialchars(
+                                $selected_equipment_data[
+                                    'equipment_type'
+                                ] ?? '-'
+                            ); ?>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            HM Saat Ini
+                        </div>
+
+                        <div class="info-value">
+
+                            <?= number_format(
+                                (float)(
+                                    $selected_equipment_data[
+                                        'hm_current'
+                                    ] ?? 0
+                                ),
+                                0,
+                                ',',
+                                '.'
+                            ); ?>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Total Spare Part
+                        </div>
+
+                        <div class="info-value">
+
+                            <?= count($sparepart_data); ?>
+                            Item
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 TABLE SPARE PART
+            ============================================== -->
+
+            <section class="table-box">
+
+                <div class="table-header">
+
+                    <div>
+
+                        <h2>
+                            Riwayat Penggunaan Spare Part
+                        </h2>
+
+                        <p class="table-sub">
+                            Daftar spare part yang digunakan
+                            berdasarkan riwayat maintenance equipment.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <?php if (!empty($sparepart_data)): ?>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="sparepart-table">
+
+                            <thead>
 
                                 <tr>
 
-                                    <td>
-                                        <?= $no++; ?>
-                                    </td>
+                                    <th>No</th>
+
+                                    <th>Tanggal Maintenance</th>
+
+                                    <th>Nama Spare Part</th>
+
+                                    <th>Jenis</th>
+
+                                    <th>Spesifikasi</th>
+
+                                    <th>Jumlah</th>
+
+                                    <th>Tanggal Order</th>
+
+                                    <th>Perkiraan Tiba</th>
+
+                                    <th>Status Spare Part</th>
+
+                                    <th>Pekerjaan</th>
+
+                                </tr>
+
+                            </thead>
 
 
-                                    <td>
+                            <tbody>
 
-                                        <?php
+                                <?php
 
-                                        if (
-                                            !empty(
-                                                $item[
-                                                    'tanggal_jadwal'
-                                                ]
-                                            )
-                                        ) {
+                                $no = 1;
 
-                                            echo date(
-                                                'd/m/Y',
-                                                strtotime(
-                                                    $item[
-                                                        'tanggal_jadwal'
-                                                    ]
-                                                )
-                                            );
+                                foreach (
+                                    $sparepart_data
+                                    as $item
+                                ):
 
-                                        } else {
+                                    $status =
+                                        $item[
+                                            'status_sparepart'
+                                        ] ?? '';
 
-                                            echo '-';
-
-                                        }
-
-                                        ?>
-
-                                    </td>
+                                    $status_class =
+                                        'badge';
 
 
-                                    <td>
+                                    if (
+                                        $status ===
+                                        'Menunggu Order'
+                                    ) {
 
-                                        <div class="item-name">
+                                        $status_class =
+                                            'badge badge-yellow';
 
-                                            <?= htmlspecialchars(
-                                                $item[
-                                                    'nama_item'
-                                                ]
+                                    } elseif (
+                                        $status ===
+                                        'Sudah Diorder'
+                                    ) {
+
+                                        $status_class =
+                                            'badge badge-blue';
+
+                                    } elseif (
+                                        $status ===
+                                        'Dalam Pengiriman'
+                                    ) {
+
+                                        $status_class =
+                                            'badge badge-purple';
+
+                                    } elseif (
+                                        $status ===
+                                        'Sudah Tiba'
+                                    ) {
+
+                                        $status_class =
+                                            'badge badge-green';
+
+                                    }
+
+                                ?>
+
+                                    <tr>
+
+                                        <td>
+                                            <?= $no++; ?>
+                                        </td>
+
+
+                                        <td>
+                                            <?= formatTanggal(
+                                                $item['tanggal_jadwal']
                                             ); ?>
+                                        </td>
 
-                                        </div>
 
+                                        <td class="wrap">
 
-                                        <?php if (
-                                            !empty(
-                                                $item[
-                                                    'keterangan'
-                                                ]
-                                            )
-                                        ): ?>
-
-                                            <div class="spec">
+                                            <div class="item-name">
 
                                                 <?= htmlspecialchars(
                                                     $item[
-                                                        'keterangan'
+                                                        'nama_item'
                                                     ]
                                                 ); ?>
 
                                             </div>
 
-                                        <?php endif; ?>
 
-                                    </td>
-
-
-                                    <td>
-
-                                        <?= htmlspecialchars(
-                                            $item[
-                                                'jenis'
-                                            ] ?? '-'
-                                        ); ?>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <?= htmlspecialchars(
-                                            $item[
-                                                'spesifikasi'
-                                            ] ?? '-'
-                                        ); ?>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <?= number_format(
-                                            (float)(
-                                                $item[
-                                                    'jumlah'
-                                                ] ?? 0
-                                            ),
-                                            2,
-                                            ',',
-                                            '.'
-                                        ); ?>
-
-                                        <?= htmlspecialchars(
-                                            $item[
-                                                'satuan'
-                                            ] ?? ''
-                                        ); ?>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <?php
-
-                                        if (
-                                            !empty(
-                                                $item[
-                                                    'tanggal_order'
-                                                ]
-                                            )
-                                        ) {
-
-                                            echo date(
-                                                'd/m/Y',
-                                                strtotime(
+                                            <?php if (
+                                                !empty(
                                                     $item[
-                                                        'tanggal_order'
+                                                        'keterangan'
                                                     ]
                                                 )
-                                            );
+                                            ): ?>
 
-                                        } else {
+                                                <div class="spec">
 
-                                            echo '-';
+                                                    <?= htmlspecialchars(
+                                                        $item[
+                                                            'keterangan'
+                                                        ]
+                                                    ); ?>
 
-                                        }
+                                                </div>
 
-                                        ?>
+                                            <?php endif; ?>
 
-                                    </td>
-
-
-                                    <td>
-
-                                        <?php
-
-                                        if (
-                                            !empty(
-                                                $item[
-                                                    'perkiraan_tiba'
-                                                ]
-                                            )
-                                        ) {
-
-                                            echo date(
-                                                'd/m/Y',
-                                                strtotime(
-                                                    $item[
-                                                        'perkiraan_tiba'
-                                                    ]
-                                                )
-                                            );
-
-                                        } else {
-
-                                            echo '-';
-
-                                        }
-
-                                        ?>
-
-                                    </td>
+                                        </td>
 
 
-                                    <td>
-
-                                        <span
-                                            class="
-                                                badge
-                                                <?= $status_class; ?>
-                                            "
-                                        >
+                                        <td>
 
                                             <?= htmlspecialchars(
-                                                $status ?: '-'
+                                                $item[
+                                                    'jenis'
+                                                ] ?? '-'
                                             ); ?>
 
-                                        </span>
-
-                                    </td>
+                                        </td>
 
 
-                                    <td>
+                                        <td class="wrap">
 
-                                        <?= htmlspecialchars(
-                                            $item[
-                                                'pekerjaan'
-                                            ] ?? '-'
-                                        ); ?>
+                                            <?= htmlspecialchars(
+                                                $item[
+                                                    'spesifikasi'
+                                                ] ?? '-'
+                                            ); ?>
 
-                                    </td>
-
-                                </tr>
-
-                            <?php endforeach; ?>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
+                                        </td>
 
 
-            <?php else: ?>
+                                        <td>
+
+                                            <?= number_format(
+                                                (float)(
+                                                    $item[
+                                                        'jumlah'
+                                                    ] ?? 0
+                                                ),
+                                                2,
+                                                ',',
+                                                '.'
+                                            ); ?>
+
+                                            <?= htmlspecialchars(
+                                                $item[
+                                                    'satuan'
+                                                ] ?? ''
+                                            ); ?>
+
+                                        </td>
 
 
-                <div class="empty">
+                                        <td>
+                                            <?= formatTanggal(
+                                                $item['tanggal_order']
+                                            ); ?>
+                                        </td>
 
-                    <div class="empty-icon">
-                        📦
+
+                                        <td>
+                                            <?= formatTanggal(
+                                                $item['perkiraan_tiba']
+                                            ); ?>
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="<?= $status_class; ?>">
+
+                                                <?= htmlspecialchars(
+                                                    $status ?: '-'
+                                                ); ?>
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <td class="wrap">
+
+                                            <?= htmlspecialchars(
+                                                $item[
+                                                    'pekerjaan'
+                                                ] ?? '-'
+                                            ); ?>
+
+                                        </td>
+
+                                    </tr>
+
+                                <?php endforeach; ?>
+
+                            </tbody>
+
+                        </table>
+
                     </div>
 
 
+                <?php else: ?>
+
+
+                    <div class="empty">
+
+                        <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"
+                             fill="none" stroke="currentColor" stroke-width="1.6"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/>
+                            <path d="m3 8 9 5 9-5M12 13v8"/>
+                        </svg>
+
+
+                        <h3>
+                            Belum Ada Data Spare Part
+                        </h3>
+
+
+                        <p>
+                            Belum terdapat riwayat penggunaan
+                            spare part untuk equipment ini.
+                        </p>
+
+                    </div>
+
+
+                <?php endif; ?>
+
+            </section>
+
+
+        <?php else: ?>
+
+
+            <!-- =============================================
+                 BELUM PILIH EQUIPMENT
+            ============================================== -->
+
+            <section class="table-box">
+
+                <div class="empty">
+
+                    <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"
+                         fill="none" stroke="currentColor" stroke-width="1.6"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L3.5 17.2a2 2 0 0 0 2.8 2.8l5.8-5.8a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/>
+                    </svg>
+
+
                     <h3>
-                        Belum Ada Data Spare Part
+                        Pilih Equipment Terlebih Dahulu
                     </h3>
 
 
                     <p>
-                        Belum terdapat riwayat penggunaan
-                        spare part untuk equipment ini.
+                        Pilih equipment pada filter di atas
+                        untuk melihat riwayat penggunaan
+                        spare part.
                     </p>
 
                 </div>
 
-
-            <?php endif; ?>
-
-        </section>
+            </section>
 
 
-    <?php else: ?>
+        <?php endif; ?>
 
 
-        <!-- =============================================
-             BELUM PILIH EQUIPMENT
-        ============================================== -->
-
-        <section class="table-box">
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    🔧
-                </div>
-
-
-                <h3>
-                    Pilih Equipment Terlebih Dahulu
-                </h3>
-
-
-                <p>
-                    Pilih equipment pada filter di atas
-                    untuk melihat riwayat penggunaan
-                    spare part.
-                </p>
-
-            </div>
-
-        </section>
-
-
-    <?php endif; ?>
-
-
-</main>
+    </main>
 
 
 </body>
