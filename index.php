@@ -502,7 +502,7 @@ $dashboard_chart_lubricant_values = array_values($dashboard_lubricant_by_month);
 
                 </div>
 
-                <div class="combined-chart">
+                <a href="analysis/index.php" style="display:block; color:inherit; text-decoration:none; cursor:pointer;">
 
                     <div class="combined-chart-area">
 
