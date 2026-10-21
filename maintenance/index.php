@@ -30,9 +30,9 @@ $sql = "
         e.equipment_name,
         e.equipment_type
     FROM maintenance_schedule ms
-    INNER JOIN equipment e
-        ON ms.equipment_id = e.id
-    WHERE ms.status <> 'Selesai'
+INNER JOIN equipment e
+    ON ms.equipment_id = e.id
+WHERE 1 = 1
 ";
 
 $params = [];
@@ -69,6 +69,10 @@ if ($status_filter !== '') {
 
     $params[] = $status_filter;
     $types .= "s";
+}
+
+if ($status_filter === '' && ($_GET['show'] ?? '') !== 'all') {
+    $sql .= " AND ms.status <> 'Selesai'";
 }
 
 $sql .= "
@@ -241,7 +245,9 @@ include $base . 'includes/sidebar.php';
     <div class="summary-grid cols-4">
 
 
-        <div class="summary-card">
+        <div class="summary-card"
+     onclick="window.location.href='index.php?show=all'"
+     style="cursor:pointer;">
 
             <div class="summary-icon icon-blue">
                 📅
@@ -260,7 +266,9 @@ include $base . 'includes/sidebar.php';
         </div>
 
 
-        <div class="summary-card">
+        <div class="summary-card"
+     onclick="window.location.href='index.php?status=Segera%20Diservis'"
+     style="cursor:pointer;">
 
             <div class="summary-icon icon-orange">
                 🔧
@@ -279,7 +287,9 @@ include $base . 'includes/sidebar.php';
         </div>
 
 
-        <div class="summary-card">
+        <div class="summary-card"
+     onclick="window.location.href='index.php?status=Overdue'"
+     style="cursor:pointer;">
 
             <div class="summary-icon icon-red">
                 ⚠
@@ -298,7 +308,9 @@ include $base . 'includes/sidebar.php';
         </div>
 
 
-        <div class="summary-card">
+        <div class="summary-card"
+     onclick="window.location.href='history/index.php'"
+     style="cursor:pointer;">
 
             <div class="summary-icon icon-green">
                 ✓
