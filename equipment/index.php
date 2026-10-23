@@ -736,10 +736,6 @@ function statusClass($status)
                             <th>NO</th>
                             <th>ID UNIT</th>
                             <th>NAMA EQUIPMENT</th>
-                            <th>JENIS ALAT</th>
-                            <th>MEREK / MODEL</th>
-                            <th>TAHUN</th>
-                            <th>KAPASITAS</th>
                             <th>LOKASI</th>
                             <th>HM SAAT INI</th>
                             <th>STATUS</th>
@@ -773,25 +769,9 @@ function statusClass($status)
                                 </strong>
                             </td>
 
-                            <td>
-                                <?php echo htmlspecialchars($row['equipment_name'] ?? '-'); ?>
-                            </td>
-
-                            <td>
-                                <?php echo htmlspecialchars($row['equipment_type'] ?? '-'); ?>
-                            </td>
-
-                            <td>
-                                <?php echo htmlspecialchars($row['brand_model'] ?? '-'); ?>
-                            </td>
-
-                            <td>
-                                <?php echo htmlspecialchars($row['year'] ?? '-'); ?>
-                            </td>
-
-                            <td>
-                                <?php echo htmlspecialchars($row['capacity'] ?? '-'); ?>
-                            </td>
+                           <td>
+    <?php echo htmlspecialchars($row['spesifikasi'] ?? '-'); ?>
+</td>
 
                             <td>
                                 <?php echo htmlspecialchars($row['location'] ?? '-'); ?>
