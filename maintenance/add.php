@@ -1585,35 +1585,28 @@ $equipment_result = $conn->query("
 
                     </div>
 
-
                 </div>
 
             `;
 
-
             container.appendChild(item);
-
         }
 
 
         function removeSparepartItem(button) {
-
             const item =
                 button.closest(
                     '.sparepart-item'
                 );
 
-
             if (item) {
                 item.remove();
             }
-
 
             const container =
                 document.getElementById(
                     'sparepartContainer'
                 );
-
 
             if (
                 container &&
