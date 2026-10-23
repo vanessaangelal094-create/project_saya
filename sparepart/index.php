@@ -182,6 +182,15 @@ function formatTanggal($value)
         } catch (e) {}
     </script>
 
+    <!-- Terapkan Tema Laut (jika sedang aktif) sebelum halaman tampil -->
+    <script>
+        try {
+            if (localStorage.getItem('sparepart_ocean_theme') === 'on') {
+                document.documentElement.classList.add('ocean-on');
+            }
+        } catch (e) {}
+    </script>
+
     <link rel="stylesheet" href="../assets/css/app.css">
 
     <style>
@@ -304,6 +313,7 @@ function formatTanggal($value)
     <?php
     $base   = '../';
     $active = 'sparepart';
+    include $base . 'includes/ocean-theme.php';
     include $base . 'includes/sidebar.php';
     ?>
 
@@ -336,6 +346,26 @@ function formatTanggal($value)
                 <p>
                     Rekam jejak penggunaan spare part pada setiap alat berat.
                 </p>
+
+            </div>
+
+            <div class="header-right">
+
+                <button
+                    type="button"
+                    class="ocean-btn"
+                    id="oceanToggle"
+                    aria-pressed="false"
+                >
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M2 12 C5 6 11 6 15 9 L21 6 V18 L15 15 C11 18 5 18 2 12 Z"/>
+                        <circle cx="8" cy="11" r="0.8"/>
+                    </svg>
+
+                    <span class="ocean-btn-label">Aktifkan Tema Laut</span>
+
+                </button>
 
             </div>
 
