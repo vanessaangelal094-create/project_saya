@@ -12,6 +12,9 @@
 |   $active = 'dashboard'; // lihat daftar key di bawah
 |
 |   include $base . 'includes/sidebar.php';
+|
+| Gaya sidebar NAVY ada di blok <style> paling bawah file ini,
+| sehingga selalu menang atas CSS lain yang dimuat di <head>.
 */
 
 $base   = $base   ?? '';
@@ -150,3 +153,99 @@ function sidebar_icon($icons, $key, $class = '')
     </div>
 
 </aside>
+
+<!-- =========================================================
+     GAYA SIDEBAR NAVY
+     Diletakkan setelah </aside> supaya dibaca terakhir dan
+     menimpa gaya lama dari app.css / tema lain.
+     Ubah warna cukup lewat variabel --sb-* di bawah.
+========================================================== -->
+<style>
+    aside.sidebar {
+        --sb-top: #0b1f3a;
+        --sb-bottom: #12305a;
+        --sb-text: #c5d0e2;
+        --sb-muted: #7e92b3;
+        --sb-line: rgba(255, 255, 255, 0.08);
+        --sb-line-strong: rgba(255, 255, 255, 0.16);
+        --sb-hover: rgba(255, 255, 255, 0.07);
+        --sb-active: rgba(255, 255, 255, 0.12);
+        --sb-accent: #d4af63;
+
+        background: linear-gradient(180deg, var(--sb-top) 0%, var(--sb-bottom) 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        color: #ffffff;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+    }
+
+    /* Mode Malam: navy lebih gelap agar tetap beda dari latar halaman */
+    [data-theme="dark"] aside.sidebar {
+        --sb-top: #071427;
+        --sb-bottom: #0b1d38;
+        --sb-line: rgba(255, 255, 255, 0.07);
+        --sb-line-strong: rgba(255, 255, 255, 0.14);
+    }
+
+    aside.sidebar::-webkit-scrollbar { width: 6px; }
+    aside.sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 6px;
+    }
+
+    /* logo & judul grup */
+    aside.sidebar .logo-text  { color: #ffffff; }
+    aside.sidebar .menu-title { color: var(--sb-muted); }
+
+    /* menu */
+    aside.sidebar .menu a { color: var(--sb-text); }
+
+    aside.sidebar .menu a svg { opacity: 0.8; }
+
+    aside.sidebar .menu a:hover {
+        background: var(--sb-hover);
+        color: #ffffff;
+    }
+
+    aside.sidebar .menu a.active {
+        background: var(--sb-active);
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: inset 3px 0 0 var(--sb-accent);
+    }
+
+    aside.sidebar .menu a.active svg {
+        stroke: var(--sb-accent);
+        opacity: 1;
+    }
+
+    /* tombol mode malam */
+    aside.sidebar .theme-toggle {
+        border-color: var(--sb-line-strong);
+        color: var(--sb-text);
+    }
+
+    aside.sidebar .theme-toggle:hover {
+        background: var(--sb-hover);
+        color: #ffffff;
+    }
+
+    /* footer: avatar, nama, logout */
+    aside.sidebar .sidebar-footer { border-top-color: var(--sb-line); }
+
+    aside.sidebar .sidebar-avatar {
+        background: var(--sb-accent);
+        color: #0b1f3a;
+        font-weight: 700;
+    }
+
+    aside.sidebar .sidebar-user       { color: #ffffff; }
+    aside.sidebar .sidebar-user small { color: var(--sb-muted); }
+
+    aside.sidebar .sidebar-logout { color: var(--sb-muted); }
+
+    aside.sidebar .sidebar-logout:hover {
+        background: rgba(255, 90, 90, 0.16);
+        color: #ff8a8a;
+    }
+</style>

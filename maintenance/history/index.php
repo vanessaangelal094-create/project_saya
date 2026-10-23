@@ -115,7 +115,7 @@ if ($summaryQuery) {
     ?>
 
     <main class="main">
-
+<?php include $base . 'includes/windmill-scene.php'; ?>
         <!-- HEADER -->
         <div class="header">
             <div class="header-left">
