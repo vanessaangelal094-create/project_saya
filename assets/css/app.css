@@ -7,6 +7,7 @@
    - tambahan halaman Histori Pemeliharaan
    - MODE MALAM (aktif lewat <html data-theme="dark">)
    - ikon kartu ringkasan berbentuk SVG (warna mengikuti kartu)
+   - SIDEBAR NAVY ELEGAN (variabel --sb-* di bawah)
 
    Cara pakai di tiap halaman:
    <link rel="stylesheet" href="../assets/css/app.css">
@@ -72,6 +73,21 @@
     --radius: 12px;
     --radius-sm: 8px;
     --sidebar-w: 248px;
+
+    /* ---------- SIDEBAR NAVY (tema terang) ---------- */
+    --sb-top: #0b1f3a;
+    --sb-bottom: #12305a;
+    --sb-text: #c5d0e2;
+    --sb-text-strong: #ffffff;
+    --sb-muted: #7e92b3;
+    --sb-line: rgba(255, 255, 255, 0.08);
+    --sb-line-strong: rgba(255, 255, 255, 0.16);
+    --sb-hover: rgba(255, 255, 255, 0.07);
+    --sb-active: rgba(255, 255, 255, 0.12);
+    --sb-accent: #d4af63;
+    --sb-accent-ink: #0b1f3a;
+    --sb-danger: #ff8a8a;
+    --sb-danger-soft: rgba(255, 90, 90, 0.16);
 }
 
 
@@ -128,6 +144,12 @@
 
     --shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.5);
     --shadow-tab: 0 1px 2px rgba(0, 0, 0, 0.4);
+
+    /* ---------- SIDEBAR NAVY (mode malam: lebih gelap) ---------- */
+    --sb-top: #071427;
+    --sb-bottom: #0b1d38;
+    --sb-line: rgba(255, 255, 255, 0.07);
+    --sb-line-strong: rgba(255, 255, 255, 0.14);
 }
 
 
@@ -160,7 +182,7 @@ select:focus-visible {
 
 
 /* =========================================================
-   SIDEBAR
+   SIDEBAR (NAVY)
 ========================================================= */
 
 .sidebar {
@@ -169,14 +191,25 @@ select:focus-visible {
     top: 0;
     width: var(--sidebar-w);
     height: 100vh;
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--line);
-    color: var(--ink);
+    background: linear-gradient(180deg, var(--sb-top) 0%, var(--sb-bottom) 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--sb-text-strong);
     padding: 20px 14px;
     overflow-y: auto;
     z-index: 1000;
     display: flex;
     flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
 }
 
 .logo {
@@ -197,14 +230,14 @@ select:focus-visible {
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: -0.2px;
-    color: var(--ink);
+    color: var(--sb-text-strong);
 }
 
 .menu-title {
     padding: 14px 12px 6px;
     font-size: 12px;
     font-weight: 500;
-    color: var(--muted);
+    color: var(--sb-muted);
 }
 
 .menu {
@@ -221,7 +254,7 @@ select:focus-visible {
     gap: 12px;
     padding: 10px 12px;
     border-radius: 10px;
-    color: var(--ink-2);
+    color: var(--sb-text);
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
@@ -237,23 +270,24 @@ select:focus-visible {
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
-    opacity: 0.75;
+    opacity: 0.8;
 }
 
 .menu a:hover {
-    background: var(--menu-hover);
-    color: var(--ink);
+    background: var(--sb-hover);
+    color: var(--sb-text-strong);
 }
 
 .menu a.active {
-    background: var(--menu-active);
-    color: var(--ink);
+    background: var(--sb-active);
+    color: var(--sb-text-strong);
     font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--sb-accent);
 }
 
 .menu a.active svg {
     opacity: 1;
-    stroke: var(--primary);
+    stroke: var(--sb-accent);
 }
 
 /* tombol ganti tema (mode malam) */
@@ -264,10 +298,10 @@ select:focus-visible {
     width: 100%;
     padding: 10px 12px;
     margin: 10px 0 12px;
-    border: 1px solid var(--line-strong);
+    border: 1px solid var(--sb-line-strong);
     border-radius: 10px;
     background: transparent;
-    color: var(--ink-2);
+    color: var(--sb-text);
     font-family: inherit;
     font-size: 14px;
     font-weight: 500;
@@ -276,8 +310,8 @@ select:focus-visible {
 }
 
 .theme-toggle:hover {
-    background: var(--primary-soft);
-    color: var(--ink);
+    background: var(--sb-hover);
+    color: var(--sb-text-strong);
 }
 
 .theme-toggle svg {
@@ -312,7 +346,7 @@ select:focus-visible {
 .sidebar-footer {
     margin-top: auto;
     padding-top: 14px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--sb-line);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -322,9 +356,9 @@ select:focus-visible {
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: var(--primary);
-    color: #fff;
-    font-weight: 600;
+    background: var(--sb-accent);
+    color: var(--sb-accent-ink);
+    font-weight: 700;
     font-size: 13px;
     display: flex;
     align-items: center;
@@ -337,6 +371,7 @@ select:focus-visible {
     min-width: 0;
     font-size: 13px;
     font-weight: 600;
+    color: var(--sb-text-strong);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -345,20 +380,20 @@ select:focus-visible {
 .sidebar-user small {
     display: block;
     font-weight: 400;
-    color: var(--muted);
+    color: var(--sb-muted);
     font-size: 11px;
 }
 
 .sidebar-logout {
-    color: var(--muted);
+    color: var(--sb-muted);
     display: flex;
     padding: 6px;
     border-radius: 8px;
 }
 
 .sidebar-logout:hover {
-    background: var(--red-soft);
-    color: var(--red);
+    background: var(--sb-danger-soft);
+    color: var(--sb-danger);
 }
 
 .sidebar-logout svg {
